@@ -1,0 +1,3 @@
+Delete this file once you populate this folder.
+
+Git requires that a folder is not empty for it to be included.
