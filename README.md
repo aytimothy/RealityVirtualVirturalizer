@@ -10,7 +10,7 @@ The aim is put together a product that would allow you to scan the world with th
 * Codie Little
 * Ritchie [don't know surname]
 * James Hamshere
-* Walreed Jamaldini
+* Waleed Jamaldini
 
 **Supervisor and Mentor:** [Jun Jo](mailto:j.jo@griffith.edu.au)
 
