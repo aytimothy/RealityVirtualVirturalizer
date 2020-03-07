@@ -1,0 +1,11 @@
+{
+	"frame_step": "(float) How long should the thing output data in seconds? (Default: 0.25s; 4 times per second).",
+	"out_source": "(string) What adapter is accepting outputs?",
+	"out_source_types": [
+		"ROS": "Prints everything to the command, basically.",
+		"SQL": "Saves everything to an SQL server.",
+		"CSV": "Saves everything to a local CSV file.",
+		"MON": "Saves everything to a MongoDB server.",
+		"NON": "Null-routes the data (basically does nothing)
+	]
+}
