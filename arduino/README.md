@@ -1,0 +1,1 @@
+You can now find it in `/catkin_ws/src/world_mapper/sketch`
