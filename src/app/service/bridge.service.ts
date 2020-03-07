@@ -7,11 +7,11 @@ import 'roslib/build/roslib.js';
   providedIn: 'root'
 })
 
-export class BridgeService  {
+export class BridgeService {
 
   private socket: any;
+  private listener: any;
   public isConnected: boolean = false;
-
   constructor() { }
 
   newRosConnection(): boolean {
@@ -32,6 +32,7 @@ export class BridgeService  {
   onConnect(next) {
     this.socket.on('connection', (response: any) => {
       this.isConnected = true;
+      this.onConnected();
       next(response)
     });
   }
@@ -49,4 +50,21 @@ export class BridgeService  {
       next(response);
     });
   }
+
+  onConnected() {
+    this.listener = new ROSLIB.Topic({
+      ros: this.socket,
+      name: '/listener',
+      messageType: 'std_msgs/String'
+    });
+  }
+
+  onListener(next) {
+    this.listener.subscribe(function (message: any) {
+      console.log(message);
+      console.log('Received message on ' + ': ' + message.data);
+      next(message);
+    });
+  }
+
 }

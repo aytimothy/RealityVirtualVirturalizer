@@ -11,7 +11,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class AppComponent {
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
-  browserSelected: boolean = true;
+  browserSelected: boolean = false;
 
   constructor(private __SidenavService: SidenavService) { }
 
