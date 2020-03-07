@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-content>
+    <div class="row">
+      <div class="col">
+        <mat-card-title>Browse Folders</mat-card-title>
+        <mat-list>
+          <mat-list-item *ngFor="let folder of folders; let index = index" (click)="markFolder(index, folder.name)"
+            [class.active]="selectedFolderIndex === index">
+            <button mat-icon-button>
+              <mat-icon>folder</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+            <span>{{folder.name}}</span>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div *ngIf="files.length != 0" class="col">
+        <mat-card-title>{{selectedFolderName}}</mat-card-title>
+        <mat-list>
+          <mat-list-item *ngFor="let file of files; let index = index" (click)="markFile(index)"
+            [class.active]="selectedFileIndex === index">
+            <button mat-icon-button>
+              <mat-icon>file_copy</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+            <span>{{file}}</span>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button mat-raised-button (click)="toggleSideNav()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="span">
+      Scanner Status:
+      <button mat-flat-button>
+        <mat-icon>{{scan_status_icon}}</mat-icon>
+        {{scan_status_msg}}
+      </button>
+    </span>
+    <span class="span">
+      Rosbridge Status:
+      <button *ngIf="!loading" mat-flat-button>
+        <mat-icon>{{bridge_status_icon}}
+        </mat-icon>
+        {{bridge_status_msg}}
+      </button>
+      <button *ngIf="loading" mat-flat-button>
+        <mat-icon>
+          <mat-spinner color="primary" diameter="20">
+          </mat-spinner>
+        </mat-icon>
+        {{bridge_status_msg}}
+      </button>
+    </span>
+  </mat-toolbar-row>
+</mat-toolbar>
