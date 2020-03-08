@@ -3,7 +3,13 @@
 Before we begin, grab the files do somewhere like your `Downloads` folder.
 
     cd ~/Downloads
-    git clone https://github.com/aytimothy/RealityVirtualVirturalizer.git
+    git --recurse-submodules -j8 clone https://github.com/aytimothy/RealityVirtualVirturalizer.git
+    
+(`--recurse-submodules` downloads submodules without you having to manually clone them, and `-j8` basically is an optimization that speeds up cloning by cloning up to 8 repositories in parallel, available in Git 2.8 and above).
+
+If you have already cloned without `--recurse-submoudles`, just run:
+
+    git submodule update --init --recursive
 
 # 1. ROS Installation
 
