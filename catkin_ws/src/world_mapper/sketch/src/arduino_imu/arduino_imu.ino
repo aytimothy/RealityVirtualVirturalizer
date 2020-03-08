@@ -1,15 +1,16 @@
 // Uncomment this to use ROS output functionality instead.
-// #define ROS
+#define ROS
 
 #include <I2Cdev.h>
 #include <helper_3dmath.h>
 #include <MPU6050.h>
-#if ROS
+#ifdef ROS
   #include <ros.h>
-  #include <sensor_msgs/imu.h>
+  #define USE_USBCON
+  #include <sensor_msgs/Imu.h>
 #endif
 
-#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
+#ifdef I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
   #include "Wire.h"
 #endif
 
@@ -26,21 +27,21 @@ double dt = 0;
 #ifdef ROS
   ros::NodeHandle nh;
   sensor_msgs::Imu imu_msg;
-  ros::Publisher chatter("imu", &imu_msg);
+  ros::Publisher chatter("arduino_imu", &imu_msg);
 #endif
 
 void setup() {
-  #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
-    Wire.begin();
-  #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
-    Fastwire::setup(400, true);
-  #endif
+#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
+  Wire.begin();
+#elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
+  Fastwire::setup(400, true);
+#endif
 
 #ifdef ROS
   nh.initNode();
   nh.advertise(chatter);
 #else
-  Serial.begin(38400);
+  Serial.begin(57600);
 #endif
 
 #ifdef ROS
@@ -63,7 +64,7 @@ accelgyro.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
 #ifdef ROS
 
 #else
-  Serial.println("\taccelX\taccelY\taccelZ\tgyroX\tgyroY\tgyroZ");
+  Serial.println("\taccelX\taccelY\taccelZ\tgyroX\tgyroY\tgyroZ\tposX\tposY\tposZ\trotX\trotY\trotZ");
 #endif
 }
 
@@ -100,22 +101,22 @@ void loop() {
   imu_msg.linear_acceleration.x = accelX;
   imu_msg.linear_acceleration.y = accelY;
   imu_msg.linear_acceleration.z = accelZ;
-  chatter.publish(imu_msg);
+  chatter.publish(&imu_msg);
   nh.spinOnce();
 #else
   Serial.print("a/g:\t");
-    Serial.print(accelX); Serial.print("\t");
-    Serial.print(accelY); Serial.print("\t");
-    Serial.print(accelZ); Serial.print("\t");
-    Serial.print(gyroX); Serial.print("\t");
-    Serial.print(gyroY); Serial.print("\t");
-    Serial.print(gyroZ); Serial.print("\t");
-    Serial.print(posX); Serial.print("\t");
-    Serial.print(posY); Serial.print("\t");
-    Serial.print(posZ); Serial.print("\t");
-    Serial.print(rotX); Serial.print("\t");
-    Serial.print(rotY); Serial.print("\t");
-    Serial.print(rotZ); Serial.print("\n");
+  Serial.print(accelX); Serial.print("\t");
+  Serial.print(accelY); Serial.print("\t");
+  Serial.print(accelZ); Serial.print("\t");
+  Serial.print(gyroX); Serial.print("\t");
+  Serial.print(gyroY); Serial.print("\t");
+  Serial.print(gyroZ); Serial.print("\t");
+  Serial.print(posX); Serial.print("\t");
+  Serial.print(posY); Serial.print("\t");
+  Serial.print(posZ); Serial.print("\t");
+  Serial.print(rotX); Serial.print("\t");
+  Serial.print(rotY); Serial.print("\t");
+  Serial.print(rotZ); Serial.print("\n");
 #endif
 
 }
