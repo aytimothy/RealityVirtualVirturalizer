@@ -1,3 +1,6 @@
 [submodule "opencv"]
 	path = catkin_ws/src/world_mapper/lib/opencv
 	url = https://github.com/opencv/opencv.git
+[submodule "web"]
+	path = web/-RealityVirtualVirturalizer-Interface
+	url = https://github.com/Jimson91/-RealityVirtualVirturalizer-Interface.git
