@@ -7,7 +7,9 @@ https://github.com/aytimothy/RealityVirtualVirturalizer
 ## Run Project
 
 1. Ensure node.js and npm are installed
-
+```
+sudo apt-get install nodejs
+```
 2. Install Angular CLI globally
 ```
 npm install -g @angular/cli
@@ -16,7 +18,11 @@ npm install -g @angular/cli
 ```
 npm install
 ```
-4. Start development server
+4. Run roslaunch.sh script
+```
+bash ./roslaunch.sh
+```
+5. Start development server
 ```
 ng serve --open
 ```
