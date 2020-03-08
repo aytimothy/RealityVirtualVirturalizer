@@ -1,8 +1,7 @@
+// import modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,17 +15,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
-import { BridgeService } from './service/bridge.service';
+// import components
+import { AppComponent } from './app.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatusbarComponent } from './statusbar/statusbar.component';
 import { FilesystemComponent } from './filesystem/filesystem.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+// import services
+import { BridgeService } from './service/bridge.service';
 import { SidenavService } from './service/sidenav.service';
+import { DialogService } from './service/dialog.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     StatusbarComponent,
-    FilesystemComponent
+    FilesystemComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +51,12 @@ import { SidenavService } from './service/sidenav.service';
     MatTreeModule,
     MatProgressSpinnerModule,
   ],
-  providers: [BridgeService, SidenavService],
+  providers: [
+    BridgeService,
+    SidenavService,
+    DialogService
+  ],
+  entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

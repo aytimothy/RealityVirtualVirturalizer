@@ -1,6 +1,8 @@
 <mat-card>
   <mat-card-content>
-    <button mat-flat-button color="primary" (click)="test()">Listen for messages</button>
-    <h1>Message Output: {{message}}</h1>
+    <button mat-flat-button color="primary" (click)="startListening()">
+      <span *ngIf="!listening">Listen for messages</span>
+      <span *ngIf="listening">Listening...</span>
+    </button>
   </mat-card-content>
 </mat-card>

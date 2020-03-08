@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>
+    <mat-icon>message</mat-icon>
+    Message Recieved
+</h1>
+
+<div mat-dialog-content>
+    <p>{{data.message}}</p>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onConfirm()">Continue</button>
+    <button mat-raised-button (click)="onDismiss()">Cancel</button>
+</div>

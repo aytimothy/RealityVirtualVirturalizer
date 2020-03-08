@@ -34,7 +34,7 @@ export class BridgeService {
     this.socket = new ROSLIB.Ros({ url: `ws://127.0.0.1:9090` });
   }
 
-  onConnect(next) {
+  onConnect(next): void {
     this.socket.on('connection', (response: any) => {
       this.isConnected = true;
       this.onConnected();
@@ -42,30 +42,30 @@ export class BridgeService {
     });
   }
 
-  onError(next) {
+  onError(next): void {
     this.socket.on('error', (response: any) => {
       this.isConnected = false;
       next(response)
     });
   }
 
-  onClose(next) {
+  onClose(next): void {
     this.socket.on('close', (response: any) => {
       this.isConnected = false;
       next(response);
     });
   }
 
-  onConnected() {
+  onConnected(): void {
     // create a basic ros topic that listens for incoming messages
     this.listener = new ROSLIB.Topic({
       ros: this.socket,
       name: '/listener',
       messageType: 'std_msgs/String'
     });
-    
+
     // create the main 3d viewer.
-    this.viewer = new ROS3D.Viewer({
+    /*this.viewer = new ROS3D.Viewer({
       divID: 'map',
       width: 800,
       height: 600,
@@ -76,13 +76,12 @@ export class BridgeService {
     this.gridClient = new ROS3D.OccupancyGridClient({
       ros: this.socket,
       rootObject: this.viewer.scene
-    });
+    });*/
   }
 
-  onListener(next) {
+  onListener(next): void {
     this.listener.subscribe(function (message: any) {
-      console.log(message);
-      console.log('Received message on ' + ': ' + message.data);
+      console.log('Received message: ' + message.data);
       next(message);
     });
   }
