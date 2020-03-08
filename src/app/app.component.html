@@ -33,8 +33,14 @@
     <mat-sidenav-content>
       <main>
         <app-statusbar></app-statusbar>
-        <app-filesystem *ngIf="browserSelected"></app-filesystem>
-        <router-outlet></router-outlet>
+        <div class="row">
+          <div *ngIf="browserSelected" class="col-sm-6 col-md-4 col-lg-4" id="file_container">
+            <app-filesystem></app-filesystem>
+          </div>
+          <div class="col-sm-6 col-md-8 col-lg-8">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
       </main>
     </mat-sidenav-content>
   </mat-sidenav-container>

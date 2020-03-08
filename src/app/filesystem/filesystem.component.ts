@@ -48,7 +48,6 @@ export class FilesystemComponent implements OnInit {
     this.selectedFolderIndex = index;
     this.selectedFolderName = name;
     this.files = this.folders[index].content;
-    console.log(this.files);
   }
 
   markFile(index) {

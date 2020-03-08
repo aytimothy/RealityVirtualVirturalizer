@@ -16,15 +16,11 @@
 }
 
 .mat-card {
-  height: 100vh;   
-  width: 30%;
-  padding-top: 5px;
-  display: flex;
-    flex-direction: column;
+  overflow: auto;
+  height: 90vh;
 }
 
 .col {
   overflow: auto;
-  height: 89vh;   
-  width: 100%;
+  padding: 0;
 }
