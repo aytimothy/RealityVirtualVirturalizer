@@ -1,11 +1,7 @@
 import { Injectable, Input } from '@angular/core';
 import { DialogService } from '../services/dialog.service';
-
-declare var ROSLIB: any;
-import 'roslib/build/roslib.js';
-
-declare var ROS3D: any;
-import 'ros3d/build/ros3d.js';
+import * as ROSLIB from 'roslib';
+import * as ROS3D from 'ros3d'
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +9,7 @@ import 'ros3d/build/ros3d.js';
 
 export class BridgeService {
 
-  private socket: any;
+  public socket: any;
   private msg_listener: any;
   private viewer: any;
   private gridClient: any;
@@ -64,20 +60,6 @@ export class BridgeService {
       name: '/listener',
       messageType: 'std_msgs/String'
     });
-
-    // create the main 3d viewer.
-    /*this.viewer = new ROS3D.Viewer({
-      divID: 'map',
-      width: 800,
-      height: 600,
-      antialias: true
-    });
-
-    //Setup the map client.
-    this.gridClient = new ROS3D.OccupancyGridClient({
-      ros: this.socket,
-      rootObject: this.viewer.scene
-    });*/
   }
 
   onMessage(next): void {
