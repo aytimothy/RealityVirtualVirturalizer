@@ -13,4 +13,11 @@
 main {
   height: 100vh;
   padding: 5px;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+#map {
+display: flex;
+justify-content: center;
 }
