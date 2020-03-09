@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-filesystem',
   templateUrl: './filesystem.component.html',
   styleUrls: ['./filesystem.component.scss']
 })
-export class FilesystemComponent implements OnInit {
+export class FilesystemComponent {
 
   selectedFolderIndex: number;
   selectedFolderName: string;
@@ -17,9 +17,9 @@ export class FilesystemComponent implements OnInit {
     {
       name: 'image_data',
       content: [
-        "1x.png", "2x.png", "3x.png", "4x.png", "5x.png","1x.png", 
-        "2x.png", "3x.png", "4x.png", "5x.png","1x.png", "2x.png", 
-        "3x.png", "4x.png", "5x.png","1x.png", "2x.png", "3x.png", 
+        "1x.png", "2x.png", "3x.png", "4x.png", "5x.png", "1x.png",
+        "2x.png", "3x.png", "4x.png", "5x.png", "1x.png", "2x.png",
+        "3x.png", "4x.png", "5x.png", "1x.png", "2x.png", "3x.png",
       ]
     },
     {
@@ -31,18 +31,28 @@ export class FilesystemComponent implements OnInit {
     {
       name: 'positioning',
       content: [
-        "file1", "file2", "file3", "file4", "file5"
+        "x_pos.txt", "y_pos.txt", "z__pos.txt", 
+        "x_pos.txt", "y_pos.txt", "z__pos.txt", 
+        "x_pos.txt", "y_pos.txt", "z__pos.txt",
       ]
     },
     {
-      name: 'folder 4',
+      name: 'accelerometer',
       content: [
-        "file1", "file2", "file3", "file4", "file5"
+        "xspeed.txt", "yspeed.txt", "zspeed.txt", 
+        "xspeed.txt", "yspeed.txt", "zspeed.txt", 
+        "xspeed.txt", "yspeed.txt", "zspeed.txt", 
       ]
     },
 
   ]
-  constructor() {}
+  constructor() { }
+
+  showFolders() {
+    this.selectedFolderIndex = null;
+    this.selectedFolderName = null;
+    this.files = [];
+  }
 
   markFolder(index, name) {
     this.selectedFolderIndex = index;
@@ -52,9 +62,6 @@ export class FilesystemComponent implements OnInit {
 
   markFile(index) {
     this.selectedFileIndex = index;
-  }
-
-  ngOnInit(): void {
   }
 
 }

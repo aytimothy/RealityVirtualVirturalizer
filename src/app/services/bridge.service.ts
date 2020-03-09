@@ -1,4 +1,5 @@
 import { Injectable, Input } from '@angular/core';
+import { DialogService } from '../services/dialog.service';
 
 declare var ROSLIB: any;
 import 'roslib/build/roslib.js';
@@ -13,11 +14,11 @@ import 'ros3d/build/ros3d.js';
 export class BridgeService {
 
   private socket: any;
-  private listener: any;
+  private msg_listener: any;
   private viewer: any;
   private gridClient: any;
   public isConnected: boolean = false;
-  constructor() { }
+  constructor(private __DialogService: DialogService) { }
 
   newRosConnection(): boolean {
     if (this.isConnected) {
@@ -58,7 +59,7 @@ export class BridgeService {
 
   onConnected(): void {
     // create a basic ros topic that listens for incoming messages
-    this.listener = new ROSLIB.Topic({
+    this.msg_listener = new ROSLIB.Topic({
       ros: this.socket,
       name: '/listener',
       messageType: 'std_msgs/String'
@@ -79,11 +80,9 @@ export class BridgeService {
     });*/
   }
 
-  onListener(next): void {
-    this.listener.subscribe(function (message: any) {
-      console.log('Received message: ' + message.data);
+  onMessage(next): void {
+    this.msg_listener.subscribe(function (message: any) {
       next(message);
     });
   }
-
 }

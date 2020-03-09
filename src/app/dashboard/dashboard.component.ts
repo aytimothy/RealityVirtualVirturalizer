@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BridgeService } from '../service/bridge.service';
-import { DialogService } from '../service/dialog.service';
+import { BridgeService } from '../services/bridge.service';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +10,7 @@ import { DialogService } from '../service/dialog.service';
 
 export class DashboardComponent implements OnInit {
   listening: boolean = false;
+  messages = [];
   constructor(
     public __BridgeService: BridgeService,
     private __DialogService: DialogService,
@@ -19,8 +20,9 @@ export class DashboardComponent implements OnInit {
 
   startListening() {
     this.listening = true;
-    this.__BridgeService.onListener((response: any) => {
+    this.__BridgeService.onMessage((response: any) => {
       this.__DialogService.openConfirmDialog("Output: " + response.data).afterClosed().subscribe(confirm => {
+        this.messages.push(response.data);
       });
     });
   }

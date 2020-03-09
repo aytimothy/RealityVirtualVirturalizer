@@ -1,6 +1,6 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="secondary">
   <mat-toolbar-row>
-    <button mat-icon-button mat-raised-button (click)="toggleSideNav()">
+    <button mat-icon-button mat-raised-button color="primary" (click)="toggleLSideNav()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <span class="span">
@@ -25,5 +25,8 @@
         {{bridge_status_msg}}
       </button>
     </span>
+    <button mat-icon-button mat-raised-button color="primary" (click)="toggleRSideNav()">
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>

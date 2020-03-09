@@ -1,8 +1,17 @@
-<mat-card>
-  <mat-card-content>
-    <button mat-flat-button color="primary" (click)="startListening()">
-      <span *ngIf="!listening">Listen for messages</span>
-      <span *ngIf="listening">Listening...</span>
-    </button>
-  </mat-card-content>
-</mat-card>
+<div class="row">
+  <div class=" col-lg-4">
+    <mat-card>
+      <mat-card-content>
+        <button mat-flat-button color="primary">
+          <span *ngIf="!listening" (click)="startListening()">Listen for messages</span>
+          <span *ngIf="listening">Listening...</span>
+        </button>
+        <mat-list>
+          <mat-list-item *ngFor="let message of messages">
+            Output: {{message}}
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

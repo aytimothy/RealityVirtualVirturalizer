@@ -21,10 +21,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatusbarComponent } from './statusbar/statusbar.component';
 import { FilesystemComponent } from './filesystem/filesystem.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 // import services
-import { BridgeService } from './service/bridge.service';
-import { SidenavService } from './service/sidenav.service';
-import { DialogService } from './service/dialog.service';
+import { BridgeService } from './services/bridge.service';
+import { SidenavService } from './services/sidenav.service';
+import { DialogService } from './services/dialog.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DialogService } from './service/dialog.service';
     DashboardComponent,
     StatusbarComponent,
     FilesystemComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    SidenavComponent
   ],
   imports: [
     BrowserModule,

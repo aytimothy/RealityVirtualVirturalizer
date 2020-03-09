@@ -9,23 +9,20 @@ import { MatSidenav } from '@angular/material/sidenav';
     https://stackoverflow.com/questions/48073057/open-close-sidenav-from-another-component
 */
 export class SidenavService {
-  private sidenav: MatSidenav;
+  private left: MatSidenav;
+  private right: MatSidenav;
   constructor() { }
 
-  public setSidenav(sidenav: MatSidenav) {
-    this.sidenav = sidenav;
+  public setSidenav(left: MatSidenav, right: MatSidenav) {
+    this.left = left;
+    this.right = right;
   }
 
-  public open() {
-    return this.sidenav.open();
+  public toggleRight(): void {
+    this.right.toggle();
   }
 
-
-  public close() {
-    return this.sidenav.close();
-  }
-
-  public toggle(): void {
-    this.sidenav.toggle();
+  public toggleLeft(): void {
+    this.left.toggle();
   }
 }

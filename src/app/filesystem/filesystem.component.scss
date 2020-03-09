@@ -1,26 +1,21 @@
+.sidenav-header {
+  padding: 20px;
+  background: #475bcf;
+  text-align: center;
+  color: #fff;
+}
+
 .mat-list-item.active {
   background-color: #3f51b5;
   color: #fff;
 }
 
-.mat-list-item {
-  color: gray;
-}
-
 .mat-list-item:hover {
-  color: black;
+  background: white;
+  color: #475bcf;
 }
 
 .mat-list-item.active:hover {
-  color: white;
-}
-
-.mat-card {
-  overflow: auto;
-  height: 90vh;
-}
-
-.col {
-  overflow: auto;
-  padding: 0;
+  background-color: #3f51b5;
+  color: #fff;
 }

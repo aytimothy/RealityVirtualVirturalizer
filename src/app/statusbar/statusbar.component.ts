@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BridgeService } from '../service/bridge.service';
-import { SidenavService } from '../service/sidenav.service';
+import { BridgeService } from '../services/bridge.service';
+import { SidenavService } from '../services/sidenav.service';
 
 @Component({
   selector: 'app-statusbar',
@@ -41,7 +41,11 @@ export class StatusbarComponent implements OnInit {
     });
   }
 
-  toggleSideNav() {
-    this.__SidenavService.toggle();
+  toggleLSideNav() {
+    this.__SidenavService.toggleLeft();
+  }
+
+  toggleRSideNav() {
+    this.__SidenavService.toggleRight();
   }
 }
