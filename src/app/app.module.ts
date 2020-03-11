@@ -23,7 +23,7 @@ import { FilesystemComponent } from './filesystem/filesystem.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 // import services
-import { BridgeService } from './services/bridge.service';
+import { BridgeService } from './services/rosbridge.service';
 import { SidenavService } from './services/sidenav.service';
 import { DialogService } from './services/dialog.service';
 
@@ -34,7 +34,7 @@ import { DialogService } from './services/dialog.service';
     StatusbarComponent,
     FilesystemComponent,
     ConfirmDialogComponent,
-    SidenavComponent
+    SidenavComponent,
   ],
   imports: [
     BrowserModule,

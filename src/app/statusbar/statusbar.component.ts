@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BridgeService } from '../services/bridge.service';
+import { BridgeService } from '../services/rosbridge.service';
 import { SidenavService } from '../services/sidenav.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class StatusbarComponent implements OnInit {
 
   ngOnInit(): void {
     // connect to rosbridge
-    this.__BridgeService.newRosConnection();
+    this.__BridgeService.estabishConnection();
 
     this.__BridgeService.onConnect((response: any) => {
       this.bridge_status_msg = "Connected";
@@ -41,11 +41,11 @@ export class StatusbarComponent implements OnInit {
     });
   }
 
-  toggleLSideNav() {
+  toggleLSideNav(): void {
     this.__SidenavService.toggleLeft();
   }
 
-  toggleRSideNav() {
+  toggleRSideNav(): void {
     this.__SidenavService.toggleRight();
   }
 }

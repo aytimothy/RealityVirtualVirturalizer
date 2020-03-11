@@ -13,7 +13,7 @@ export class SidenavService {
   private right: MatSidenav;
   constructor() { }
 
-  public setSidenav(left: MatSidenav, right: MatSidenav) {
+  public setSidenav(left: MatSidenav, right: MatSidenav): void {
     this.left = left;
     this.right = right;
   }

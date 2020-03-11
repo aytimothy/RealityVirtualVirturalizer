@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BridgeService } from './bridge.service';
+import { BridgeService } from './rosbridge.service';
 
 describe('BridgeService', () => {
   let service: BridgeService;

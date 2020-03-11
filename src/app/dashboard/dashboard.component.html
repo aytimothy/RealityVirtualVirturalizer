@@ -1,21 +1,40 @@
-<!--<div class="row">-->
-  <!--<div class="col-lg-4">
+<div *ngIf="__BridgeService.isConnected" class="row">
+  <div class="col-lg-4">
+    <mat-toolbar>
+      <button mat-flat-button color="primary" (click)="startListening()">
+        <span *ngIf="!listeningForMessages">Listen for messages</span>
+        <span *ngIf="listeningForMessages">Listening...</span>
+      </button>
+    </mat-toolbar>
     <mat-card>
       <mat-card-content>
-        <button mat-flat-button color="primary">
-          <span *ngIf="!listening" (click)="startListening()">Listen for messages</span>
-          <span *ngIf="listening">Listening...</span>
-        </button>
         <mat-list>
           <mat-list-item *ngFor="let message of messages">
             Output: {{message}}
+            <mat-divider></mat-divider>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
     </mat-card>
-  </div>-->
- <!-- <div class="col-lg-8">
-    <button (click)="createCanvas()">Create Canvas</button>
-    <div class="map"></div>
-  </div>-->
-<!--</div>-->
+  </div>
+  <div class="col-lg-8">
+    <mat-toolbar>
+      <button *ngIf="!isCanvasDisplayed" mat-flat-button color="primary" (click)="create3DCanvas()">Show 3D
+        Map</button>
+      <button *ngIf="isCanvasDisplayed" mat-flat-button color="primary" (click)="remove3DCanvas()">Hide 3D
+        Map</button>
+    </mat-toolbar>
+    <mat-card>
+      <mat-card-content>
+        <div id="map"></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-danger text-center">
+      <mat-icon>error</mat-icon> Please connect to RosBrdge
+    </div>
+  </div>
+</div>

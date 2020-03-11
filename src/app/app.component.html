@@ -20,15 +20,8 @@
 
     <mat-sidenav-content>
       <main>
-        <!--<div class="row">-->
         <router-outlet>
-          <!--<div class="col-lg-12">-->
-          <!-- workaround: we have to manually insert this div for the map due to incompatibility
-                with ROS3D and javascript frameworks such as angular-->
-          <div id="map"></div>
-          <!--</div>-->
         </router-outlet>
-        <!--</div>-->
       </main>
       <app-statusbar></app-statusbar>
     </mat-sidenav-content>

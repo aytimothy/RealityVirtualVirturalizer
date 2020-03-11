@@ -31,36 +31,36 @@ export class FilesystemComponent {
     {
       name: 'positioning',
       content: [
-        "x_pos.txt", "y_pos.txt", "z__pos.txt", 
-        "x_pos.txt", "y_pos.txt", "z__pos.txt", 
+        "x_pos.txt", "y_pos.txt", "z__pos.txt",
+        "x_pos.txt", "y_pos.txt", "z__pos.txt",
         "x_pos.txt", "y_pos.txt", "z__pos.txt",
       ]
     },
     {
       name: 'accelerometer',
       content: [
-        "xspeed.txt", "yspeed.txt", "zspeed.txt", 
-        "xspeed.txt", "yspeed.txt", "zspeed.txt", 
-        "xspeed.txt", "yspeed.txt", "zspeed.txt", 
+        "xspeed.txt", "yspeed.txt", "zspeed.txt",
+        "xspeed.txt", "yspeed.txt", "zspeed.txt",
+        "xspeed.txt", "yspeed.txt", "zspeed.txt",
       ]
     },
 
   ]
   constructor() { }
 
-  showFolders() {
+  showFolders(): void {
     this.selectedFolderIndex = null;
     this.selectedFolderName = null;
     this.files = [];
   }
 
-  markFolder(index, name) {
+  markFolder(index: number, name: string): void {
     this.selectedFolderIndex = index;
     this.selectedFolderName = name;
     this.files = this.folders[index].content;
   }
 
-  markFile(index) {
+  markFile(index: number): void {
     this.selectedFileIndex = index;
   }
 
