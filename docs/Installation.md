@@ -121,7 +121,14 @@ Now, just build and publish to the Arduino.
 
 ## 2.3 Building the ROS Code
 
-// todo.
+First, update all the packages in the `catkin_ws` folder, and build them.
+
+    rosdep update
+    catkin_make build
+    
+Now, let's get a whole bunch of other packages that we used.
+
+    sudo apt-get install ros-kinetic-video-stream-opencv
 
 ## 2.4 Building the Desktop Code
 
@@ -132,5 +139,29 @@ Now, just build and publish to the Arduino.
 // todo.
 
 # 4. Usage
+
+First, boot it up...
+
+## 4.1 Start ROS
+
+Start up ROS if it already isn't set in your launch commands.
+
+    roscore
+    
+## 4.2 Start the Sensors
+
+Start up the nodes for the sensors, if they are already not running.
+
+    rosrun urg_node urg_node
+    roslaunch video_stream_opencv webcam.launch
+    rosrun rosserial_python serial_node.py
+
+Press the button on the Arduino to reset the program so that it syncs with `rosserial_python`).
+
+## 4.3 Start the Data
+
+// todo.
+
+## 4.4 Start the Interface
 
 // todo.
