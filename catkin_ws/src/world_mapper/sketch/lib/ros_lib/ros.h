@@ -45,13 +45,14 @@
 
 namespace ros
 {
+  int ros_dummy_ignore_me = 0;
 #if defined(__AVR_ATmega8__) or defined(__AVR_ATmega168__)
   /* downsize our buffers */
   typedef NodeHandle_<ArduinoHardware, 6, 6, 150, 150> NodeHandle;
 
 #elif defined(__AVR_ATmega328P__)
 
-  typedef NodeHandle_<ArduinoHardware, 25, 25, 280, 280> NodeHandle;
+  typedef NodeHandle_<ArduinoHardware, 15, 15, 550, 550> NodeHandle;
 
 #elif defined(SPARK)
 
