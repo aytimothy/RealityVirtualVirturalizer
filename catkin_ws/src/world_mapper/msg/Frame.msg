@@ -23,8 +23,9 @@ float32 range_min			# The minimum range the lidar can detect.
 float32 range_max			# The maximum range the lidar can detect.
 float32[] ranges			# An array of all the distance data collected in the current frame.
 float32[] intensities		# An array of all the response intensity data collected in the current frame.
-# Image Data
-int32 width					# Width of the image.
-int32 height				# Height of the image.
-int32 depth					# The color depth of the image (this is usually 3, for RGB).
-int16[] image				# Image data. This should be height*width*depth in size.
+# Image Data (sensor_msgs/Image)
+uint32 width                # Width of the image.
+uint32 height               # Height of the image.
+uint32 depth                # The color depth of the image (this is usually 3, for RGB).
+uint32 rowSize              # Size of a row of data
+int16[] image               # Image data. This should be height*width*depth in size.
