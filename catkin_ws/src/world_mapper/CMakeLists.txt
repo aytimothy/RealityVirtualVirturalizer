@@ -210,14 +210,5 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(arduino_reader src/arduino_in.cpp)
+add_executable(framewriter src/framewriter.cpp)
 target_link_libraries(arduino_reader ${catkin_LIBRARIES})
-
-add_executable(hokuyo_reader src/hokuyo_in.cpp)
-target_link_libraries(hokuyo_reader ${catkin_LIBRARIES})
-
-add_executable(camera_reader src/camera_in.cpp)
-target_link_libraries(camera_reader ${catkin_LIBRARIES})
-
-add_executable(frame_writer src/frame_writer.cpp)
-target_link_libraries(frame_writer ${catkin_LIBRARIES})
