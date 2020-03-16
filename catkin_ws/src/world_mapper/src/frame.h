@@ -1,7 +1,11 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include <ros/ros.h>
+#ifdef _WIN32
+#include "../../../../../../../opt/ros/melodic/x64/include/ros/ros.h"
+#else
+#include "ros/ros.h"
+#endif
 
 // See /catkin_ws/src/world_mapper/msg/Frame.msg for documentation.
 class Frame
@@ -21,7 +25,7 @@ public:
 	float accZ;
 	float gyrX;
 	float gyrY;
-	float gryZ;
+	float gyrZ;
 	float angle_min;
 	float angle_max;
 	std::vector<float> ranges;
@@ -30,5 +34,5 @@ public:
 	uint32_t height;
 	uint32_t depth;
 	uint32_t rowSize;
-	std::vector<int16_t> image
+	std::vector<unsigned char> image;
 };
