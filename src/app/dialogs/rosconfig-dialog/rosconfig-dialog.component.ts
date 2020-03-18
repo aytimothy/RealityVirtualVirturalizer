@@ -30,7 +30,7 @@ export class RosconfigDialogComponent {
   
   onSet(): void {
     if (this.configForm.valid) {
-      this.__BridgeService.estabishConnection(this.configForm.getRawValue())
+      this.__BridgeService.setCustomAddress(this.configForm.getRawValue())
       this.__DialogRef.close(true);
     }
   }
