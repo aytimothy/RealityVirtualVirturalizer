@@ -211,4 +211,6 @@ include_directories(
 # catkin_add_nosetests(test)
 
 add_executable(framewriter src/framewriter.cpp)
-target_link_libraries(arduino_reader ${catkin_LIBRARIES})
+target_link_libraries(framewriter ${catkin_LIBRARIES})
+target_link_libraries(framewriter lib/json/include)
+target_link_libraries(framewriter lib/opencv/include)
