@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(world_mapper)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+## Compile as C++11, supported in ROS Kinetic and newer=
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -15,7 +15,6 @@ find_package(catkin
   sensor_msgs
   genmsg
   message_generation
-  hokuyo_node
 )
 
 ## System dependencies are found with CMake's conventions
@@ -54,7 +53,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  msg/Frame.msg
+  Frame.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -120,10 +119,7 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
-)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -212,5 +208,6 @@ include_directories(
 
 add_executable(framewriter src/framewriter.cpp)
 target_link_libraries(framewriter ${catkin_LIBRARIES})
-target_link_libraries(framewriter lib/json/include)
-target_link_libraries(framewriter lib/opencv/include)
+target_include_directories(framewriter PUBLIC lib/json/single_include)
+target_include_directories(framewriter PUBLIC lib/opencv/include)
+add_dependencies(framewriter beginner_tutorials_generate_messages_cpp)

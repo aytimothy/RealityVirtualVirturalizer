@@ -16,26 +16,24 @@
 #include "sensor_msgs/Imu.h"
 #include "sensor_msgs/LaserScan.h"
 #endif
-#include "frame.h"
+#include "world_mapper/Frame.h"
 #include <fstream>
 #include <functional>
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <stdlib.h> 
 #include <nlohmann/json.hpp>
- 
-#define PORT 8080
 
 ros::NodeHandle* nh;
-ros::Publisher* output;
-ros::Subscriber* cam_input;
-ros::Subscriber* imu_input;
-ros::Subscriber* laser_input;
+ros::Publisher output;
+ros::Subscriber cam_input;
+ros::Subscriber imu_input;
+ros::Subscriber laser_input;
 ros::Rate* loop_rate;
 ros::Time* lastFrameTimestamp;
-Frame* frame;
+world_mapper::Frame* frame;
 
 void imageCallback (const sensor_msgs::Image::ConstPtr& msg);
 void imuCallback (const sensor_msgs::Imu::ConstPtr& msg);
@@ -43,22 +41,22 @@ void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg);
 
 void setupSocket();
 void setupWriter();
-void writeFrame(Frame* frame);
-void broadcastFrame(Frame* frame);
+void writeFrame(world_mapper::Frame* frame);
+void broadcastFrame(world_mapper::Frame* frame);
 
 uint32_t seq = 0;
 
 int main (int argc, char** argv) {
 	ros::init(argc, argv, "framewriter");
 	nh = new ros::NodeHandle();
-	output = nh->advertise<Frame>("output", 1000);
+	output = nh->advertise<world_mapper::Frame>("output", 1000);
 	loop_rate = new ros::Rate(10);
 	setupSocket();
 	setupWriter();
 
-	cam_input = nh.subscribe("webcam/image_raw", 1000, imageCallback);
-	imu_input = nh.subscribe("imu", 1000, imuCallback);
-	laser_input = nh.subscribe("scan", 1000, laserCallback);
+	cam_input = nh->subscribe("webcam/image_raw", 1000, imageCallback);
+	imu_input = nh->subscribe("imu", 1000, imuCallback);
+	laser_input = nh->subscribe("scan", 1000, laserCallback);
 
 	ros::spin();
 	return 0;
@@ -68,9 +66,9 @@ ros::Time timestamp;
 void checkData();
 void createFrame();
 
-sensor_msgs::Image* lastImageMessage;
-sensor_msgs::Imu* lastImuMessage;
-sensor_msgs::LaserScan* lastLaserMessage;
+sensor_msgs::Image::ConstPtr* lastImageMessage;
+sensor_msgs::Imu::ConstPtr* lastImuMessage;
+sensor_msgs::LaserScan::ConstPtr* lastLaserMessage;
 ros::Time lastImageTimestamp;
 ros::Time lastImuTimestamp;
 ros::Time lastLaserTimestamp;
@@ -85,7 +83,7 @@ double posZ = 0.0;
 
 void imageCallback (const sensor_msgs::Image::ConstPtr& msg) {
 	ros::Time now = ros::Time::now();
-	lastImageMessage = msg;
+	lastImageMessage = *msg;
 	lastImageTimestamp = now;
 
 	checkData();
@@ -230,7 +228,7 @@ void setupSocket() {
 	
 }
 
-void writeFrame(Frame* frame) {
+void writeFrame(world_mapper::Frame* frame) {
 	std::vector<std::uint8_t> v_bson = json::to_bson(frame);
 	std::fstream fs;
 	char filenamebuff[2048];
@@ -239,7 +237,7 @@ void writeFrame(Frame* frame) {
 	fs.close();
 }
 
-void broadcastFrame(Frame* frame) {
+void broadcastFrame(world_mapper::Frame* frame) {
 	// todo: Use the socket server you initialized in setupSocket().
 	
 }
