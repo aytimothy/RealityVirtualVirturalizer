@@ -12,7 +12,7 @@ export class BridgeService {
 
   constructor() { }
 
-  estabishConnection(): boolean {
+  estabishConnection(config: any): boolean {
     if (this.isConnected) { // check if there is already a connection
       console.log("connected:", this.isConnected);
       return this.isConnected;
@@ -23,8 +23,8 @@ export class BridgeService {
       this.socket = false;
       return;
     }
-
-    this.socket = new ROSLIB.Ros({ url: `ws://127.0.0.1:9090` }); // establish a new ws connection on port 9090
+    // establish a new ws connection
+    this.socket = new ROSLIB.Ros({ url: `ws://${config.host}:${config.port}` });
   }
 
   onConnect(next): void { // if the websocket connection is sucessfull

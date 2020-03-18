@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,12 +21,13 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatusbarComponent } from './statusbar/statusbar.component';
 import { FilesystemComponent } from './filesystem/filesystem.component';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 // import services
 import { BridgeService } from './services/rosbridge.service';
 import { SidenavService } from './services/sidenav.service';
 import { DialogService } from './services/dialog.service';
+import { RosconfigDialogComponent } from './dialogs/rosconfig-dialog/rosconfig-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,9 +37,11 @@ import { DialogService } from './services/dialog.service';
     FilesystemComponent,
     ConfirmDialogComponent,
     SidenavComponent,
+    RosconfigDialogComponent,
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatFormFieldModule,

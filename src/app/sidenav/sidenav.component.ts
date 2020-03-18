@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -7,6 +8,9 @@ import { Component } from '@angular/core';
 })
 export class SidenavComponent {
 
-  constructor() { }
+  constructor(private __DialogService: DialogService) { }
 
+  configureRosBridge() {
+    this.__DialogService.openRosconfigDialog().afterClosed().subscribe()
+  }
 }
