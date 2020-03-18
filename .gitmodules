@@ -4,3 +4,6 @@
 [submodule "web"]
 	path = web/-RealityVirtualVirturalizer-Interface
 	url = https://github.com/Jimson91/-RealityVirtualVirturalizer-Interface.git
+[submodule "json"]
+	path = catkin_ws/src/world_mapper/lib/json
+	url = https://github.com/nlohmann/json.git
