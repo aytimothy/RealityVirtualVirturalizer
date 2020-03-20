@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h> 
-#include <nlohmann/json.hpp>
+#include "../lib/json/include/nlohmann/json.hpp"
 
 //Using
 //using json = nlohman::json;
@@ -53,9 +53,9 @@ ros::Time timestamp;
 void checkData();
 void createFrame();
 
-sensor_msgs::Image::ConstPtr* lastImageMessage;
-sensor_msgs::Imu::ConstPtr* lastImuMessage;
-sensor_msgs::LaserScan::ConstPtr* lastLaserMessage;
+sensor_msgs::Image *lastImageMessage;
+sensor_msgs::Imu *lastImuMessage;
+sensor_msgs::LaserScan *lastLaserMessage;
 ros::Time lastImageTimestamp;
 ros::Time lastImuTimestamp;
 ros::Time lastLaserTimestamp;
@@ -88,7 +88,15 @@ int main (int argc, char** argv) {
 //Image Callback
 void imageCallback (const sensor_msgs::Image::ConstPtr& msg) {
 	ros::Time now = ros::Time::now();
-	lastImageMessage = *msg;
+	if (lastImageMessage != NULL)
+	    ~lastImageMessage;
+	lastImageMessage->height = msg->height;
+	lastImageMessage->width = msg->width;
+	lastImageMessage->step = msg->step;
+	lastImageMessage->data = msg->data;
+	lastImageMessage->is_bigendian = msg->is_bigendian;
+	lastImageMessage->encoding = msg->encoding;
+	lastImageMessage->header = msg->header;
 	lastImageTimestamp = now;
     //Call Function
 	checkData();
@@ -100,15 +108,23 @@ double velAdj = 1;
 void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
 	ros::Time now = ros::Time::now();
 	double deltaTime = lastImuTimestamp.toSec() - now.toSec();
-	lastImuMessage = msg;
+	if (lastImuMessage != NULL)
+	    ~lastImuMessage;
+	lastImuMessage = new sensor_msgs::Imu();
+	lastImuMessage->linear_acceleration.x = msg->linear_acceleration.x;
+	lastImuMessage->linear_acceleration.y = msg->linear_acceleration.y;
+	lastImuMessage->linear_acceleration.z = msg->linear_acceleration.z;
+	lastImuMessage->orientation.x = msg->orientation.x;
+	lastImuMessage->orientation.y = msg->orientation.y;
+	lastImuMessage->orientation.z = msg->orientation.z;
 	lastImuTimestamp = now;
-	double deltaRotX = deltaTime * msg->angularVelocity->x * rotAdj;
-	double deltaRotY = deltaTime * msg->angularVelocity->y * rotAdj;
-	double deltaRotZ = deltaTime * msg->angularVelocity->z * rotAdj;
+	double deltaRotX = deltaTime * msg->orientation.x * rotAdj;
+	double deltaRotY = deltaTime * msg->orientation.y * rotAdj;
+	double deltaRotZ = deltaTime * msg->orientation.z * rotAdj;
 	
-	double deltaPosX = deltaTime * msg->linearVelocity->x * velAdj;
-	double deltaPosY = deltaTime * msg->linearVelocity->y * velAdj;
-	double deltaPosZ = deltaTime * msg->linearvelocity->z * velAdj;
+	double deltaPosX = deltaTime * msg->linear_acceleration.x * velAdj;
+	double deltaPosY = deltaTime * msg->linear_acceleration.y * velAdj;
+	double deltaPosZ = deltaTime * msg->linear_acceleration.z * velAdj;
 
 	rotX += deltaRotX;
 	rotY += deltaRotY;
@@ -184,7 +200,19 @@ void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
 //Laser Callback
 void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg) {
 	ros::Time now = ros::Time::now();
-	lastLaserMessage = msg;
+	if (lastLaserMessage != NULL)
+	    ~lastLaserMessage;
+	lastLaserMessage = new sensor_msgs::LaserScan();
+	lastLaserMessage->header = msg->header;
+	lastLaserMessage->angle_increment = msg->angle_increment;
+	lastLaserMessage->angle_min = msg->angle_min;
+	lastLaserMessage->angle_max = msg->angle_max;
+	lastLaserMessage->intensities = msg->intensities;
+	lastLaserMessage->range_max = msg->range_max;
+	lastLaserMessage->range_min = msg->range_min;
+	lastLaserMessage->ranges = msg->ranges;
+	lastLaserMessage->scan_time = msg->scan_time;
+	lastLaserMessage->time_increment = msg->time_increment;
 	lastLaserTimestamp = now;
     //Call Function
 	checkData();
@@ -202,13 +230,13 @@ void checkData() {
 //Create Frame 
 void createFrame() {
 	//Init Frame
-	frame = new Frame();
-	frame->accX = lastImuMessage->linear_acceleration->x;
-	frame->accY = lastImuMessage->linear_acceleration->y;
-	frame->accZ = lastImuMessage->linear_acceleration->z;
-	frame->gyrX = lastImuMessage->angular_velocity->x;
-	frame->gyrY = lastImuMessage->angular_velocity->y;
-	frame->gyrZ = lastImuMessage->angular_velocity->z;
+	frame = new world_mapper::Frame();
+	frame->accX = lastImuMessage->linear_acceleration.x;
+	frame->accY = lastImuMessage->linear_acceleration.y;
+	frame->accZ = lastImuMessage->linear_acceleration.z;
+	frame->gyrX = lastImuMessage->orientation.x;
+	frame->gyrY = lastImuMessage->orientation.y;
+	frame->gyrZ = lastImuMessage->orientation.z;
 	frame->posX = posX;
 	frame->posY = posY;
 	frame->posZ = posZ;
