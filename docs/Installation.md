@@ -89,7 +89,7 @@ Before we begin, ensure you have the Arduino IDE installed. You'll need to have 
 
 Next, you'll want to copy the `libraries` (located `/catkin_ws/src/world_mapper/sketches/libraries`) to your own library folder. If not, the Arduino IDE will complain all the files do not exist.
 
-    mv ~/catkin_ws/src/world_mapper/sketches/libraries ~/sketchbook/libraries
+    mv ~/catkin_ws/src/world_mapper/sketch/libraries ~/sketchbook/libraries
 
 Next, we'll need to initialize the libraries for our Arduino build. First, ensure `rosserial-arduino` is setup. If not, you can find the steps on the [ROS Wiki](http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup)
 
