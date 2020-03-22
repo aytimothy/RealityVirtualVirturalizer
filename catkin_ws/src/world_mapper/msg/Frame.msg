@@ -1,7 +1,7 @@
 # Timestamp
 uint32 seq					# The sequential frame number. Always in order.
 time timestamp				# Timestamp in actual unix time. It's 64-bit so we should be fine for another trillion or so years.
-string fameid				# A string tag for this frame.
+string frameid				# A string tag for this frame.
 # Arduino Data
 float32 posX				# Position of sensor (x-axis), worked locally from accelorometer deltas.
 float32 posY				# Position of sensor (y-axis), worked locally from accelorometer deltas.
@@ -28,4 +28,4 @@ uint32 width                # Width of the image.
 uint32 height               # Height of the image.
 uint32 depth                # The color depth of the image (this is usually 3, for RGB).
 uint32 rowSize              # Size of a row of data
-int16[] image               # Image data. This should be height*width*depth in size.
+uint8[] image                # Image data. This should be height*width*depth in size.

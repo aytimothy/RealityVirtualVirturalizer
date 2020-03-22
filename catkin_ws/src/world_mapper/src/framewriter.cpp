@@ -17,18 +17,17 @@
 #include "sensor_msgs/Imu.h"
 #include "sensor_msgs/LaserScan.h"
 #endif
-#include "world_mapper/Frame.h"
+#include <world_mapper/Frame.h>
 #include <fstream>
 #include <functional>
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
 #include <iostream>
-#include <stdlib.h> 
+#include <stdlib.h>
+#include <iterator>
+#include <vector>
 #include "../lib/json/include/nlohmann/json.hpp"
-
-//Using
-//using json = nlohman::json;
 
 //ROS
 ros::NodeHandle* nh;
@@ -89,7 +88,8 @@ int main (int argc, char** argv) {
 void imageCallback (const sensor_msgs::Image::ConstPtr& msg) {
 	ros::Time now = ros::Time::now();
 	if (lastImageMessage != NULL)
-	    ~lastImageMessage;
+	    delete(lastImageMessage);
+	lastImageMessage = new sensor_msgs::Image();
 	lastImageMessage->height = msg->height;
 	lastImageMessage->width = msg->width;
 	lastImageMessage->step = msg->step;
@@ -109,7 +109,7 @@ void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
 	ros::Time now = ros::Time::now();
 	double deltaTime = lastImuTimestamp.toSec() - now.toSec();
 	if (lastImuMessage != NULL)
-	    ~lastImuMessage;
+	    delete(lastImuMessage);
 	lastImuMessage = new sensor_msgs::Imu();
 	lastImuMessage->linear_acceleration.x = msg->linear_acceleration.x;
 	lastImuMessage->linear_acceleration.y = msg->linear_acceleration.y;
@@ -201,7 +201,7 @@ void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
 void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg) {
 	ros::Time now = ros::Time::now();
 	if (lastLaserMessage != NULL)
-	    ~lastLaserMessage;
+	    delete(lastLaserMessage);
 	lastLaserMessage = new sensor_msgs::LaserScan();
 	lastLaserMessage->header = msg->header;
 	lastLaserMessage->angle_increment = msg->angle_increment;
@@ -223,9 +223,7 @@ void checkData() {
 	if (lastImageMessage != NULL && lastImuMessage != NULL && lastLaserMessage != NULL){
 		//Create Frame
 	    createFrame();
-    } else{
-    	//do nothing? 
-	}
+    }
 }
 //Create Frame 
 void createFrame() {
@@ -249,8 +247,9 @@ void createFrame() {
 	frame->intensities = lastLaserMessage->intensities;
 	frame->width = lastImageMessage->width;
 	frame->height = lastImageMessage->height;
-	frame->depth = 4;	// should read lastImageMessage->encoding
-	frame->image = lastImageMessage->data;
+	frame->depth = 3;	// should read lastImageMessage->encoding
+	frame->image = std::vector<uint8_t>(lastImageMessage->data.size());
+	std::copy(lastImageMessage->data.begin(), lastImageMessage->data.end(), frame->image.begin());
 	frame->frameid = "";
 	frame->seq = seq;
 	frame->timestamp = ros::Time::now();
@@ -267,7 +266,7 @@ void createFrame() {
 	ros::Time now = ros::Time::now();
 	lastFrameTimestamp = &now;
 
-	~frame();
+	delete(frame);
 }
 //Setup Writer 
 void setupWriter() {
@@ -280,20 +279,46 @@ void setupSocket() {
 //Write Frame
 void writeFrame(world_mapper::Frame* frame) {
 	//Init JSON
-	std::vector<std::uint8_t> v_bson = json::to_bson(frame);
+	nlohmann::json j;
+	j["accX"] = frame->accX;
+	j["accY"] = frame->accY;
+	j["accZ"] = frame->accZ;
+	j["gyrX"] = frame->gyrX;
+	j["gyrY"] = frame->gyrY;
+	j["gyrZ"] = frame->gyrZ;
+	j["posX"] = frame->posX;
+	j["posY"] = frame->posY;
+	j["posZ"] = frame->posZ;
+	j["rotX"] = frame->rotX;
+	j["rotY"] = frame->rotY;
+	j["rotZ"] = frame->rotZ;
+	j["angle_max"] = frame->angle_max;
+	j["angle_min"] = frame->angle_min;
+	j["ranges"] = frame->ranges;
+	j["intensities"] = frame->intensities;
+	j["width"] = frame->width;
+	j["height"] = frame->height;
+	j["depth"] = frame->depth;
+	j["image"] = frame->image;
+	j["frameid"] = frame->frameid;
+	j["seq"] = frame->seq;
+	j["timestamp"] = frame->timestamp.toSec();
+
+	std::vector<std::uint8_t> v_bson = nlohmann::json::to_bson(j);
 	//json j;
 	//Init File
 	std::fstream fs;
 	char filenamebuff[2048];
 	//Open File
-	fs.open(sprintf("frame%5d.bson", filenamebuff, seq));
+    sprintf("frame%5d.bson", filenamebuff, seq);
+	fs.open(filenamebuff);
 	//Write to File
-	fs.write(v_bson.data);
+	std::ostream_iterator<std::uint8_t> out_itr(fs);
+	std::copy(v_bson.begin(), v_bson.end(), out_itr);
 	//Close to File
 	fs.close();
 }
 //Boardcast Frame
 void broadcastFrame(world_mapper::Frame* frame) {
 	// todo: Use the socket server you initialized in setupSocket().
-		
 }
