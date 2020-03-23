@@ -208,6 +208,6 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(framewriter src/framewriter.cpp)
 target_link_libraries(framewriter ${catkin_LIBRARIES})
-target_include_directories(framewriter PUBLIC lib/json/single_include)
+target_include_directories(framewriter PUBLIC lib/json/include)
 target_include_directories(framewriter PUBLIC lib/opencv/include)
-add_dependencies(framewriter beginner_tutorials_generate_messages_cpp)
+add_dependencies(framewriter world_mapper_generate_messages_cpp)
