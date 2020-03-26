@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BridgeService } from '../services/rosbridge.service';
-import * as ROS3D from 'ros3d'
+import * as ROS3D from 'ros3d';
+import * as ROSLIB from 'roslib';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +14,8 @@ export class DashboardComponent implements OnInit {
   private viewer: ROS3D.Viewer
 
   private gridClient: ROS3D.OccupancyGridClient;
+  private tfClient: ROSLIB.TFClient;
+  private cloudClient: ROS3D.PointCloud2;
 
   public listeningForMessages: boolean = false;
   public isCanvasDisplayed: boolean = false;
@@ -26,7 +29,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() { }
 
   startListening(): void {
-    this.msg_listener = this.__BridgeService.subscribeToTopic('/listener', 'std_msgs/String')
+    this.msg_listener = this.__BridgeService.subscribeToTopic('/output', 'world_mapper/Frame')
     // listen for basic messages
     this.listeningForMessages = true;
     this.msg_listener.subscribe((response: any) => {
@@ -46,12 +49,22 @@ export class DashboardComponent implements OnInit {
     // create background grid in the viewer
     this.viewer.addObject(new ROS3D.Grid());
 
-    // setup the map client.
-    this.gridClient = new ROS3D.OccupancyGridClient({
+    // Setup a client to listen to TFs.
+    this.tfClient = new ROSLIB.TFClient({
       ros: this.__BridgeService.socket,
-      rootObject: this.viewer.scene
+      angularThres: 0.01,
+      transThres: 0.01,
+      rate: 10.0,
+      fixedFrame: '/camera_link'
     });
-    console.log(this.gridClient);
+
+    this.cloudClient = new ROS3D.PointCloud2({
+      ros: this.__BridgeService.socket,
+      tfClient: this.tfClient,
+      rootObject: this.viewer.scene,
+      topic: '/camera/depth_registered/points',
+      material: { size: 0.05, color: 0xff00ff }
+    });
   }
 
   remove3DCanvas(): void {
