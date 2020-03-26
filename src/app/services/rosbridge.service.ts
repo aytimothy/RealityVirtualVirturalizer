@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import * as ROSLIB from 'roslib';
 
 @Injectable({
@@ -9,7 +8,7 @@ import * as ROSLIB from 'roslib';
 export class BridgeService {
 
   // set default host and port values
-  private host: string = "127.0.0.1";
+  private host: string = "0.0.0.0";
   private port: string = "9090";
 
   // websocket connection
