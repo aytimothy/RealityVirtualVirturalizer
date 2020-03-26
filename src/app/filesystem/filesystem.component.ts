@@ -1,67 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/data.service';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-filesystem',
   templateUrl: './filesystem.component.html',
   styleUrls: ['./filesystem.component.scss']
 })
-export class FilesystemComponent {
+export class FilesystemComponent implements OnInit {
 
   selectedFolderIndex: number;
   selectedFolderName: string;
-  selectedFileIndex: number;
+  selectedItemIndex: number;
 
-  files: any = [];
+  directoryList: any = [];
 
-  folders: any = [
-    {
-      name: 'image_data',
-      content: [
-        "1x.png", "2x.png", "3x.png", "4x.png", "5x.png", "1x.png",
-        "2x.png", "3x.png", "4x.png", "5x.png", "1x.png", "2x.png",
-        "3x.png", "4x.png", "5x.png", "1x.png", "2x.png", "3x.png",
-      ]
-    },
-    {
-      name: 'sensor_msgs',
-      content: [
-        "log1.txt", "log2.txt", "log3.txt", "log4.txt", "log5.txt"
-      ]
-    },
-    {
-      name: 'positioning',
-      content: [
-        "x_pos.txt", "y_pos.txt", "z__pos.txt",
-        "x_pos.txt", "y_pos.txt", "z__pos.txt",
-        "x_pos.txt", "y_pos.txt", "z__pos.txt",
-      ]
-    },
-    {
-      name: 'accelerometer',
-      content: [
-        "xspeed.txt", "yspeed.txt", "zspeed.txt",
-        "xspeed.txt", "yspeed.txt", "zspeed.txt",
-        "xspeed.txt", "yspeed.txt", "zspeed.txt",
-      ]
-    },
+  constructor(
+    private __DataService: DataService,
+    private __DialogService: DialogService
+  ) { }
 
-  ]
-  constructor() { }
+  ngOnInit() {
+    // get root directory listing on page initialisation
+    this.directoryListing();
+  }
 
-  showFolders(): void {
+  public directoryListing() {
+    // reset any values in template
     this.selectedFolderIndex = null;
     this.selectedFolderName = null;
-    this.files = [];
+    // request to get the items in the root directory
+    this.__DataService.requestRootDirectory().subscribe((rootDirectoryListing: any) => {
+      this.directoryList = rootDirectoryListing;
+    });
   }
 
-  markFolder(index: number, name: string): void {
-    this.selectedFolderIndex = index;
-    this.selectedFolderName = name;
-    this.files = this.folders[index].content;
-  }
-
-  markFile(index: number): void {
-    this.selectedFileIndex = index;
+  public navigateFileSystem(index: number, item: any): void {
+    // check if the item is a directory
+    if (item.isDir) {
+      // assign folder values for template
+      this.selectedFolderIndex = index;
+      this.selectedFolderName = item.name;
+      // further navigate through the filesystem
+      this.__DataService.navigateDirectory(item).subscribe((list: any) => {
+        this.directoryList = list;
+      });
+    }
+    else {
+      // send a request to get the data for the file
+      this.__DataService.requestReadFile(item).subscribe((data: any) => {
+        // output the data in a dialog
+        this.__DialogService.openConfirmDialog(JSON.stringify(data), item.name, 'file_copy')
+          .afterClosed()
+          .subscribe()
+      });
+    }
   }
 
 }

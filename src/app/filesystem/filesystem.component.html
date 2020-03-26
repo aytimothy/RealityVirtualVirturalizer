@@ -3,32 +3,27 @@
     <mat-icon>file_copy</mat-icon> Browse Data
   </h2>
 </div>
-<button mat-button *ngIf="selectedFolderName" (click)="showFolders()">
+<button mat-button *ngIf="selectedFolderName" (click)="directoryListing()">
   <mat-icon>keyboard_arrow_left</mat-icon>
   {{selectedFolderName}}
 </button>
-<mat-nav-list *ngIf="!selectedFolderName">
-  <mat-list-item *ngFor="let folder of folders; let index = index" (click)="markFolder(index, folder.name)"
-    [class.active]="selectedFolderIndex === index">
+<button mat-button (click)="directoryListing()">
+  <mat-icon>refresh</mat-icon>
+  Refresh
+</button>
+<mat-nav-list>
+  <mat-list-item *ngFor="let item of directoryList; let index = index" (click)="navigateFileSystem(index, item)"
+    [class.active]="selectedItemIndex === index">
     <div matLine>
       <button mat-button>
-        <mat-icon mat-list-icon>folder</mat-icon>
-        {{folder.name}}
+        <mat-icon *ngIf="item.isDir" mat-list-icon>folder</mat-icon>
+        <mat-icon *ngIf="!item.isDir" mat-list-icon>file_copy</mat-icon>
+        {{item.name}}
       </button>
     </div>
     <mat-divider></mat-divider>
     <button mat-icon-button>
       <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
     </button>
-  </mat-list-item>
-</mat-nav-list>
-<mat-nav-list>
-  <mat-list-item *ngFor="let file of files; let index = index" (click)="markFile(index)"
-    [class.active]="selectedFileIndex === index">
-    <button mat-icon-button>
-      <mat-icon>file_copy</mat-icon>
-    </button>
-    <mat-divider></mat-divider>
-    <span>{{file}}</span>
   </mat-list-item>
 </mat-nav-list>

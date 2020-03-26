@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -22,12 +23,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatusbarComponent } from './statusbar/statusbar.component';
 import { FilesystemComponent } from './filesystem/filesystem.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { RosconfigDialogComponent } from './dialogs/rosconfig-dialog/rosconfig-dialog.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 // import services
 import { BridgeService } from './services/rosbridge.service';
 import { SidenavService } from './services/sidenav.service';
 import { DialogService } from './services/dialog.service';
-import { RosconfigDialogComponent } from './dialogs/rosconfig-dialog/rosconfig-dialog.component';
+import { DataService } from './services/data.service';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { RosconfigDialogComponent } from './dialogs/rosconfig-dialog/rosconfig-d
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -60,7 +63,8 @@ import { RosconfigDialogComponent } from './dialogs/rosconfig-dialog/rosconfig-d
   providers: [
     BridgeService,
     SidenavService,
-    DialogService
+    DialogService,
+    DataService
   ],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
