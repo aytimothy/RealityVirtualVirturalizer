@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently -c \"yellow.bold,green.bold\" -n \"SERVER,BUILD\" \"nodemon ./server/server.js\" \"ng build --watch\"",
+    "start": "concurrently -c \"yellow.bold,green.bold\" -n \"SERVER,BUILD\" \"nodemon ./server/server.js\" \"ng build --prod --watch\"",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -26,6 +26,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mdbootstrap": "^4.14.1",
+    "moment": "^2.24.0",
     "ros3d": "^1.0.1",
     "roslib": "^1.1.0",
     "rxjs": "~6.5.4",
