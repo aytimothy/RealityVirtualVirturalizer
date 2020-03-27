@@ -8,7 +8,7 @@ import * as ROSLIB from 'roslib';
 export class BridgeService {
 
   // set default host and port values
-  private host: string = "0.0.0.0";
+  private host: string = window.location.hostname;
   private port: string = "9090";
 
   // websocket connection

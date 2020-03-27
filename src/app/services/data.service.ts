@@ -5,7 +5,7 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
-const SERVER_URL = 'http://localhost:8080';
+const SERVER_URL = window.location.href + 'filesys';
 
 @Injectable({
   providedIn: 'root'
