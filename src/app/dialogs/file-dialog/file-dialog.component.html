@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>
+    <mat-icon>file_copy</mat-icon>
+    {{data.name}}
+</h1>
+
+<div mat-dialog-content>
+    <p>{{data.data}}</p>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onDismiss()">Close</button>
+</div>

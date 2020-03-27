@@ -23,6 +23,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatusbarComponent } from './statusbar/statusbar.component';
 import { FilesystemComponent } from './filesystem/filesystem.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { FileDialogComponent } from './dialogs/file-dialog/file-dialog.component';
 import { RosconfigDialogComponent } from './dialogs/rosconfig-dialog/rosconfig-dialog.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 // import services
@@ -40,6 +41,7 @@ import { DataService } from './services/data.service';
     ConfirmDialogComponent,
     SidenavComponent,
     RosconfigDialogComponent,
+    FileDialogComponent,
   ],
   imports: [
     BrowserModule,
