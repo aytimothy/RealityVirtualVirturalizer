@@ -8,6 +8,8 @@ const bodyParser = require('body-parser'); // body-parser to handle HTTP POST re
 
 const path = require('path'); // rosolve project path
 
+const ip = require("ip");
+process.env.HOST = ip.address();
 
 const logger = require('./logger'); // logger for console
 
@@ -20,11 +22,13 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, '../dist/virtualUI/'))); // make dist directory accessable
 
 var PORT = process.env.PORT || 8080; // set server port
+var HOST = process.env.HOST //set local ip address
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server listening on port: ${PORT}`); // start listening
+app.listen(PORT, HOST, () => {
+  console.log(`Express server listening on ${HOST}:${PORT}`); // start listening
 });
 
 // Import routes
-const index = require('./routes/filesys');
-app.use('/', index);
+const filesys = require('./routes/filesys');
+
+app.use('/filesys', filesys);
