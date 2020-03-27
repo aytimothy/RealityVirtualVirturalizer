@@ -25,17 +25,20 @@ router.get('/root_list', async function (req, res) {
 
                 if (isDir) {
                     // push directories
-                    data.push({ name: file, isDir: true, path: path.join(rootDirectory, file) });
+                    data.push({ name: file, isDir: true, path: path.join(rootDirectory, file), exists: true });
                 }
                 else {
                     // get file extension type
                     var ext = path.extname(file);
                     // push files
-                    data.push({ name: file, ext: ext, isDir: false, path: path.join(rootDirectory, file) });
+                    data.push({ name: file, ext: ext, isDir: false, path: path.join(rootDirectory, file), exists: true });
                 }
             });
             // send the data back to the client
             res.send(data);
+        }
+        else {
+            res.send({ exists: false })
         }
     }
     catch (err) {
@@ -60,20 +63,20 @@ router.post('/navigate_dir', async function (req, res) {
 
                     if (isDir) {
                         // push directories
-                        data.push({ name: file, isDir: true, path: path.join(currentItem.path, file) });
+                        data.push({ name: file, isDir: true, path: path.join(currentItem.path, file), exists: true });
                     }
                     else {
                         // get file extension type
                         var ext = path.extname(file);
                         // push files
-                        data.push({ name: file, ext: ext, isDir: false, path: path.join(currentItem.path, file) });
+                        data.push({ name: file, ext: ext, isDir: false, path: path.join(currentItem.path, file), exists: true });
                     }
                 });
                 res.send(data);
             }
             else {
                 // directory no longer exists
-                res.send({ 'valid': false });
+                res.send({ exists: false });
             }
         }
         catch (err) {
@@ -89,22 +92,29 @@ router.post('/readfile', async function (req, res) {
     // get file from body
     let file = req.body;
     var bson = new BSON();
-    // if the file extension is a bson format
-    if (file.ext == '.bson') {
-        fs.readFile(file.path, (error, bsonData) => {
-            if (error) throw error;
-            // convert the bson file to a json format on the fly
-            var jsonData = bson.deserialize(bsonData);
-            res.send({ 'data': jsonData });
-        });
+
+    if (fs.existsSync(file.path)) {
+        // if the file extension is a bson format
+        if (file.ext == '.bson') {
+            fs.readFile(file.path, (error, bsonData) => {
+                if (error) throw error;
+                // convert the bson file to a json format on the fly
+                var jsonData = bson.deserialize(bsonData);
+                file.data = jsonData
+                res.send(file);
+            });
+        }
+        else {
+            // if the file is any other format encode in utf-8
+            fs.readFile(file.path, 'utf-8', (error, data) => {
+                if (error) throw error;
+                file.data = data
+                res.send(file);
+            });
+        }
     }
     else {
-        // if the file is any other format encode in utf-8
-        fs.readFile(file.path, 'utf-8', (error, data) => {
-            if (error) throw error;
-            res.send({ 'data': data });
-        });
-
+        res.send({ exists: false });
     }
 });
 

@@ -46,13 +46,41 @@ export class FilesystemComponent implements OnInit {
         this.directoryList = list;
       });
     }
+    else if (item.ext == '.bson') {
+      // send a request to get the data for the file
+      this.__DataService.requestReadFile(item).subscribe((file: any) => {
+        //ensure the file still exists
+        if (file.exists) {
+          // output the data in a dialog
+          this.__DialogService.openFileDialog(file)
+            .afterClosed()
+            .subscribe()
+        }
+        else {
+          this.__DialogService.openConfirmDialog(
+            'The file no longer exists', 'Whoops', 'warning')
+            .afterClosed()
+            .subscribe()
+        }
+      });
+    }
     else {
       // send a request to get the data for the file
-      this.__DataService.requestReadFile(item).subscribe((data: any) => {
-        // output the data in a dialog
-        this.__DialogService.openConfirmDialog(JSON.stringify(data), item.name, 'file_copy')
-          .afterClosed()
-          .subscribe()
+      this.__DataService.requestReadFile(item).subscribe((file: any) => {
+        //ensure the file still exists
+        if (file.exists) {
+          // output the data in a dialog
+          this.__DialogService.openFileDialog(file)
+            .afterClosed()
+            .subscribe()
+        }
+        else {
+          this.__DialogService.openConfirmDialog(
+            'The file no longer exists', 'Whoops', 'warning')
+            .afterClosed()
+            .subscribe()
+        }
+
       });
     }
   }
