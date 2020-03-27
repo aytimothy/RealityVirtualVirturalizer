@@ -91,25 +91,20 @@ router.post('/readfile', async function (req, res) {
     var bson = new BSON();
     // if the file extension is a bson format
     if (file.ext == '.bson') {
-        try {
-            fs.readFile(file.path, (err, bsonData) => {
-                // convert the bson file to a json format on the fly
-                var jsonData = bson.deserialize(bsonData);
-                res.send({ 'data': jsonData });
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        fs.readFile(file.path, (error, bsonData) => {
+            if (error) throw error;
+            // convert the bson file to a json format on the fly
+            var jsonData = bson.deserialize(bsonData);
+            res.send({ 'data': jsonData });
+        });
     }
     else {
         // if the file is any other format encode in utf-8
-        try {
-            fs.readFile(file.path, 'utf-8', (err, data) => {
-                res.send({ 'data': data });
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        fs.readFile(file.path, 'utf-8', (error, data) => {
+            if (error) throw error;
+            res.send({ 'data': data });
+        });
+
     }
 });
 
