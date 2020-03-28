@@ -1,5 +1,5 @@
 // Uncomment this to use ROS output functionality instead.
-#define ROS
+//#define ROS
 
 #include <I2Cdev.h>
 #include <helper_3dmath.h>
@@ -104,19 +104,67 @@ void loop() {
   chatter.publish(&imu_msg);
   nh.spinOnce();
 #else
-  Serial.print("a/g:\t");
-  Serial.print(accelX); Serial.print("\t");
-  Serial.print(accelY); Serial.print("\t");
-  Serial.print(accelZ); Serial.print("\t");
-  Serial.print(gyroX); Serial.print("\t");
-  Serial.print(gyroY); Serial.print("\t");
-  Serial.print(gyroZ); Serial.print("\t");
-  Serial.print(posX); Serial.print("\t");
-  Serial.print(posY); Serial.print("\t");
-  Serial.print(posZ); Serial.print("\t");
-  Serial.print(rotX); Serial.print("\t");
-  Serial.print(rotY); Serial.print("\t");
-  Serial.print(rotZ); Serial.print("\n");
+
+
+  String accelX2 = String(accelX);
+  String accelY2 = String(accelY);
+  String accelZ2 = String(accelZ);
+  
+  String gyroX2 = String(gyroX);
+  String gyroY2 = String(gyroY);
+  String gyroZ2 = String(gyroZ);
+  
+  String posX2 = String(posX);
+  String posY2 = String(posY);
+  String posZ2 = String(posZ);
+  
+  String rotX2 = String(rotX);
+  String rotY2 = String(rotY);
+  String rotZ2 = String(rotZ);
+
+  String buffer = "";
+  buffer.concat(accelX2);
+  buffer.concat(";");
+  buffer.concat(accelY2);
+  buffer.concat(";");
+  buffer.concat(accelZ2);
+  buffer.concat(";");
+  buffer.concat(gyroX2);
+  buffer.concat(";");
+  buffer.concat(gyroY2);
+  buffer.concat(";");
+  buffer.concat(gyroZ2);
+  buffer.concat(";");
+  buffer.concat(posX2);
+  buffer.concat(";");
+  buffer.concat(posY2);
+  buffer.concat(";");
+  buffer.concat(posZ2);
+  buffer.concat(";");
+  buffer.concat(rotX2);
+  buffer.concat(";");
+  buffer.concat(rotY2);
+  buffer.concat(";");
+  buffer.concat(rotZ2);
+
+
+
+  
+  Serial.println(buffer);
+
+//  Serial.print("a/g:\t");
+//  Serial.print(accelX); Serial.print("\t");
+//  Serial.print(accelY); Serial.print("\t");
+//  Serial.print(accelZ); Serial.print("\t");
+//  Serial.print(gyroX); Serial.print("\t");
+//  Serial.print(gyroY); Serial.print("\t");
+//  Serial.print(gyroZ); Serial.print("\t");
+//  Serial.print(posX); Serial.print("\t");
+//  Serial.print(posY); Serial.print("\t");
+//  Serial.print(posZ); Serial.print("\t");
+//  Serial.print(rotX); Serial.print("\t");
+//  Serial.print(rotY); Serial.print("\t");
+//  Serial.print(rotZ); Serial.print("\n");
 #endif
 
 }
