@@ -91,7 +91,6 @@ router.post('/navigate_dir', async function (req, res) {
 router.post('/readfile', async function (req, res) {
     // get file from body
     let file = req.body;
-    var bson = new BSON();
 
     if (fs.existsSync(file.path)) {
         // if the file extension is a bson format
@@ -99,7 +98,7 @@ router.post('/readfile', async function (req, res) {
             fs.readFile(file.path, (error, bsonData) => {
                 if (error) throw error;
                 // convert the bson file to a json format on the fly
-                var jsonData = bson.deserialize(bsonData);
+                var jsonData = BSON.deserialize(bsonData);
                 file.data = jsonData
                 res.send(file);
             });
