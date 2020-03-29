@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 #include <cstdio>
+
+#include <stdio.h>
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>'
 
@@ -54,6 +56,7 @@ void enumerate_ports()
 
 
 int main(int argc, char **argv) {
+  double accelX, accelY, accelZ, gyroX, gyroY, gyroZ, posX, posY, posZ, rotX, rotY, rotZ;
   enumerate_ports();
   unsigned long baud = 9600;
   serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
@@ -62,20 +65,27 @@ int main(int argc, char **argv) {
   ros::Publisher pub = node.advertise<sensor_msgs::Imu>("imu", 10);
   ros::Rate rate(10);
   while(ros::ok()) {
+
     string result = my_serial.read();
-    // split message
-    sensor_msgs::Imu msg;
-    msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = '0';
-    msg.angular_velocity.x = ;
-    msg.angular_velocity.y = ;
-    msg.angular_velocity.z = ;
-    msg.linear_acceleration.x = ;
-    msg.linear_acceleration.y = ;
-    msg.linear_acceleration.z = ;
-    pub.publish(msg);
-    ros::spinOnce();
-    rate.sleep();
+    if (result) {
+
+
+      sscanf(result, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
+      sensor_msgs::Imu msg;
+      msg.header.stamp = ros::Time::now();
+      msg.header.frame_id = '0';
+      msg.angular_velocity.x = gyroX / 2048.0;
+      msg.angular_velocity.y = gyroY / 2048.0;
+      msg.angular_velocity.z = gyroZ / 2048.0;
+      msg.linear_acceleration.x = accelX / 16.4;
+      msg.linear_acceleration.y = accelY / 16.4;
+      msg.linear_acceleration.z = accelZ / 16.4;
+      pub.publish(msg);
+      ros::spinOnce();
+      rate.sleep();
+    }
+
+
   try {
     return run(argc, argv);
   } catch (exception &e) {
