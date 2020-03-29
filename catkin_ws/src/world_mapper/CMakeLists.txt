@@ -211,3 +211,7 @@ target_link_libraries(framewriter ${catkin_LIBRARIES})
 target_include_directories(framewriter PUBLIC lib/json/include)
 target_include_directories(framewriter PUBLIC lib/opencv/include)
 add_dependencies(framewriter world_mapper_generate_messages_cpp)
+
+add_executable(imureader src/imureader.cpp)
+target_link_libraries(imureader ${catkin_LIBRARIES})
+target_include_directories(imureader PUBLIC lib/serial/include)
