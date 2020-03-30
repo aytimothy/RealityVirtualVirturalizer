@@ -69,7 +69,10 @@ int main(int argc, char **argv) {
   while(ros::ok()) {
 
     string result = my_serial.read();
-    if (result) {
+    
+    if (result.length() > 2) {
+      char * resultArr = new char [result.length()+1];
+      strcpy (resultArr, result.c_str());
 
 
       sscanf(result, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
