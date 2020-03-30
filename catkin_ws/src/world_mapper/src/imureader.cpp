@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <ros/ros.h>
-#include <sensor_msgs/Imu.h>'
+#include <sensor_msgs/Imu.h>
 
 // OS Specific sleep
 #ifdef _WIN32
@@ -59,6 +59,8 @@ int main(int argc, char **argv) {
   double accelX, accelY, accelZ, gyroX, gyroY, gyroZ, posX, posY, posZ, rotX, rotY, rotZ;
   enumerate_ports();
   unsigned long baud = 9600;
+	
+	
   serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
   ros::init(argc, argv, "mpu6050");
   ros::NodeHandle node;
@@ -84,11 +86,13 @@ int main(int argc, char **argv) {
       ros::spinOnce();
       rate.sleep();
     }
-
-
-  try {
-    return run(argc, argv);
-  } catch (exception &e) {
-    cerr << "Unhandled Exception: " << e.what() << endl;
+	 
   }
+
+
+//   try {
+//     return run(argc, argv);
+//   } catch (exception &e) {
+//     cerr << "Unhandled Exception: " << e.what() << endl;
+//   }
 }
