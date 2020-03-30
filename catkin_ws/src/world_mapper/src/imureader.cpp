@@ -67,32 +67,34 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "mpu6050");
   ros::NodeHandle node;
   ros::Publisher pub = node.advertise<sensor_msgs::Imu>("imu", 10);
-  ros::Rate rate(10);
+  ros::Rate rate(60);
   while(ros::ok() && my_serial.isOpen()) {
     
-    std::string result = "";
-    size_t characters = my_serial.readline(result);
-    printf("%s\n", result.c_str());
+    std::vector<std::string> results = my_serial.readlines();
+    if (results.size() > 1) {
+      std::string result = results.get(results.size() - 1);
+      size_t characters = my_serial.readline(result);
+      printf("%s\n", result.c_str());
     
-    if (result.length() > 2) {
-      char * resultArr = new char [result.length()+1];
-      strcpy (resultArr, result.c_str());
+      if (result.length() > 2) {
+        char * resultArr = new char [result.length()+1];
+        strcpy (resultArr, result.c_str());
 
-      sscanf(resultArr, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
-      sensor_msgs::Imu msg;
-      msg.header.stamp = ros::Time::now();
-      msg.header.frame_id = '0';
-      msg.angular_velocity.x = gyroX;
-      msg.angular_velocity.y = gyroY;
-      msg.angular_velocity.z = gyroZ;
-      msg.linear_acceleration.x = accelX;
-      msg.linear_acceleration.y = accelY;
-      msg.linear_acceleration.z = accelZ;
-      pub.publish(msg);
-      ros::spinOnce();
-      rate.sleep();
-    }
-	 
+        sscanf(resultArr, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
+        sensor_msgs::Imu msg;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = '0';
+        msg.angular_velocity.x = gyroX;
+        msg.angular_velocity.y = gyroY;
+        msg.angular_velocity.z = gyroZ;
+        msg.linear_acceleration.x = accelX;
+        msg.linear_acceleration.y = accelY;
+        msg.linear_acceleration.z = accelZ;
+        pub.publish(msg);
+        rate.sleep();
+        ros::spinOnce();
+      }
+    } 
   }
 
 

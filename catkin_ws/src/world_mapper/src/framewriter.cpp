@@ -70,25 +70,33 @@ double posZ = 0.0;
 uint32_t seq = 0;
 //Main
 int main (int argc, char** argv) {
+	printf("Line 73\n");
 	ros::init(argc, argv, "framewriter");
 	nh = new ros::NodeHandle();
 	output = nh->advertise<world_mapper::Frame>("output", 1000);
 	loop_rate = new ros::Rate(10);
+	printf("Line 78\n");
 	setupSocket();
 	setupWriter();
 
+	printf("Line 82\n");
 	cam_input = nh->subscribe("webcam/image_raw", 1000, imageCallback);
 	imu_input = nh->subscribe("imu", 1000, imuCallback);
 	laser_input = nh->subscribe("scan", 1000, laserCallback);
 
+	printf("Line 87\n");
 	ros::spin();
 	return 0;
 }
 //Image Callback
 void imageCallback (const sensor_msgs::Image::ConstPtr& msg) {
+	printf("Line 93 : imageCallback(const sensor_msgs::Image::ConstPtr&)\n");
 	ros::Time now = ros::Time::now();
-	if (lastImageMessage != NULL)
-	    delete(lastImageMessage);
+	if (lastImageMessage != NULL) {
+		printf("Line 96\n");
+		delete(lastImageMessage);
+	}
+	printf("Line 99\n");
 	lastImageMessage = new sensor_msgs::Image();
 	lastImageMessage->height = msg->height;
 	lastImageMessage->width = msg->width;
@@ -106,10 +114,14 @@ double rotAdj = 1;
 double velAdj = 1;
 //IMU Callback
 void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
+	printf("Line 117: imuCallback(const sensor_msgs::Imu::ConstPtr&)\n");
 	ros::Time now = ros::Time::now();
 	double deltaTime = lastImuTimestamp.toSec() - now.toSec();
-	if (lastImuMessage != NULL)
-	    delete(lastImuMessage);
+	if (lastImuMessage != NULL) {
+		printf("Line 121");
+		delete(lastImuMessage);
+	}
+	printf("Line 124\n");
 	lastImuMessage = new sensor_msgs::Imu();
 	lastImuMessage->linear_acceleration.x = msg->linear_acceleration.x;
 	lastImuMessage->linear_acceleration.y = msg->linear_acceleration.y;
@@ -118,6 +130,7 @@ void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
 	lastImuMessage->orientation.y = msg->orientation.y;
 	lastImuMessage->orientation.z = msg->orientation.z;
 	lastImuTimestamp = now;
+	printf("Line 133\n");
 	double deltaRotX = deltaTime * msg->orientation.x * rotAdj;
 	double deltaRotY = deltaTime * msg->orientation.y * rotAdj;
 	double deltaRotZ = deltaTime * msg->orientation.z * rotAdj;
@@ -129,30 +142,32 @@ void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
 	rotX += deltaRotX;
 	rotY += deltaRotY;
 	rotZ += deltaRotZ;
+	printf("Line 145\n");
 	
 	if (rotX >= 360.0){
 		rotX -= 360.0;
-    }
+	}
     
 	if (rotX < 0.0){
 		rotX += 360.0;
-    }
+	}
     
 	if (rotY >= 360.0){	
 		rotY -= 360.0;
-    }
+	}
     
 	if (rotY < 0.0){
 		rotY += 360.0;
-    }
+	}
     
 	if (rotZ >= 360.0){
 		rotZ -= 360.0;
-    }
+	}
     
 	if (rotZ < 0.0){
 		rotZ += 360.0;
-    }
+	}
+	printf("Line 170\n");
 
 	double radX = rotX * (M_PI / 180.0);
 	double radY = rotY * (M_PI / 180.0);
@@ -194,14 +209,19 @@ void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
 	posX += finalDeltaX;
 	posY += finalDeltaY;
 	posZ += finalDeltaZ;
+	printf("Line 212\n");
 
 	checkData();
 }
 //Laser Callback
 void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg) {
+	printf("Line 218: laserCallback(const sensor_msgs::LaserScan::ConstPtr&)\n");
 	ros::Time now = ros::Time::now();
-	if (lastLaserMessage != NULL)
-	    delete(lastLaserMessage);
+	if (lastLaserMessage != NULL) {
+		printf("Line 221");
+		delete(lastLaserMessage);
+	}
+	printf("Line 224\n");
 	lastLaserMessage = new sensor_msgs::LaserScan();
 	lastLaserMessage->header = msg->header;
 	lastLaserMessage->angle_increment = msg->angle_increment;
@@ -215,10 +235,12 @@ void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg) {
 	lastLaserMessage->time_increment = msg->time_increment;
 	lastLaserTimestamp = now;
     //Call Function
+	printf("Line 238\n");
 	checkData();
 }
 //Check Data
 void checkData() { 
+	printf("Line 243 : checkData()\n");
     //Check Messages
 	if (lastImageMessage != NULL && lastImuMessage != NULL && lastLaserMessage != NULL){
 		//Create Frame
@@ -227,35 +249,42 @@ void checkData() {
 }
 //Create Frame 
 void createFrame() {
+	printf("Line 252 : createFrame()\n");
 	//Init Frame
 	frame = new world_mapper::Frame();
+	printf("Line 255\n");
 	frame->accX = lastImuMessage->linear_acceleration.x;
 	frame->accY = lastImuMessage->linear_acceleration.y;
 	frame->accZ = lastImuMessage->linear_acceleration.z;
 	frame->gyrX = lastImuMessage->orientation.x;
 	frame->gyrY = lastImuMessage->orientation.y;
 	frame->gyrZ = lastImuMessage->orientation.z;
+	printf("Line 262\n");
 	frame->posX = posX;
 	frame->posY = posY;
 	frame->posZ = posZ;
 	frame->rotX = rotX;
 	frame->rotY = rotY;
 	frame->rotZ = rotZ;
+	printf("Line 269\n");
 	frame->angle_max = lastLaserMessage->angle_max;
 	frame->angle_min = lastLaserMessage->angle_min;
 	frame->ranges = lastLaserMessage->ranges;
 	frame->intensities = lastLaserMessage->intensities;
+	printf("Line 274\n");
 	frame->width = lastImageMessage->width;
 	frame->height = lastImageMessage->height;
 	frame->depth = 3;	// should read lastImageMessage->encoding
 	frame->image = std::vector<uint8_t>(lastImageMessage->data.size());
 	std::copy(lastImageMessage->data.begin(), lastImageMessage->data.end(), frame->image.begin());
+	printf("Line 280\n");
 	frame->frameid = "";
 	frame->seq = seq;
 	frame->timestamp = ros::Time::now();
 
 	seq++;
-	
+
+	printf("Line 287\n");
 	writeFrame(frame);
 	broadcastFrame(frame);
 	//Set Messages to NULL
@@ -265,21 +294,24 @@ void createFrame() {
     //Get Time 
 	ros::Time now = ros::Time::now();
 	lastFrameTimestamp = &now;
-
+	printf("Line 297\n");
 	delete(frame);
 }
 //Setup Writer 
 void setupWriter() {
+	printf("Line 302 : setupWriter()\n");
 	// Nothing needed to be done. Just open close files.
 }
 //SetupSocket
 void setupSocket() {
-	//
+	printf("Line 307 : setupWriter()\n");
 }
 //Write Frame
 void writeFrame(world_mapper::Frame* frame) {
 	//Init JSON
+	printf("Line 312 : writeFrame(world_mapper::Frame*)\n");
 	nlohmann::json j;
+	printf("Line 314\n");
 	j["accX"] = frame->accX;
 	j["accY"] = frame->accY;
 	j["accZ"] = frame->accZ;
@@ -302,23 +334,34 @@ void writeFrame(world_mapper::Frame* frame) {
 	j["image"] = frame->image;
 	j["frameid"] = frame->frameid;
 	j["seq"] = frame->seq;
+	printf("Line 337\n");
 	j["timestamp"] = frame->timestamp.toSec();
 
 	std::vector<std::uint8_t> v_bson = nlohmann::json::to_bson(j);
+	printf("Line 341\n");
 	//json j;
 	//Init File
+	printf("Line 344\n");
 	std::fstream fs;
 	char filenamebuff[2048];
+	printf("Line 347\n");
 	//Open File
-    sprintf("frame%5d.bson", filenamebuff, seq);
+	// segfault here!!!
+    	sprintf("frame%5d.bson", filenamebuff, seq);
+	printf("Line 350");
 	fs.open(filenamebuff);
 	//Write to File
+	printf("Line 353\n");
 	std::ostream_iterator<std::uint8_t> out_itr(fs);
+	printf("Line 355\n");
 	std::copy(v_bson.begin(), v_bson.end(), out_itr);
+	printf("Line 357\n");
 	//Close to File
 	fs.close();
+	printf("Line 360\n");
 }
 //Boardcast Frame
 void broadcastFrame(world_mapper::Frame* frame) {
+	printf("Line 362 : broadcastFrame(world_mapper::Frame*)\n");
 	// todo: Use the socket server you initialized in setupSocket().
 }
