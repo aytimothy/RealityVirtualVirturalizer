@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
       strcpy (resultArr, result.c_str());
 
 
-      sscanf(result, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
+      sscanf(resultArr, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
       sensor_msgs::Imu msg;
       msg.header.stamp = ros::Time::now();
       msg.header.frame_id = '0';
