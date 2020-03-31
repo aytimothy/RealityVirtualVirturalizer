@@ -105,52 +105,95 @@ void loop() {
   nh.spinOnce();
 #else
 
-
-  String accelX2 = String(accelX);
-  String accelY2 = String(accelY);
-  String accelZ2 = String(accelZ);
+  char imuArr[1000];
   
-  String gyroX2 = String(gyroX);
-  String gyroY2 = String(gyroY);
-  String gyroZ2 = String(gyroZ);
+  char accelXtemp[20];
+  char accelYtemp[20];
+  char accelZtemp[20];
   
-  String posX2 = String(posX);
-  String posY2 = String(posY);
-  String posZ2 = String(posZ);
+  char gyroXtemp[20];
+  char gyroYtemp[20];
+  char gyroZtemp[20];
   
-  String rotX2 = String(rotX);
-  String rotY2 = String(rotY);
-  String rotZ2 = String(rotZ);
-
-  String buffer = "";
-  buffer.concat(accelX2);
-  buffer.concat(";");
-  buffer.concat(accelY2);
-  buffer.concat(";");
-  buffer.concat(accelZ2);
-  buffer.concat(";");
-  buffer.concat(gyroX2);
-  buffer.concat(";");
-  buffer.concat(gyroY2);
-  buffer.concat(";");
-  buffer.concat(gyroZ2);
-  buffer.concat(";");
-  buffer.concat(posX2);
-  buffer.concat(";");
-  buffer.concat(posY2);
-  buffer.concat(";");
-  buffer.concat(posZ2);
-  buffer.concat(";");
-  buffer.concat(rotX2);
-  buffer.concat(";");
-  buffer.concat(rotY2);
-  buffer.concat(";");
-  buffer.concat(rotZ2);
-
-
+  char posXtemp[20];
+  char posYtemp[20];
+  char posZtemp[20];
+  
+  char rotXtemp[20];
+  char rotYtemp[20];
+  char rotZtemp[20];
 
   
-  Serial.println(buffer);
+  dtostrf(accelX, 4, 3, accelXtemp);
+  dtostrf(accelY, 4, 3, accelYtemp);
+  dtostrf(accelZ, 4, 3, accelZtemp);
+
+  dtostrf(gyroX, 4, 3, gyroXtemp);
+  dtostrf(gyroY, 4, 3, gyroYtemp);
+  dtostrf(gyroZ, 4, 3, gyroZtemp);
+
+  dtostrf(posX, 4, 3, posXtemp);
+  dtostrf(posY, 4, 3, posYtemp);
+  dtostrf(posZ, 4, 3, posZtemp);
+
+  dtostrf(rotX, 4, 3, rotXtemp);
+  dtostrf(rotY, 4, 3, rotYtemp);
+  dtostrf(rotZ, 4, 3, rotZtemp);
+
+  
+
+  
+  sprintf(imuArr, "%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", accelXtemp, accelYtemp, accelZtemp, gyroXtemp, gyroYtemp, gyroZtemp, posXtemp, posYtemp, posZtemp, rotXtemp, rotYtemp, rotZtemp);
+  
+  Serial.println(imuArr);
+  
+
+  
+//  String accelX2 = String(accelX);
+//  String accelY2 = String(accelY);
+//  String accelZ2 = String(accelZ);
+//  
+//  String gyroX2 = String(gyroX);
+//  String gyroY2 = String(gyroY);
+//  String gyroZ2 = String(gyroZ);
+//  
+//  String posX2 = String(posX);
+//  String posY2 = String(posY);
+//  String posZ2 = String(posZ);
+//  
+//  String rotX2 = String(rotX);
+//  String rotY2 = String(rotY);
+//  String rotZ2 = String(rotZ);
+//
+//  String buffer = "";
+//  buffer.concat(accelX2);
+//  buffer.concat(";");
+//  buffer.concat(accelY2);
+//  buffer.concat(";");
+//  buffer.concat(accelZ2);
+//  buffer.concat(";");
+//  buffer.concat(gyroX2);
+//  buffer.concat(";");
+//  buffer.concat(gyroY2);
+//  buffer.concat(";");
+//  buffer.concat(gyroZ2);
+//  buffer.concat(";");
+//  buffer.concat(posX2);
+//  buffer.concat(";");
+//  buffer.concat(posY2);
+//  buffer.concat(";");
+//  buffer.concat(posZ2);
+//  buffer.concat(";");
+//  buffer.concat(rotX2);
+//  buffer.concat(";");
+//  buffer.concat(rotY2);
+//  buffer.concat(";");
+//  buffer.concat(rotZ2);
+//
+//
+//
+//  
+//  Serial.println(buffer);
 
 //  Serial.print("a/g:\t");
 //  Serial.print(accelX); Serial.print("\t");
