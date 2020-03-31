@@ -59,7 +59,8 @@ void enumerate_ports()
 int main(int argc, char **argv) {
   double accelX, accelY, accelZ, gyroX, gyroY, gyroZ, posX, posY, posZ, rotX, rotY, rotZ;
   enumerate_ports();
-  unsigned long baud = 9600;
+  unsigned long baud = 57600;
+  printf("READY!\n");
 	
   std::string port("/dev/ttyUSB0");
   serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
@@ -67,25 +68,26 @@ int main(int argc, char **argv) {
   ros::NodeHandle node;
   ros::Publisher pub = node.advertise<sensor_msgs::Imu>("imu", 10);
   ros::Rate rate(10);
-  while(ros::ok()) {
-
-    string result = my_serial.read();
+  while(ros::ok() && my_serial.isOpen()) {
+    
+    std::string result = "";
+    size_t characters = my_serial.readline(result);
+    printf("%s\n", result.c_str());
     
     if (result.length() > 2) {
       char * resultArr = new char [result.length()+1];
       strcpy (resultArr, result.c_str());
 
-
       sscanf(resultArr, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
       sensor_msgs::Imu msg;
       msg.header.stamp = ros::Time::now();
       msg.header.frame_id = '0';
-      msg.angular_velocity.x = gyroX / 2048.0;
-      msg.angular_velocity.y = gyroY / 2048.0;
-      msg.angular_velocity.z = gyroZ / 2048.0;
-      msg.linear_acceleration.x = accelX / 16.4;
-      msg.linear_acceleration.y = accelY / 16.4;
-      msg.linear_acceleration.z = accelZ / 16.4;
+      msg.angular_velocity.x = gyroX;
+      msg.angular_velocity.y = gyroY;
+      msg.angular_velocity.z = gyroZ;
+      msg.linear_acceleration.x = accelX;
+      msg.linear_acceleration.y = accelY;
+      msg.linear_acceleration.z = accelZ;
       pub.publish(msg);
       ros::spinOnce();
       rate.sleep();
