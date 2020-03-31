@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <cstdio>
+#include <stdlib.h>
 
 #include <stdio.h>
 #include <ros/ros.h>
@@ -60,7 +61,7 @@ int main(int argc, char **argv) {
   enumerate_ports();
   unsigned long baud = 9600;
 	
-	
+  std::string port("/dev/ttyUSB0");
   serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
   ros::init(argc, argv, "mpu6050");
   ros::NodeHandle node;
