@@ -1,367 +1,280 @@
-//Include
-#ifdef _WIN32
-#include "../../../../../../../../../opt/ros/melodic/x64/include/ros/ros.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/ros/time.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/ros/node_handle.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/ros/init.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/ros/rate.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/ros/subscriber.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/ros/publisher.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/sensor_msgs/Image.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/sensor_msgs/LaserScan.h"
-#include "../../../../../../../../../opt/ros/melodic/x64/include/sensor_msgs/Imu.h"
-#define _USE_MATH_DEFINES
-#else
 #include "ros/ros.h"
 #include "sensor_msgs/Image.h"
 #include "sensor_msgs/Imu.h"
 #include "sensor_msgs/LaserScan.h"
-#endif
-#include <world_mapper/Frame.h>
+#include "world_mapper/Frame.h"
+#define _USE_MATH_DEFINES
 #include <fstream>
 #include <functional>
 #include <math.h>
-#include <string.h> 
+#include <string.h>
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
 #include <iterator>
 #include <vector>
+#include <cstdlib>
 #include "../lib/json/include/nlohmann/json.hpp"
 
-//ROS
+// ROS
 ros::NodeHandle* nh;
 ros::Publisher output;
 ros::Subscriber cam_input;
 ros::Subscriber imu_input;
 ros::Subscriber laser_input;
+sensor_msgs::Imu imu_msg;
+sensor_msgs::Image image_msg;
+sensor_msgs::LaserScan laser_msg;
+world_mapper::Frame frame_msg;
+bool imu_hasmsg = false;
+bool image_hasmsg = false;
+bool laser_hasmsg = false;
+
 ros::Rate* loop_rate;
-ros::Time* lastFrameTimestamp;
-world_mapper::Frame* frame;
-//Functions
+ros::Time lastFrameTimestamp;
+
 void imageCallback (const sensor_msgs::Image::ConstPtr& msg);
 void imuCallback (const sensor_msgs::Imu::ConstPtr& msg);
 void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg);
+void checkFrame();
 
-void setupSocket();
-void setupWriter();
-void writeFrame(world_mapper::Frame* frame);
-void broadcastFrame(world_mapper::Frame* frame);
-//ROS Time 
-ros::Time timestamp;
-void checkData();
-void createFrame();
+char fileDir[2049];
+char fileName[129] = "frame";
+char fullFileName[2204];
 
-sensor_msgs::Image *lastImageMessage;
-sensor_msgs::Imu *lastImuMessage;
-sensor_msgs::LaserScan *lastLaserMessage;
-ros::Time lastImageTimestamp;
-ros::Time lastImuTimestamp;
-ros::Time lastLaserTimestamp;
-ros::Time lastFrameTimestmap;
+int main (int argc, char** argv) {
+    if (argc <= 1) {
+        printf("Error: Frame save directory required as a argument.\n");
+        return -1;
+    }
+    if (strlen(argv[1])  >= 2048) {
+        printf("Error: Frame save directory is too long. (maxlen=2048)\n")
+        return -1;
+    }
 
-double rotX = 0.0;
-double rotY = 0.0;
-double rotZ = 0.0;
-double posX = 0.0;
-double posY = 0.0;
-double posZ = 0.0;
+    strcpy(argv[1], fileDir);
+    ros::init(argc, argv, "framewriter");
+    nh = new ros::NodeHandle();
+    output = nh->advertise<world_mapper::Frame>("output", 1000);
+    loop_rate = new ros::Rate(10);
+    cam_input = nh->subscribe("webcam/image_raw", 1000, imageCallback);
+    imu_input = nh->subscribe("imu", 1000, imuCallback);
+    laser_input = nh->subscribe("scan", 1000, laserCallback);
+    ros::spin();
+    return 0;
+}
+
+void imageCallback (const sensor_msgs::Image::ConstPtr& msg) {
+    image_msg.width = msg->width;
+    image_msg.height = msg->height;
+    image_msg.is_bigendian = msg->is_bigendian;
+    image_msg.step = msg->step;
+    image_msg.data.clear();
+    for (int i = 0; i < msg->data.size(); i++)
+        image_msg.data.push_back(msg->data[i]);
+
+    image_hasmsg = true;
+    checkFrame();
+}
+
+ros::Time lastImuCallback;
+double rotAdj = 1;      // It's already done in imureader.
+double velAdj = 1;      // It's already done in imureader.
+double rotX = 0;
+double rotY = 0;
+double rotZ = 0;
+double posX = 0;
+double posY = 0;
+double posZ = 0;
+
+void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
+    ros::Time now = ros::Time::now();
+    double deltaTime = now.toSec() - lastImuCallback.toSec();
+    lastImuCallback = now;
+
+    imu_msg.linear_acceleration.x = msg->linear_acceleration.x;
+    imu_msg.linear_acceleration.y = msg->linear_acceleration.y;
+    imu_msg.linear_acceleration.z = msg->linear_acceleration.z;
+    imu_msg.linear_acceleration_covariance = msg->linear_acceleration_covariance;
+    imu_msg.angular_velocity.x = msg->angular_velocity.x;
+    imu_msg.angular_velocity.y = msg->angular_velocity.y;
+    imu_msg.angular_velocity.z = msg->angular_velocity.z;
+    imu_msg.angular_velocity_covariance = msg->angular_velocity_covariance;
+    imu_msg.orientation.x = msg->orientation.x;
+    imu_msg.orientation.y = msg->orientation.y;
+    imu_msg.orientation.z = msg->orientation.z;
+    imu_msg.orientation.w = msg->orientation.w;
+    imu_msg.orientation_covariance = msg->orientation_covariance;
+
+    double deltaRotX = deltaTime * msg->orientation.x * rotAdj;
+    double deltaRotY = deltaTime * msg->orientation.y * rotAdj;
+    double deltaRotZ = deltaTime * msg->orientation.z * rotAdj;
+
+    double deltaPosX = deltaTime * msg->linear_acceleration.x * velAdj;
+    double deltaPosY = deltaTime * msg->linear_acceleration.y * velAdj;
+    double deltaPosZ = deltaTime * msg->linear_acceleration.z * velAdj;
+
+    rotX += deltaRotX;
+    rotY += deltaRotY;
+    rotZ += deltaRotZ;
+
+    if (rotX >= 360.0)
+        rotX -= 360.0;
+    if (rotX < 0.0)
+        rotX += 360.0;
+    if (rotY >= 360.0)
+        rotY -= 360.0;
+    if (rotY < 0.0)
+        rotY += 360.0;
+    if (rotZ >= 360.0)
+        rotZ -= 360.0;
+    if (rotZ < 0.0)
+        rotZ += 360.0;
+
+    double radX = rotX * (M_PI / 180.0);
+    double radY = rotY * (M_PI / 180.0);
+    double radZ = rotZ * (M_PI / 180.0);
+    double rx_x = 1;
+    double rx_y = cos(radX) - sin(radX);
+    double rx_z = sin(radX) + cos(radX);
+    double ry_x = cos(radY) + sin(radY);
+    double ry_y = 1;
+    double ry_z = -sin(radY) + cos(radY);
+    double rz_x = cos(radZ) - sin(radZ);
+    double rz_y = sin(radZ) + cos(radZ);
+    double rz_z = 1;
+    double rx_n = rx_x + rx_y + rx_z;
+    double ry_n = ry_x + ry_y + ry_z;
+    double rz_n = rz_x + rz_y + rz_z;
+    rx_x = rx_x / rx_n;
+    rx_y = rx_y / rx_n;
+    rx_z = rx_z / rx_n;
+    ry_x = ry_x / ry_n;
+    ry_y = ry_y / ry_n;
+    ry_z = ry_z / ry_n;
+    rz_x = rz_x / rz_n;
+    rz_y = rz_y / rz_n;
+    rz_z = rz_z / rz_n;
+    double dx_x = rx_x * deltaPosX;
+    double dx_y = rx_y * deltaPosX;
+    double dx_z = rx_z * deltaPosX;
+    double dy_x = ry_x * deltaPosY;
+    double dy_y = ry_y * deltaPosY;
+    double dy_z = ry_z * deltaPosY;
+    double dz_x = rz_x * deltaPosZ;
+    double dz_y = rz_y * deltaPosZ;
+    double dz_z = rz_z * deltaPosZ;
+    double finalDeltaX = dx_x + dy_x + dz_x;
+    double finalDeltaY = dx_y + dy_y + dz_y;
+    double finalDeltaZ = dx_z + dy_z + dz_z;
+
+    posX += finalDeltaX;
+    posY += finalDeltaY;
+    posZ += finalDeltaZ;
+
+    imu_hasmsg = true;
+    checkFrame();
+}
+
+void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg) {
+    laser_msg.angle_min = msg->angle_min;
+    laser_msg.angle_max = msg->angle_max;
+    laser_msg.angle_increment = msg->angle_increment;
+    laser_msg.time_increment = msg->time_increment;
+    laser_msg.scan_time = msg->scan_time;
+    laser_msg.range_min = msg->range_min;
+    laser_msg.range_max = msg->range_max;
+    laser_msg.ranges.clear();
+    laser_msg.intensities.clear();
+    for (int i = 0; i < msg->ranges.size(); i++)
+        laser_msg.ranges.push_back(msg->ranges[i]);
+    for (int i = 0; i < msg->intensities.size(); i++)
+        laser_msg.intensities.push_back(msg->intensities[i]);
+
+    laser_hasmsg = true;
+    checkFrame();
+}
 
 uint32_t seq = 0;
-//Main
-int main (int argc, char** argv) {
-	printf("Line 73\n");
-	ros::init(argc, argv, "framewriter");
-	nh = new ros::NodeHandle();
-	output = nh->advertise<world_mapper::Frame>("output", 1000);
-	loop_rate = new ros::Rate(10);
-	printf("Line 78\n");
-	setupSocket();
-	setupWriter();
 
-	printf("Line 82\n");
-	cam_input = nh->subscribe("webcam/image_raw", 1000, imageCallback);
-	imu_input = nh->subscribe("imu", 1000, imuCallback);
-	laser_input = nh->subscribe("scan", 1000, laserCallback);
+void checkFrame() {
+    if (!laser_hasmsg || !imu_hasmsg || !image_hasmsg)
+        return;
 
-	printf("Line 87\n");
-	ros::spin();
-	return 0;
-}
-//Image Callback
-void imageCallback (const sensor_msgs::Image::ConstPtr& msg) {
-	printf("Line 93 : imageCallback(const sensor_msgs::Image::ConstPtr&)\n");
-	ros::Time now = ros::Time::now();
-	if (lastImageMessage != NULL) {
-		printf("Line 96\n");
-		delete(lastImageMessage);
-	}
-	printf("Line 99\n");
-	lastImageMessage = new sensor_msgs::Image();
-	lastImageMessage->height = msg->height;
-	lastImageMessage->width = msg->width;
-	lastImageMessage->step = msg->step;
-	lastImageMessage->data = msg->data;
-	lastImageMessage->is_bigendian = msg->is_bigendian;
-	lastImageMessage->encoding = msg->encoding;
-	lastImageMessage->header = msg->header;
-	lastImageTimestamp = now;
-    //Call Function
-	checkData();
-}
-// todo: Work out calibration (should not be necessary since this is done in the Arduino Program)
-double rotAdj = 1;
-double velAdj = 1;
-//IMU Callback
-void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
-	printf("Line 117: imuCallback(const sensor_msgs::Imu::ConstPtr&)\n");
-	ros::Time now = ros::Time::now();
-	double deltaTime = lastImuTimestamp.toSec() - now.toSec();
-	if (lastImuMessage != NULL) {
-		printf("Line 121");
-		delete(lastImuMessage);
-	}
-	printf("Line 124\n");
-	lastImuMessage = new sensor_msgs::Imu();
-	lastImuMessage->linear_acceleration.x = msg->linear_acceleration.x;
-	lastImuMessage->linear_acceleration.y = msg->linear_acceleration.y;
-	lastImuMessage->linear_acceleration.z = msg->linear_acceleration.z;
-	lastImuMessage->orientation.x = msg->orientation.x;
-	lastImuMessage->orientation.y = msg->orientation.y;
-	lastImuMessage->orientation.z = msg->orientation.z;
-	lastImuTimestamp = now;
-	printf("Line 133\n");
-	double deltaRotX = deltaTime * msg->orientation.x * rotAdj;
-	double deltaRotY = deltaTime * msg->orientation.y * rotAdj;
-	double deltaRotZ = deltaTime * msg->orientation.z * rotAdj;
-	
-	double deltaPosX = deltaTime * msg->linear_acceleration.x * velAdj;
-	double deltaPosY = deltaTime * msg->linear_acceleration.y * velAdj;
-	double deltaPosZ = deltaTime * msg->linear_acceleration.z * velAdj;
+    seq++;
+    lastFrameTimestamp = ros::Time::now();
+    frame_msg.seq = seq;
+    frame_msg.timestamp = lastFrameTimestamp;
+    frame_msg.frameid = "";
+    frame_msg.posX = posX;
+    frame_msg.posY = posY;
+    frame_msg.posZ = posZ;
+    frame_msg.rotX = rotX;
+    frame_msg.rotY = rotY;
+    frame_msg.rotZ = rotZ;
+    frame_msg.accX = imu_msg.linear_acceleration.x;
+    frame_msg.accY = imu_msg.linear_acceleration.y;
+    frame_msg.accZ = imu_msg.linear_acceleration.z;
+    frame_msg.gyrX = imu_msg.angular_velocity.x;
+    frame_msg.gyrY = imu_msg.angular_velocity.y;
+    frame_msg.gyrZ = imu_msg.angular_velocity.z;
+    frame_msg.angle_min = laser_msg.angle_min;
+    frame_msg.angle_max = laser_msg.angle_max;
+    frame_msg.angle_increment = laser_msg.angle_increment;
+    frame_msg.range_min = laser_msg.range_min;
+    frame_msg.range_max = laser_msg.range_max;
+    frame_msg.ranges.clear();
+    for (int i = 0; i < laser_msg.ranges.size(); i++)
+        frame_msg.ranges.push_back(frame_msg.ranges[i]);
+    frame_msg.intensities.clear();
+    for (int i = 0; i < laser_msg.intensities.size(); i++)
+        frame_msg.intensities.push_back(laser_msg.intensities[i]);
+    frame_msg.width = image_msg.width;
+    frame_msg.height = image_msg.height;
+    frame_msg.depth = 3;
+    frame_msg.rowSize = image_msg.step;
+    frame_msg.image.clear();
+    for (int i = 0; i < image_msg.data.size(); i++)
+        frame_msg.image.push_back(image_msg.data[i]);
 
-	rotX += deltaRotX;
-	rotY += deltaRotY;
-	rotZ += deltaRotZ;
-	printf("Line 145\n");
-	
-	if (rotX >= 360.0){
-		rotX -= 360.0;
-	}
-    
-	if (rotX < 0.0){
-		rotX += 360.0;
-	}
-    
-	if (rotY >= 360.0){	
-		rotY -= 360.0;
-	}
-    
-	if (rotY < 0.0){
-		rotY += 360.0;
-	}
-    
-	if (rotZ >= 360.0){
-		rotZ -= 360.0;
-	}
-    
-	if (rotZ < 0.0){
-		rotZ += 360.0;
-	}
-	printf("Line 170\n");
+    sprintf("%s%s%05u.bson", fullFileName, fileDir, fileName, seq);
 
-	double radX = rotX * (M_PI / 180.0);
-	double radY = rotY * (M_PI / 180.0);
-	double radZ = rotZ * (M_PI / 180.0);
-	double rx_x = 1;
-	double rx_y = cos(radX) - sin(radX);
-	double rx_z = sin(radX) + cos(radX);
-	double ry_x = cos(radY) + sin(radY);
-	double ry_y = 1;
-	double ry_z = -sin(radY) + cos(radY);
-	double rz_x = cos(radZ) - sin(radZ);
-	double rz_y = sin(radZ) + cos(radZ);
-	double rz_z = 1;
-	double rx_n = rx_x + rx_y + rx_z;
-	double ry_n = ry_x + ry_y + ry_z;
-	double rz_n = rz_x + rz_y + rz_z;
-	rx_x = rx_x / rx_n;
-	rx_y = rx_y / rx_n;
-	rx_z = rx_z / rx_n;
-	ry_x = ry_x / ry_n;
-	ry_y = ry_y / ry_n;
-	ry_z = ry_z / ry_n;
-	rz_x = rz_x / rz_n;
-	rz_y = rz_y / rz_n;
-	rz_z = rz_z / rz_n;
-	double dx_x = rx_x * deltaPosX;
-	double dx_y = rx_y * deltaPosX;
-	double dx_z = rx_z * deltaPosX;
-	double dy_x = ry_x * deltaPosY;
-	double dy_y = ry_y * deltaPosY;
-	double dy_z = ry_z * deltaPosY;
-	double dz_x = rz_x * deltaPosZ;
-	double dz_y = rz_y * deltaPosZ;
-	double dz_z = rz_z * deltaPosZ;
-	double finalDeltaX = dx_x + dy_x + dz_x;
-	double finalDeltaY = dx_y + dy_y + dz_y;
-	double finalDeltaZ = dx_z + dy_z + dz_z;
-	
-	posX += finalDeltaX;
-	posY += finalDeltaY;
-	posZ += finalDeltaZ;
-	printf("Line 212\n");
+    nlohmann::json j;
+    printf("Line 314\n");
+    j["accX"] = frame_msg.accX;
+    j["accY"] = frame_msg.accY;
+    j["accZ"] = frame_msg.accZ;
+    j["gyrX"] = frame_msg.gyrX;
+    j["gyrY"] = frame_msg.gyrY;
+    j["gyrZ"] = frame_msg.gyrZ;
+    j["posX"] = frame_msg.posX;
+    j["posY"] = frame_msg.posY;
+    j["posZ"] = frame_msg.posZ;
+    j["rotX"] = frame_msg.rotX;
+    j["rotY"] = frame_msg.rotY;
+    j["rotZ"] = frame_msg.rotZ;
+    j["angle_max"] = frame_msg.angle_max;
+    j["angle_min"] = frame_msg.angle_min;
+    j["ranges"] = frame_msg.ranges;
+    j["intensities"] = frame_msg.intensities;
+    j["width"] = frame_msg.width;
+    j["height"] = frame_msg.height;
+    j["depth"] = frame_msg.depth;
+    j["image"] = frame_msg.image;
+    j["frameid"] = frame_msg.frameid;
+    j["seq"] = frame_msg.seq;
+    j["timestamp"] = frame_msg.timestamp.toSec();
 
-	checkData();
-}
-//Laser Callback
-void laserCallback (const sensor_msgs::LaserScan::ConstPtr& msg) {
-	printf("Line 218: laserCallback(const sensor_msgs::LaserScan::ConstPtr&)\n");
-	ros::Time now = ros::Time::now();
-	if (lastLaserMessage != NULL) {
-		printf("Line 221");
-		delete(lastLaserMessage);
-	}
-	printf("Line 224\n");
-	lastLaserMessage = new sensor_msgs::LaserScan();
-	lastLaserMessage->header = msg->header;
-	lastLaserMessage->angle_increment = msg->angle_increment;
-	lastLaserMessage->angle_min = msg->angle_min;
-	lastLaserMessage->angle_max = msg->angle_max;
-	lastLaserMessage->intensities = msg->intensities;
-	lastLaserMessage->range_max = msg->range_max;
-	lastLaserMessage->range_min = msg->range_min;
-	lastLaserMessage->ranges = msg->ranges;
-	lastLaserMessage->scan_time = msg->scan_time;
-	lastLaserMessage->time_increment = msg->time_increment;
-	lastLaserTimestamp = now;
-    //Call Function
-	printf("Line 238\n");
-	checkData();
-}
-//Check Data
-void checkData() { 
-	printf("Line 243 : checkData()\n");
-    //Check Messages
-	if (lastImageMessage != NULL && lastImuMessage != NULL && lastLaserMessage != NULL){
-		//Create Frame
-	    createFrame();
-    }
-}
-//Create Frame 
-void createFrame() {
-	printf("Line 252 : createFrame()\n");
-	//Init Frame
-	frame = new world_mapper::Frame();
-	printf("Line 255\n");
-	frame->accX = lastImuMessage->linear_acceleration.x;
-	frame->accY = lastImuMessage->linear_acceleration.y;
-	frame->accZ = lastImuMessage->linear_acceleration.z;
-	frame->gyrX = lastImuMessage->orientation.x;
-	frame->gyrY = lastImuMessage->orientation.y;
-	frame->gyrZ = lastImuMessage->orientation.z;
-	printf("Line 262\n");
-	frame->posX = posX;
-	frame->posY = posY;
-	frame->posZ = posZ;
-	frame->rotX = rotX;
-	frame->rotY = rotY;
-	frame->rotZ = rotZ;
-	printf("Line 269\n");
-	frame->angle_max = lastLaserMessage->angle_max;
-	frame->angle_min = lastLaserMessage->angle_min;
-	frame->ranges = lastLaserMessage->ranges;
-	frame->intensities = lastLaserMessage->intensities;
-	printf("Line 274\n");
-	frame->width = lastImageMessage->width;
-	frame->height = lastImageMessage->height;
-	frame->depth = 3;	// should read lastImageMessage->encoding
-	frame->image = std::vector<uint8_t>(lastImageMessage->data.size());
-	std::copy(lastImageMessage->data.begin(), lastImageMessage->data.end(), frame->image.begin());
-	printf("Line 280\n");
-	frame->frameid = "";
-	frame->seq = seq;
-	frame->timestamp = ros::Time::now();
+    std::vector<std::uint8_t> v_bson = nlohmann::json::to_bson(j);
 
-	seq++;
+    std::fstream fs;
+    fs.open(fullFileName);
+    std::ostream_iterator<std::uint8_t> out_itr(fs);
+    std::copy(v_bson.begin(), v_bson.end(), out_itr);
+    fs.close();
+    output.publish(frame_msg);
 
-	printf("Line 287\n");
-	writeFrame(frame);
-	broadcastFrame(frame);
-	//Set Messages to NULL
-	lastImageMessage = NULL;
-	lastImuMessage = NULL;
-	lastLaserMessage = NULL;
-    //Get Time 
-	ros::Time now = ros::Time::now();
-	lastFrameTimestamp = &now;
-	printf("Line 297\n");
-	delete(frame);
-}
-//Setup Writer 
-void setupWriter() {
-	printf("Line 302 : setupWriter()\n");
-	// Nothing needed to be done. Just open close files.
-}
-//SetupSocket
-void setupSocket() {
-	printf("Line 307 : setupWriter()\n");
-}
-//Write Frame
-void writeFrame(world_mapper::Frame* frame) {
-	//Init JSON
-	printf("Line 312 : writeFrame(world_mapper::Frame*)\n");
-	nlohmann::json j;
-	printf("Line 314\n");
-	j["accX"] = frame->accX;
-	j["accY"] = frame->accY;
-	j["accZ"] = frame->accZ;
-	j["gyrX"] = frame->gyrX;
-	j["gyrY"] = frame->gyrY;
-	j["gyrZ"] = frame->gyrZ;
-	j["posX"] = frame->posX;
-	j["posY"] = frame->posY;
-	j["posZ"] = frame->posZ;
-	j["rotX"] = frame->rotX;
-	j["rotY"] = frame->rotY;
-	j["rotZ"] = frame->rotZ;
-	j["angle_max"] = frame->angle_max;
-	j["angle_min"] = frame->angle_min;
-	j["ranges"] = frame->ranges;
-	j["intensities"] = frame->intensities;
-	j["width"] = frame->width;
-	j["height"] = frame->height;
-	j["depth"] = frame->depth;
-	j["image"] = frame->image;
-	j["frameid"] = frame->frameid;
-	j["seq"] = frame->seq;
-	printf("Line 337\n");
-	j["timestamp"] = frame->timestamp.toSec();
-
-	std::vector<std::uint8_t> v_bson = nlohmann::json::to_bson(j);
-	printf("Line 341\n");
-	//json j;
-	//Init File
-	printf("Line 344\n");
-	std::fstream fs;
-	char filenamebuff[2048];
-	printf("Line 347\n");
-	//Open File
-	// segfault here!!!
-    	sprintf("frame%5d.bson", filenamebuff, seq);
-	printf("Line 350");
-	fs.open(filenamebuff);
-	//Write to File
-	printf("Line 353\n");
-	std::ostream_iterator<std::uint8_t> out_itr(fs);
-	printf("Line 355\n");
-	std::copy(v_bson.begin(), v_bson.end(), out_itr);
-	printf("Line 357\n");
-	//Close to File
-	fs.close();
-	printf("Line 360\n");
-}
-//Boardcast Frame
-void broadcastFrame(world_mapper::Frame* frame) {
-	printf("Line 362 : broadcastFrame(world_mapper::Frame*)\n");
-	// todo: Use the socket server you initialized in setupSocket().
+    imu_hasmsg = false;
+    image_hasmsg = false;
+    laser_hasmsg = false;
 }
