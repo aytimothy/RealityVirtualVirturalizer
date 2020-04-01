@@ -9,4 +9,7 @@
 	url = https://github.com/nlohmann/json.git
 [submodule "serial"]
 	path = catkin_ws/src/world_mapper/lib/serial
-	url = https://github.com/wjwwood/serial
+	url = https://github.com/wjwwood/serial.git
+[submodule "desktop"]
+    path = src/Desktop-UI
+	url = https://github.com/Waleed-tech/Desktop-UI.git
