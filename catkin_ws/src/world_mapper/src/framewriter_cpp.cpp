@@ -48,7 +48,7 @@ int main (int argc, char** argv) {
         return -1;
     }
     if (strlen(argv[1])  >= 2048) {
-        printf("Error: Frame save directory is too long. (maxlen=2048)\n")
+        printf("Error: Frame save directory is too long. (maxlen=2048)\n");
         return -1;
     }
 

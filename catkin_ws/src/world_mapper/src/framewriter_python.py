@@ -1,21 +1,23 @@
+#! /usr/bin/env python2
+
 # import basic python modules
 import rospy
 import math
 import json
 import sys
 # import basic ros modules
-from ros import NodeHandle
-from ros import Publisher
-from ros import Subscriber
+# from ros import NodeHandle
+# from ros import Publisher
+# from ros import Subscriber
 # import pi, cos and sin from math module
 from math import pi
 from math import cos
 from math import sin
 # import ros messages
-from world_mapper import Frame
-from sensor_msg import LaserScan
-from sensor_msg import Image
-from sensor_msg import Imu
+from world_mapper.msg import Frame
+from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import Image
+from sensor_msgs.msg import Imu
 
 output = None
 frame = None
@@ -184,8 +186,8 @@ def main():
         exit()
     fileDir = sys.argv[1]
 
-    rospy.initnode("framewriter")
-    output = rospy.Publisher("output", Frame, 1000)
+    rospy.init_node("framewriter")
+    output = rospy.Publisher("output", Frame, queue_size=100)
     rospy.Subscriber("webcam/image_raw", Image, imageCallback)
     rospy.Subscriber("imu", Imu, imuCallback)
     rospy.Subscriber("scan", LaserScan, laserCallback)
