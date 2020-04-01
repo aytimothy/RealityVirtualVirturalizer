@@ -67,12 +67,12 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "mpu6050");
   ros::NodeHandle node;
   ros::Publisher pub = node.advertise<sensor_msgs::Imu>("imu", 10);
-  ros::Rate rate(60);
+  ros::Rate rate(10);
   while(ros::ok() && my_serial.isOpen()) {
     
     std::vector<std::string> results = my_serial.readlines();
-    if (results.size() > 1) {
-      std::string result = results.get(results.size() - 1);
+    if (results.size() > 0) {
+      std::string result = results[results.size() - 1];
       size_t characters = my_serial.readline(result);
       printf("%s\n", result.c_str());
     

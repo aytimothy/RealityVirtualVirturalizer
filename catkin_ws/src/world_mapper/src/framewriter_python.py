@@ -5,11 +5,7 @@ import rospy
 import math
 import json
 import sys
-# import basic ros modules
-# from ros import NodeHandle
-# from ros import Publisher
-# from ros import Subscriber
-# import pi, cos and sin from math module
+import base64
 from math import pi
 from math import cos
 from math import sin
@@ -20,10 +16,10 @@ from sensor_msgs.msg import Image
 from sensor_msgs.msg import Imu
 
 output = None
-frame = None
-imu_msg = None
-image_msg = None
-laser_msg = None
+frame = Frame()
+imu_msg = Imu()
+image_msg = Image()
+laser_msg = LaserScan()
 imu_hasmsg = False
 image_hasmsg = False
 laser_hasmsg = False
@@ -84,7 +80,31 @@ def checkFrame():
     frame.rowSize = image_msg.step
     frame.image = image_msg.data
 
-    json_str = json.dumps(frame)
+    j = json.loads("{}")
+    j["accX"] = frame.accX
+    j["accY"] = frame.accY
+    j["accZ"] = frame.accZ
+    j["gyrX"] = frame.gyrX
+    j["gyrY"] = frame.gyrY
+    j["gyrZ"] = frame.gyrZ
+    j["posX"] = frame.posX
+    j["posY"] = frame.posY
+    j["posZ"] = frame.posZ
+    j["rotX"] = frame.rotX
+    j["rotY"] = frame.rotY
+    j["rotZ"] = frame.rotZ
+    j["angle_max"] = frame.angle_max
+    j["angle_min"] = frame.angle_min
+    j["ranges"] = frame.ranges
+    j["intensities"] = frame.intensities
+    j["width"] = frame.width
+    j["height"] = frame.height
+    j["depth"] = frame.depth
+    j["image"] = base64.b64encode(frame.image)
+    j["frameid"] = frame.frameid
+    j["seq"] = frame.seq
+    j["timestamp"] = frame.timestamp.to_sec()
+    json_str = json.dumps(j)
     file = open(fileDir + fileName + '{0:03d}'.format(5) + fileExt, "w+")
     file.write(json_str)
     file.close()
@@ -103,7 +123,7 @@ def imuCallback(data):
     imu_hasmsg = True
     
     now = rospy.get_rostime()
-    deltaTime = now.toSec() - lastImuMessageTime.toSec()
+    deltaTime = now.to_sec() - lastImuMessageTime.to_sec()
     lastImuMessageTime = now
     deltaRotX = deltaTime * data.orientation.x * rotAdj
     deltaRotY = deltaTime * data.orientation.y * rotAdj
@@ -180,17 +200,22 @@ def laserCallback(data):
 
 
 def main():
-    global fileDir, output
+    global fileDir, output, lastImuMessageTime
     if len(sys.argv) <= 1:
         print("Error: Frame save directory required as a argument.\n")
         exit()
     fileDir = sys.argv[1]
-
+    
     rospy.init_node("framewriter")
+    lastImuMessageTime = rospy.get_rostime()
     output = rospy.Publisher("output", Frame, queue_size=100)
     rospy.Subscriber("webcam/image_raw", Image, imageCallback)
     rospy.Subscriber("imu", Imu, imuCallback)
     rospy.Subscriber("scan", LaserScan, laserCallback)
+
+    r = rospy.Rate(100)
+    while not rospy.is_shutdown():
+        r.sleep()
 
 
 if __name__ == '__main__':
