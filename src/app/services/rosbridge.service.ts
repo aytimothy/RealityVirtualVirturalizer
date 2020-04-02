@@ -48,16 +48,19 @@ export class BridgeService {
 
     this.socket.on('connection', (response: any) => { // if the websocket connection is sucessfull
       this.isConnected = true;
+      console.log(`Success! Connected to rosbridge on: ${this.host}:${this.port}`)
       next(response)
     });
 
     this.socket.on('error', (response: any) => { // if the websocket connection failed
       this.isConnected = false;
+      console.log(`Error! Failed to connect to rosbridge on: ${this.host}:${this.port}`)
       next(response)
     });
 
     this.socket.on('close', (response: any) => { // if the websocket connection closes
       this.isConnected = false;
+      console.log(`Closed rosbridge connection on: ${this.host}:${this.port}`)
       next(response)
     });
   }
