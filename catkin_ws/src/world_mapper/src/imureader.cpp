@@ -66,18 +66,20 @@ int main(int argc, char **argv) {
   serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
   ros::init(argc, argv, "mpu6050");
   ros::NodeHandle node;
-  ros::Publisher pub = node.advertise<sensor_msgs::Imu>("imu", 10);
-  ros::Rate rate(10);
+  ros::Publisher pub = node.advertise<sensor_msgs::Imu>("imu", 100);
+  ros::Rate rate(100);
   while(ros::ok() && my_serial.isOpen()) {
-    
-    std::vector<std::string> results = my_serial.readlines();
-    if (results.size() > 0) {
-      std::string result = results[results.size() - 1];
-      size_t characters = my_serial.readline(result);
+    if (!my_serial.available()) {
+      rate.sleep();
+      ros::spinOnce();
+    }
+
+    // std::vector<std::string> results = my_serial.readlines();
+    // if (results.size() > 0) {
+      // std::string result = results[results.size() - 1];
+      std::string result = my_serial.readline();
       printf("%s\n", result.c_str());
-    
-      if (result.length() > 2) {
-        char * resultArr = new char [result.length()+1];
+        char* resultArr = new char [result.length()+1];
         strcpy (resultArr, result.c_str());
 
         sscanf(resultArr, "%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%lf", &accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ, &posX, &posY, &posZ, &rotX, &rotY, &rotZ);
@@ -91,10 +93,9 @@ int main(int argc, char **argv) {
         msg.linear_acceleration.y = accelY;
         msg.linear_acceleration.z = accelZ;
         pub.publish(msg);
-        rate.sleep();
-        ros::spinOnce();
-      }
-    } 
+    // } 
+    rate.sleep();
+    ros::spinOnce();
   }
 
 

@@ -1,4 +1,5 @@
 #! /usr/bin/env python2
+
 # import basic python modules
 import rospy
 import math
@@ -42,8 +43,8 @@ fileExt = ".json"
 def checkFrame():
     global fileDir, fileName, fileExt, image_msg, image_hasmsg, imu_msg, imu_hasmsg, laser_msg, laser_hasmsg, frame, seq
     # if there are no messages for any of the topics
-    if (not image_hasmsg or not imu_hasmsg or not laser_hasmsg):
-        pass
+    if (image_hasmsg == False or imu_hasmsg == False or laser_hasmsg == False):
+        return
 
     image_hasmsg = False
     imu_hasmsg = False
@@ -79,6 +80,7 @@ def checkFrame():
     frame.rowSize = image_msg.step
     frame.image = image_msg.data
 
+    print("Wrote frame " + str(seq))
     j = json.loads("{}")
     j["accX"] = frame.accX
     j["accY"] = frame.accY
@@ -104,7 +106,7 @@ def checkFrame():
     j["seq"] = frame.seq
     j["timestamp"] = frame.timestamp.to_sec()
     json_str = json.dumps(j)
-    file = open(fileDir + fileName + '{0:03d}'.format(5) + fileExt, "w+")
+    file = open(fileDir + fileName + '{0:03d}'.format(seq) + fileExt, "w+")
     file.write(json_str)
     file.close()
     output.publish(frame)
