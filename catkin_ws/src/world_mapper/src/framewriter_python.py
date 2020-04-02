@@ -80,7 +80,6 @@ def checkFrame():
     frame.rowSize = image_msg.step
     frame.image = image_msg.data
 
-    print("Wrote frame " + str(seq))
     j = json.loads("{}")
     j["accX"] = frame.accX
     j["accY"] = frame.accY
@@ -102,13 +101,16 @@ def checkFrame():
     j["height"] = frame.height
     j["depth"] = frame.depth
     j["image"] = base64.b64encode(frame.image)
+    j["rowSize"] = frame.rowSize
     j["frameid"] = frame.frameid
     j["seq"] = frame.seq
     j["timestamp"] = frame.timestamp.to_sec()
     json_str = json.dumps(j)
-    file = open(fileDir + fileName + '{0:03d}'.format(seq) + fileExt, "w+")
+    filepath = fileDir + fileName + '{0:03d}'.format(seq) + fileExt
+    file = open(filepath, "w+")
     file.write(json_str)
     file.close()
+    print("Wrote frame " + str(seq) + " (len:" + str(len(json_str)) + ", path:" + filepath + ")")
     output.publish(frame)
     
     # define callback functions
