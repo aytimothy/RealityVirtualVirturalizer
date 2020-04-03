@@ -122,13 +122,14 @@ def checkFrame():
 
 def imageEncoder(raw_data):
    bridge = CvBridge()
+   
     try:
-       cv_image = bridge.imgmsg_to_cv2(raw_data, "png")
+        cv_image = bridge.imgmsg_to_cv2(raw_data, "png")
     except CvBridgeError as error:
         print(error)
 
    openCVbase64EncodedImage = base64.b64encode(cv_image)
-   
+
    return openCVbase64EncodedImage
 
 
