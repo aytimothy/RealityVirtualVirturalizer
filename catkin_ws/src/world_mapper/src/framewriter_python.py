@@ -9,6 +9,10 @@ import base64
 from math import pi
 from math import cos
 from math import sin
+
+# import cv_bridge for converting images to opencv format
+from cv_bridge import CvBridge, CvBridgeError
+
 # import ros messages
 from world_mapper.msg import Frame
 from sensor_msgs.msg import LaserScan
@@ -78,7 +82,9 @@ def checkFrame():
     frame.height = image_msg.height
     frame.depth = 3
     frame.rowSize = image_msg.step
-    frame.image = image_msg.data
+
+    # format and encode image (png/base64) before sending
+    frame.image = imageEncoder(image_msg.data)
 
     j = json.loads("{}")
     j["accX"] = frame.accX
@@ -100,7 +106,7 @@ def checkFrame():
     j["width"] = frame.width
     j["height"] = frame.height
     j["depth"] = frame.depth
-    j["image"] = base64.b64encode(frame.image)
+    j["image"] = frame.image
     j["rowSize"] = frame.rowSize
     j["frameid"] = frame.frameid
     j["seq"] = frame.seq
@@ -112,8 +118,20 @@ def checkFrame():
     file.close()
     print("Wrote frame " + str(seq) + " (len:" + str(len(json_str)) + ", path:" + filepath + ")")
     output.publish(frame)
-    
-    # define callback functions
+
+
+def imageEncoder(raw_data):
+   bridge = CvBridge()
+    try:
+       cv_image = bridge.imgmsg_to_cv2(raw_data, "png")
+    except CvBridgeError as error:
+        print(error)
+
+   openCVbase64EncodedImage = base64.b64encode(cv_image)
+   
+   return openCVbase64EncodedImage
+
+
 def imageCallback(data):
     global image_msg, image_hasmsg
     image_msg = data
