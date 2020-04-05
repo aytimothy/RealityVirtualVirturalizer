@@ -1,36 +1,54 @@
 <div *ngIf="__BridgeService.isConnected" class="row">
-  <div class="col-lg-4">
-    <mat-toolbar>
-      <button mat-flat-button color="primary" (click)="startListening()">
-        <span *ngIf="!listeningForMessages">Listen for messages</span>
-        <span *ngIf="listeningForMessages">Listening...</span>
-      </button>
+  <div class="col-lg-12">
+    <!-- toolbar displays dashboard options-->
+    <mat-toolbar id="options-bar">
+      <span>
+        <button mat-flat-button (click)="startListening()" *ngIf="!listeningForMessages">
+          <mat-icon>sync_alt</mat-icon>
+          Listen for messages
+        </button>
+        <button mat-flat-button (click)="stopListening()" *ngIf="listeningForMessages">
+          <mat-icon>sync_alt</mat-icon>
+          Stop Listening
+        </button>
+      </span>
+      <span class="spacer"></span>
+      <span *ngIf="listeningForMessages">
+        <button mat-icon-button matTooltip="Display Options" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+          (click)="menuTrigger.openMenu()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+          <span (mouseleave)="menuTrigger.closeMenu()">
+            <button mat-icon-button matTooltip="Toggle Images" (click)="isImageDisplayed = !isImageDisplayed">
+              <mat-icon>collections</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Toggle 3D Canvas" (click)="isCanvasDisplayed = !isCanvasDisplayed">
+              <mat-icon>3d_rotation</mat-icon>
+            </button>
+          </span>
+        </mat-menu>
+      </span>
     </mat-toolbar>
+    <!-- toolbar with coordinates and sequence number-->
+    <mat-toolbar id="coordinates-bar" color="primary" *ngIf="listeningForMessages">
+      <span class="spacer"><strong>Seq: </strong>{{frame.seq}}</span>
+      <span class="spacer"><strong>posX: </strong>{{frame.posX}}</span>
+      <span class="spacer"><strong>posY: </strong>{{frame.posY}}</span>
+      <span><strong>posZ: </strong>{{frame.posZ}}</span>
+    </mat-toolbar>
+    <!-- card that displays either the canvas or images-->
     <mat-card>
       <mat-card-content>
-        <mat-list>
-          <mat-list-item *ngFor="let message of messages">
-            Output: {{message}}
-            <mat-divider></mat-divider>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <div class="col-lg-8">
-    <mat-toolbar>
-      <button *ngIf="!isCanvasDisplayed" mat-flat-button color="primary" (click)="create3DCanvas()">Show 3D
-        Map</button>
-      <button *ngIf="isCanvasDisplayed" mat-flat-button color="primary" (click)="remove3DCanvas()">Hide 3D
-        Map</button>
-    </mat-toolbar>
-    <mat-card>
-      <mat-card-content>
-        <div id="map"></div>
+        <div *ngIf="isImageDisplayed" class="image_wrapper">
+          <img src="data:image/png;base64, {{frame.image}}" alt="frame image">
+        </div>
+        <div *ngIf="isCanvasDisplayed" id="map"></div>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
+<!-- seperate row that displays an alert message that rosbridge is not connected-->
 <div class="row" *ngIf="!__BridgeService.isConnected">
   <div class="col-lg-12 justify-content-center text-center">
     <div class="alert alert-danger text-center">

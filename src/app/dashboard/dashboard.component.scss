@@ -5,3 +5,17 @@ mat-card {
 .alert {
   height: 90vh;
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+#options-bar {
+  height: 10%;
+}
+
+#coordinates-bar {
+  height: 5%;
+  font-size: 1vw;
+
+}
