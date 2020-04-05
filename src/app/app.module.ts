@@ -17,6 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 // import components
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -61,6 +63,8 @@ import { DataService } from './services/data.service';
     MatSidenavModule,
     MatTreeModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatMenuModule
   ],
   providers: [
     BridgeService,
