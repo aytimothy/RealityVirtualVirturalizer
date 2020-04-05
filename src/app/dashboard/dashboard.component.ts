@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BridgeService } from '../services/rosbridge.service';
 import * as ROS3D from 'ros3d';
-import * as ROSLIB from 'roslib';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,14 +12,17 @@ export class DashboardComponent implements OnInit {
 
   private viewer: ROS3D.Viewer
 
-  private gridClient: ROS3D.OccupancyGridClient;
-  private tfClient: ROSLIB.TFClient;
-  private cloudClient: ROS3D.PointCloud2;
-
   public listeningForMessages: boolean = false;
+
   public isCanvasDisplayed: boolean = false;
+
+  public isImageDisplayed: boolean = false;
+
   private msg_listener: any;
+
   public messages = [];
+
+  public frame: any;
 
   constructor(
     public __BridgeService: BridgeService
@@ -32,12 +34,21 @@ export class DashboardComponent implements OnInit {
     this.msg_listener = this.__BridgeService.subscribeToTopic('/output', 'world_mapper/Frame')
     // listen for basic messages
     this.listeningForMessages = true;
-    this.msg_listener.subscribe((response: any) => {
-      this.messages.push(response.data);
+    this.msg_listener.subscribe((frame: any) => {
+      // output entire frame to console
+      console.log(frame);
+      // update the current frame
+      this.frame = frame;
     });
   }
 
+  stopListening(): void {
+    this.msg_listener.unsubstribe();
+    this.listeningForMessages = false;
+  }
+
   create3DCanvas() {
+    this.isImageDisplayed = false;
     this.isCanvasDisplayed = true;
     // create the main 3d viewer.
     this.viewer = new ROS3D.Viewer({
@@ -48,27 +59,10 @@ export class DashboardComponent implements OnInit {
     });
     // create background grid in the viewer
     this.viewer.addObject(new ROS3D.Grid());
-
-    // Setup a client to listen to TFs.
-    this.tfClient = new ROSLIB.TFClient({
-      ros: this.__BridgeService.socket,
-      angularThres: 0.01,
-      transThres: 0.01,
-      rate: 10.0,
-      fixedFrame: '/camera_link'
-    });
-
-    this.cloudClient = new ROS3D.PointCloud2({
-      ros: this.__BridgeService.socket,
-      tfClient: this.tfClient,
-      rootObject: this.viewer.scene,
-      topic: '/camera/depth_registered/points',
-      material: { size: 0.05, color: 0xff00ff }
-    });
   }
 
   remove3DCanvas(): void {
     this.viewer = undefined;
-    this.gridClient = undefined;
+    this.isCanvasDisplayed = false;
   }
 }
