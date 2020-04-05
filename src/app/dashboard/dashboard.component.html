@@ -32,15 +32,23 @@
     </mat-toolbar>
     <!-- toolbar with coordinates and sequence number-->
     <mat-toolbar id="coordinates-bar" color="primary" *ngIf="listeningForMessages">
-      <span class="spacer"><strong>Seq: </strong>{{frame.seq}}</span>
-      <span class="spacer"><strong>posX: </strong>{{frame.posX}}</span>
-      <span class="spacer"><strong>posY: </strong>{{frame.posY}}</span>
-      <span><strong>posZ: </strong>{{frame.posZ}}</span>
+      <span class="spacer"><strong>Seq: </strong>
+        <p *ngIf="frame">{{frame.seq}}</p>
+      </span>
+      <span class="spacer"><strong>posX: </strong>
+        <p *ngIf="frame">{{frame.posX}}</p>
+      </span>
+      <span class="spacer"><strong>posY: </strong>
+        <p *ngIf="frame">{{frame.posY}}</p>
+      </span>
+      <span><strong>posZ: </strong>
+        <p *ngIf="frame">{{frame.posZ}}</p>
+      </span>
     </mat-toolbar>
     <!-- card that displays either the canvas or images-->
     <mat-card>
       <mat-card-content>
-        <div *ngIf="isImageDisplayed" class="image_wrapper">
+        <div *ngIf="isImageDisplayed && frame" class="image_wrapper">
           <img src="data:image/png;base64, {{frame.image}}" alt="frame image">
         </div>
         <div *ngIf="isCanvasDisplayed" id="map"></div>
