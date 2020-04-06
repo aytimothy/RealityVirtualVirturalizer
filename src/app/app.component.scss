@@ -11,12 +11,14 @@
 }
 
 main {
-  height: 100vh;
-  padding: 5px;
+  height: 80vh;
   background-color: #fff;
 }
 
-#map {
-display: flex;
-justify-content: center;
+html,
+body,
+.mat-sidenav-container,
+.material-app {
+  height: 100%;
+  width: 100%;
 }

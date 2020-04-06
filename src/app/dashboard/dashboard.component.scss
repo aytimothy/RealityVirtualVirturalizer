@@ -1,21 +1,21 @@
-mat-card {
-  height: 90vh;
+.container-fluid {
+  background-color: rgb(241, 173, 173);
 }
 
-.alert {
-  height: 90vh;
+.image_wrapper {
+  height: 80vh;
+  text-align: center;
 }
 
 .spacer {
   flex: 1 1 auto;
 }
 
-#options-bar {
-  height: 10%;
-}
-
 #coordinates-bar {
   height: 5%;
   font-size: 1vw;
+}
 
+canvas {
+  display: block;
 }
