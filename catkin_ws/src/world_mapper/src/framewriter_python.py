@@ -15,14 +15,14 @@ from cv_bridge import CvBridge, CvBridgeError
 
 # import ros messages
 from world_mapper.msg import Frame
+from sensor_msgs.msg import CompressedImage
 from sensor_msgs.msg import LaserScan
-from sensor_msgs.msg import Image
 from sensor_msgs.msg import Imu
 
 output = None
 frame = Frame()
 imu_msg = Imu()
-image_msg = Image()
+image_msg = CompressedImage()
 laser_msg = LaserScan()
 imu_hasmsg = False
 image_hasmsg = False
@@ -30,8 +30,8 @@ laser_hasmsg = False
 lastImuMessageTime = None
 lastFrameMessageTime = None
 
-rotAdj = 1
-velAdj = 1
+rotAdj = 16.4
+velAdj = 2048
 rotX = 0
 rotY = 0
 rotZ = 0
@@ -43,6 +43,8 @@ seq = 0
 fileDir = "// todo: Set as whatever sys.argv[1] is..."
 fileName = "frame"
 fileExt = ".json"
+
+bridge = CvBridge()
 
 def checkFrame():
     global fileDir, fileName, fileExt, image_msg, image_hasmsg, imu_msg, imu_hasmsg, laser_msg, laser_hasmsg, frame, seq
@@ -78,13 +80,9 @@ def checkFrame():
     frame.range_max = laser_msg.range_max
     frame.ranges = laser_msg.ranges
     frame.intensities = laser_msg.intensities
-    frame.width = image_msg.width
-    frame.height = image_msg.height
-    frame.depth = 3
-    frame.rowSize = image_msg.step
+    frame.img = image_msg.data
+    frame.imgfmt = image_msg.format
 
-    # format and encode image (png/base64) before sending
-    frame.image = imageEncoder(image_msg.data)
 
     j = json.loads("{}")
     j["accX"] = frame.accX
@@ -103,11 +101,8 @@ def checkFrame():
     j["angle_min"] = frame.angle_min
     j["ranges"] = frame.ranges
     j["intensities"] = frame.intensities
-    j["width"] = frame.width
-    j["height"] = frame.height
-    j["depth"] = frame.depth
-    j["image"] = frame.image
-    j["rowSize"] = frame.rowSize
+    j["img"] = base64.b64encode(frame.img)
+    j["imgfmt"] = frame.imgfmt
     j["frameid"] = frame.frameid
     j["seq"] = frame.seq
     j["timestamp"] = frame.timestamp.to_sec()
@@ -118,19 +113,6 @@ def checkFrame():
     file.close()
     print("Wrote frame " + str(seq) + " (len:" + str(len(json_str)) + ", path:" + filepath + ")")
     output.publish(frame)
-
-
-def imageEncoder(raw_data):
-   bridge = CvBridge()
-   
-    try:
-        cv_image = bridge.imgmsg_to_cv2(raw_data, "png")
-    except CvBridgeError as error:
-        print(error)
-
-   openCVbase64EncodedImage = base64.b64encode(cv_image)
-
-   return openCVbase64EncodedImage
 
 
 def imageCallback(data):
@@ -147,12 +129,12 @@ def imuCallback(data):
     now = rospy.get_rostime()
     deltaTime = now.to_sec() - lastImuMessageTime.to_sec()
     lastImuMessageTime = now
-    deltaRotX = deltaTime * data.orientation.x * rotAdj
-    deltaRotY = deltaTime * data.orientation.y * rotAdj
-    deltaRotZ = deltaTime * data.orientation.z * rotAdj
-    deltaPosX = deltaTime * data.linear_acceleration.x * velAdj
-    deltaPosY = deltaTime * data.linear_acceleration.y * velAdj
-    deltaPosZ = deltaTime * data.linear_acceleration.z * velAdj
+    deltaRotX = deltaTime * (data.orientation.x / rotAdj)
+    deltaRotY = deltaTime * (data.orientation.y / rotAdj)
+    deltaRotZ = deltaTime * (data.orientation.z / rotAdj)
+    deltaPosX = deltaTime * (data.linear_acceleration.x / velAdj)
+    deltaPosY = deltaTime * (data.linear_acceleration.y / velAdj)
+    deltaPosZ = deltaTime * (data.linear_acceleration.z / velAdj)
 
     rotX += deltaRotX
     rotY += deltaRotY
@@ -231,7 +213,7 @@ def main():
     rospy.init_node("framewriter")
     lastImuMessageTime = rospy.get_rostime()
     output = rospy.Publisher("output", Frame, queue_size=100)
-    rospy.Subscriber("webcam/image_raw", Image, imageCallback)
+    rospy.Subscriber("webcam/image_raw/compressed", CompressedImage, imageCallback)
     rospy.Subscriber("imu", Imu, imuCallback)
     rospy.Subscriber("scan", LaserScan, laserCallback)
 
