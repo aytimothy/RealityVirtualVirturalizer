@@ -206,12 +206,6 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(framewriter_cpp src/framewriter_cpp.cpp)
-target_link_libraries(framewriter_cpp ${catkin_LIBRARIES})
-target_include_directories(framewriter_cpp PUBLIC lib/json/include)
-target_include_directories(framewriter_cpp PUBLIC lib/opencv/include)
-add_dependencies(framewriter_cpp world_mapper_generate_messages_cpp)
-
 set(serial_SRCS lib/serial/src/serial.cc lib/serial/include/serial/serial.h lib/serial/include/serial/v8stdint.h lib/serial/src/impl/list_ports/list_ports_linux.cc)
 if (UNIX)
   list(APPEND serial_SRCS lib/serial/src/impl/unix.cc)
