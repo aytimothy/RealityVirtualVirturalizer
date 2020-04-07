@@ -129,9 +129,9 @@ def imuCallback(data):
     now = rospy.get_rostime()
     deltaTime = now.to_sec() - lastImuMessageTime.to_sec()
     lastImuMessageTime = now
-    deltaRotX = deltaTime * (data.orientation.x / rotAdj)
-    deltaRotY = deltaTime * (data.orientation.y / rotAdj)
-    deltaRotZ = deltaTime * (data.orientation.z / rotAdj)
+    deltaRotX = deltaTime * (data.angular_velocity.x / rotAdj)
+    deltaRotY = deltaTime * (data.angular_velocity.y / rotAdj)
+    deltaRotZ = deltaTime * (data.angular_velocity.z / rotAdj)
     deltaPosX = deltaTime * (data.linear_acceleration.x / velAdj)
     deltaPosY = deltaTime * (data.linear_acceleration.y / velAdj)
     deltaPosZ = deltaTime * (data.linear_acceleration.z / velAdj)
