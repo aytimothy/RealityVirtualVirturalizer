@@ -78,8 +78,8 @@ void imageCallback (const sensor_msgs::Image::ConstPtr& msg) {
 }
 
 ros::Time lastImuCallback;
-double rotAdj = 1;      // It's already done in imureader.
-double velAdj = 1;      // It's already done in imureader.
+double rotAdj = 2048;      // It's already done in imureader.
+double velAdj = 2048;      // It's already done in imureader.
 double rotX = 0;
 double rotY = 0;
 double rotZ = 0;
@@ -106,13 +106,13 @@ void imuCallback (const sensor_msgs::Imu::ConstPtr& msg) {
     imu_msg.orientation.w = msg->orientation.w;
     imu_msg.orientation_covariance = msg->orientation_covariance;
 
-    double deltaRotX = deltaTime * msg->orientation.x * rotAdj;
-    double deltaRotY = deltaTime * msg->orientation.y * rotAdj;
-    double deltaRotZ = deltaTime * msg->orientation.z * rotAdj;
+    double deltaRotX = deltaTime * msg->orientation.x / rotAdj;
+    double deltaRotY = deltaTime * msg->orientation.y / rotAdj;
+    double deltaRotZ = deltaTime * msg->orientation.z / rotAdj;
 
-    double deltaPosX = deltaTime * msg->linear_acceleration.x * velAdj;
-    double deltaPosY = deltaTime * msg->linear_acceleration.y * velAdj;
-    double deltaPosZ = deltaTime * msg->linear_acceleration.z * velAdj;
+    double deltaPosX = deltaTime * msg->linear_acceleration.x / velAdj;
+    double deltaPosY = deltaTime * msg->linear_acceleration.y / velAdj;
+    double deltaPosZ = deltaTime * msg->linear_acceleration.z / velAdj;
 
     rotX += deltaRotX;
     rotY += deltaRotY;
