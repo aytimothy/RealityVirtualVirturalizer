@@ -541,7 +541,7 @@ function DashboardComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.listeningForMessages);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.isImageDisplayed && ctx_r0.frame);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.isImageDisplayed && ctx_r0.image);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("hidden", !ctx_r0.isCanvasDisplayed);
 } }
@@ -596,6 +596,7 @@ class DashboardComponent {
     }
     stopListening() {
         this.msg_listener.unsubstribe();
+        this.img_listener.unsubstribe();
         this.listeningForMessages = false;
         this.isCanvasDisplayed = false;
     }
