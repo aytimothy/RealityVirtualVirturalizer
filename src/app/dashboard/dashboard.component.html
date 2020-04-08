@@ -35,24 +35,23 @@
   <!-- toolbar with coordinates and sequence number-->
   <mat-toolbar id="coordinates-bar" color="primary" *ngIf="listeningForMessages">
     <span class="spacer"><strong>Seq: </strong>
-      <p *ngIf="frame">{{frame.seq}}</p>
+      <span *ngIf="frame">{{frame.seq}}</span>
     </span>
     <span class="spacer"><strong>posX: </strong>
-      <p *ngIf="frame">{{frame.posX}}</p>
+      <span *ngIf="frame">{{frame.posX}}</span>
     </span>
     <span class="spacer"><strong>posY: </strong>
-      <p *ngIf="frame">{{frame.posY}}</p>
+      <span *ngIf="frame">{{frame.posY}}</span>
     </span>
     <span><strong>posZ: </strong>
-      <p *ngIf="frame">{{frame.posZ}}</p>
+      <span *ngIf="frame">{{frame.posZ}}</span>
     </span>
   </mat-toolbar>
   <!-- card that displays either the canvas or images-->
-  <div *ngIf="isImageDisplayed && image" class="image_wrapper">
-    <img *ngIf="image.format == 'png'" src="data:image/png;base64, {{image.data}}" alt="frame image">
-    <img *ngIf="image.format == 'jpeg'" src="data:image/jpeg;base64, {{image.data}}" alt="frame image">
+  <div [hidden]="!isImageDisplayed" class="image_wrapper">
+    <img src="{{imageUrl}}" width="{{dashboardWidth}}" height="{{dashboardHeight}}" alt="frame image">
   </div>
-  <div [hidden]="!isCanvasDisplayed" id="canvas" #map (window:resize)="onResize($event)"></div>
+  <div [hidden]="!isCanvasDisplayed" id="canvas" (window:resize)="onResize($event)"></div>
 </div>
 <!-- seperate row that displays an alert message that rosbridge is not connected-->
 <div class="container-fluid" *ngIf="!__BridgeService.isConnected">

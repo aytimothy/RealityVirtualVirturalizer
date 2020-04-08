@@ -20,12 +20,11 @@ export class DashboardComponent implements AfterViewInit {
   public isImageDisplayed: boolean = false;
 
   private msg_listener: any;
-  private img_listener: any;
-
   public frame: any;
-  public image: any;
-  public canvasWidth: number;
-  public canvasHeight: number;
+  public imageUrl: string;
+
+  public dashboardWidth: number;
+  public dashboardHeight: number;
 
   constructor(
     public __BridgeService: BridgeService,
@@ -34,8 +33,8 @@ export class DashboardComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     // retrieve the width and height of the canvas div dynamically  
-    this.canvasWidth = this.elementRef.nativeElement.offsetWidth;
-    this.canvasHeight = this.elementRef.nativeElement.offsetHeight;
+    this.dashboardWidth = this.elementRef.nativeElement.offsetWidth;
+    this.dashboardHeight = this.elementRef.nativeElement.offsetHeight;
   }
 
   public startListening(): void {
@@ -47,23 +46,15 @@ export class DashboardComponent implements AfterViewInit {
       console.log(frame);
       // update the current frame
       this.frame = frame;
+      // update the image url per frame
+      this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
       //this.generatePoint(frame);
     });
     this.create3DCanvas();
-
-    this.img_listener = this.__BridgeService.subscribeToTopic('/webcam', 'image_raw/compressed');
-    
-    this.img_listener.subscribe((img: any) => {
-      //output to console for testing
-      console.log(img);
-      //update the image
-      this.image = img;
-    })
   }
 
   public stopListening(): void {
     this.msg_listener.unsubstribe();
-    this.img_listener.unsubstribe();
     this.listeningForMessages = false;
     this.isCanvasDisplayed = false;
   }
@@ -92,12 +83,12 @@ export class DashboardComponent implements AfterViewInit {
     /* The event will only detect window resize events, 
     Therefore we need to substract 520 pixels from the innerWidth manually 
     to take into account the two side navigation panels which are both 260*/
-    this.canvasWidth = event.target.innerWidth - 520;
-    this.canvasHeight = event.target.innerHeight - 164;
+    this.dashboardWidth = event.target.innerWidth - 520;
+    this.dashboardHeight = event.target.innerHeight - 164;
 
     // ensure the viewer is created before calling resizing it
     if (this.viewer != undefined) {
-      this.viewer.resize(this.canvasWidth, this.canvasHeight);
+      this.viewer.resize(this.dashboardWidth, this.dashboardHeight);
     }
   }
 
@@ -123,13 +114,11 @@ export class DashboardComponent implements AfterViewInit {
 
   public create3DCanvas(): void {
 
-    this.isCanvasDisplayed = true;
-
     // create the main 3d viewer.
     this.viewer = new ROS3D.Viewer({
       divID: 'canvas',
-      width: this.canvasWidth,
-      height: this.canvasHeight,
+      width: this.dashboardWidth,
+      height: this.dashboardHeight,
       antialias: true
     });
 
