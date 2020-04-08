@@ -49,7 +49,8 @@
   </mat-toolbar>
   <!-- card that displays either the canvas or images-->
   <div *ngIf="isImageDisplayed && frame" class="image_wrapper">
-    <img src="data:image/png;base64, {{frame.image}}" alt="frame image">
+    <img *ngIf="image.format == 'png'" src="data:image/png;base64, {{image.data}}" alt="frame image">
+    <img *ngIf="image.format == 'jpeg'" src="data:image/jpeg;base64, {{image.data}}" alt="frame image">
   </div>
   <div [hidden]="!isCanvasDisplayed" id="canvas" #map (window:resize)="onResize($event)"></div>
 </div>

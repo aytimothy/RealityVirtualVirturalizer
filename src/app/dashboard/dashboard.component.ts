@@ -20,8 +20,10 @@ export class DashboardComponent implements AfterViewInit {
   public isImageDisplayed: boolean = false;
 
   private msg_listener: any;
-  public frame: any;
+  private img_listener: any;
 
+  public frame: any;
+  public image: any;
   public canvasWidth: number;
   public canvasHeight: number;
 
@@ -48,6 +50,15 @@ export class DashboardComponent implements AfterViewInit {
       //this.generatePoint(frame);
     });
     this.create3DCanvas();
+
+    this.img_listener = this.__BridgeService.subscribeToTopic('/webcam', 'image_raw/compressed');
+    
+    this.img_listener.subscribe((img: any) => {
+      //output to console for testing
+      console.log(img);
+      //update the image
+      this.image = img;
+    })
   }
 
   public stopListening(): void {
