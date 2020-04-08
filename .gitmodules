@@ -13,3 +13,6 @@
 [submodule "desktop"]
     path = src/Desktop-UI
 	url = https://github.com/Waleed-tech/Desktop-UI.git
+[submodule "imu2"]
+	path = catkin_ws/src/world_mapper/sketch/arduino
+	url = https://github.com/wesleymilan/arduino.git
