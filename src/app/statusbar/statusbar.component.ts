@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BridgeService } from '../services/rosbridge.service';
 import { SidenavService } from '../services/sidenav.service';
+import { ScannerService } from '../services/scanner.service';
 
 @Component({
   selector: 'app-statusbar',
@@ -18,12 +19,15 @@ export class StatusbarComponent implements OnInit {
   scan_status_msg: string = "Disabled";
 
   loading: boolean = true;
+  isScanning: boolean = false;
 
   constructor(
     private __BridgeService: BridgeService,
-    private __SidenavService: SidenavService) { }
+    private __SidenavService: SidenavService,
+    public __ScannerService: ScannerService
+  ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     // connect to rosbridge
     this.__BridgeService.estabishConnection((response: any) => {
       if (response.type == "open") {
@@ -42,15 +46,27 @@ export class StatusbarComponent implements OnInit {
         this.loading = false;
       }
     });
+
+    // subscribe to scanner status
+    this.__ScannerService.getScannerStatus().subscribe(isScanning => {
+      if (isScanning) {
+        this.scan_status_msg = 'Enabled';
+        this.scan_status_icon = 'cast';
+      }
+      if (!isScanning) {
+        this.scan_status_msg = 'Disabled';
+        this.scan_status_icon = 'close';
+      }
+    });
   }
 
   // open/close left side navigation pane
-  toggleLSideNav(): void {
+  public toggleLSideNav(): void {
     this.__SidenavService.toggleLeft();
   }
 
   // open/close right side navigation pane
-  toggleRSideNav(): void {
+  public toggleRSideNav(): void {
     this.__SidenavService.toggleRight();
   }
 }
