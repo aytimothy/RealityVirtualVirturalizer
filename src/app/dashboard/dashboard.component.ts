@@ -12,6 +12,7 @@ import * as THREE from 'three/build/three';
 export class DashboardComponent implements AfterViewInit {
 
   @ViewChild('canvas', { read: ElementRef, static: false }) elementView: ElementRef;
+  public isConnected: boolean = false;
 
   private viewer: ROS3D.Viewer
 
@@ -35,6 +36,11 @@ export class DashboardComponent implements AfterViewInit {
     // retrieve the width and height of the canvas div dynamically  
     this.dashboardWidth = this.elementRef.nativeElement.offsetWidth;
     this.dashboardHeight = this.elementRef.nativeElement.offsetHeight;
+
+    this.__BridgeService.getConnnectionStatus().subscribe(status => {
+      this.isConnected = status
+    });
+
   }
 
   public startListening(): void {

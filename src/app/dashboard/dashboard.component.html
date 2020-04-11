@@ -1,4 +1,4 @@
-<div *ngIf="__BridgeService.isConnected" class="row no-gutters">
+<div *ngIf="isConnected" class="row no-gutters">
   <!-- toolbar displays dashboard options-->
   <mat-toolbar id="options-bar">
     <span>
@@ -54,7 +54,7 @@
   <div [hidden]="!isCanvasDisplayed" id="canvas" (window:resize)="onResize($event)"></div>
 </div>
 <!-- seperate row that displays an alert message that rosbridge is not connected-->
-<div class="container-fluid" *ngIf="!__BridgeService.isConnected">
+<div class="container-fluid" *ngIf="!isConnected">
   <div class="image_wrapper">
     <img src="assets/error.png" alt="error">
     <br>
