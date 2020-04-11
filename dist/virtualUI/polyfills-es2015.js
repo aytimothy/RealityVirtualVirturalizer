@@ -3033,7 +3033,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/crypto/Projects/-RealityVirtualVirturalizer-Interface/src/polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! /home/vm-ubuntu/-RealityVirtualVirturalizer-Interface/src/polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })
