@@ -7,10 +7,13 @@
       <a mat-list-item [routerLink]="'dashboard'">
         <mat-icon>dashboard</mat-icon>Dashboard
       </a>
-      <a mat-list-item>
+      <a mat-list-item *ngIf="isConnected && isScanning" (click)="toggleScanner()">
+        <mat-icon>cast</mat-icon>Stop Scanning
+      </a>
+      <a mat-list-item *ngIf="isConnected && !isScanning" (click)="toggleScanner()">
         <mat-icon>cast</mat-icon>Start Scanning
       </a>
-      <a mat-list-item>
+      <a mat-list-item *ngIf="isConnected">
         <mat-icon>settings_overscan</mat-icon>Calibrate Position
       </a>
       <a mat-list-item (click)="configureRosBridge()">
