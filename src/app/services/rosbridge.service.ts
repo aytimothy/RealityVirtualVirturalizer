@@ -36,9 +36,9 @@ export class BridgeService {
     });
   }
 
-  public estabishConnection(next): boolean {
+  public estabishConnection(next): void {
     if (this.isConnected) { // check if there is already a connection
-      return this.isConnected;
+        return;
     }
 
     // establish a new ws connection
