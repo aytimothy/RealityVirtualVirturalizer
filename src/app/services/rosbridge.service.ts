@@ -72,4 +72,11 @@ export class BridgeService {
       messageType: messageType
     });
   }
+  public createService(name: String, serviceType: String): ROSLIB.Service { // create a custom ros service
+    return new ROSLIB.Service({
+      ros: this.socket,
+      name: name,
+      serviceType: serviceType
+    });
+  }
 }
