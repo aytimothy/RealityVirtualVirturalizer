@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import * as ROSLIB from 'roslib';
 
 @Injectable({
@@ -15,9 +16,19 @@ export class BridgeService {
   public socket: ROSLIB.Ros;
 
   // connection status
-  public isConnected: boolean = false;
+  public isConnected: BehaviorSubject<boolean>
 
-  constructor() { }
+  constructor() {
+    this.isConnected = new BehaviorSubject<boolean>(false);
+  }
+
+  public getConnnectionStatus(): Observable<boolean> {
+    return this.isConnected.asObservable();
+  }
+
+  private updateConnectionStatus(status: boolean): void {
+    this.isConnected.next(status);
+  }
 
   public setCustomAddress(config: any) {
     this.host = config.host;
@@ -27,7 +38,7 @@ export class BridgeService {
     if (this.isConnected && this.socket) {
       this.socket.close();
       this.socket = null;
-      this.isConnected = false;
+      this.updateConnectionStatus(false);
     }
 
     // establish a new connection after changes
@@ -47,21 +58,21 @@ export class BridgeService {
     });
 
     this.socket.on('connection', (response: any) => { // if the websocket connection is sucessfull
-      this.isConnected = true;
-      console.log(`Success! Connected to rosbridge on: ${this.host}:${this.port}`)
-      next(response)
+      this.updateConnectionStatus(true);
+      console.log(`Success! Connected to rosbridge on: ${this.host}:${this.port}`);
+      next(response);
     });
 
     this.socket.on('error', (response: any) => { // if the websocket connection failed
-      this.isConnected = false;
-      console.log(`Error! Failed to connect to rosbridge on: ${this.host}:${this.port}`)
-      next(response)
+      this.updateConnectionStatus(false);
+      console.log(`Error! Failed to connect to rosbridge on: ${this.host}:${this.port}`);
+      next(response);
     });
 
     this.socket.on('close', (response: any) => { // if the websocket connection closes
-      this.isConnected = false;
-      console.log(`Closed rosbridge connection on: ${this.host}:${this.port}`)
-      next(response)
+      this.updateConnectionStatus(false);
+      console.log(`Closed rosbridge connection on: ${this.host}:${this.port}`);
+      next(response);
     });
   }
 
@@ -72,6 +83,7 @@ export class BridgeService {
       messageType: messageType
     });
   }
+
   public createService(name: String, serviceType: String): ROSLIB.Service { // create a custom ros service
     return new ROSLIB.Service({
       ros: this.socket,
