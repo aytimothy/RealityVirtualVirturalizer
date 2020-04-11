@@ -33,6 +33,7 @@ import { BridgeService } from './services/rosbridge.service';
 import { SidenavService } from './services/sidenav.service';
 import { DialogService } from './services/dialog.service';
 import { DataService } from './services/data.service';
+import { ScannerService } from './services/scanner.service';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { DataService } from './services/data.service';
     BridgeService,
     SidenavService,
     DialogService,
-    DataService
+    DataService,
+    ScannerService
   ],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
