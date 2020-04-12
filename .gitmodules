@@ -10,6 +10,3 @@
 [submodule "serial"]
 	path = catkin_ws/src/world_mapper/lib/serial
 	url = https://github.com/wjwwood/serial.git
-[submodule "desktopui"]
-    path = src/DesktopUI
-	url = https://github.com/Waleed-tech/DesktopUI.git
