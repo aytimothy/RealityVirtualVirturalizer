@@ -1,0 +1,8 @@
+<launch>
+  <node name="urg_node" pkg="urg_node" type="urg_node" />
+  <node name="imureader" pkg="world_mapper" type="imureader" />
+  <include file="$(find video_stream_opencv)/launch/webcamm.launch">
+  <node name="framewriter" pkg="world_mapper" type="framewriter" />
+  <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" />
+  <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" />
+</launch>
