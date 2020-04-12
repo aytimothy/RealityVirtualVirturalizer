@@ -28,7 +28,7 @@ export class ScannerService {
 
   public requestScannerStatus() {
     if (!this.scanService) {  // ensure the scanner service has been created
-      this.scanService = this.__BridgeService.createService('/scanner', 'std_msgs/String');
+      this.scanService = this.__BridgeService.createService('/switch', 'string');
     }
 
     const statusRequest = new ROSLIB.ServiceRequest('status');
