@@ -48,10 +48,6 @@ export class BridgeService {
   }
 
   public estabishConnection(next): void {
-    if (this.isConnected) { // check if there is already a connection
-        return;
-    }
-
     // establish a new ws connection
     this.socket = new ROSLIB.Ros({
       url: `ws://${this.host}:${this.port}`
