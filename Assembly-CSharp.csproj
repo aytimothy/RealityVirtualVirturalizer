@@ -134,10 +134,16 @@
     <Compile Include="Assets\RosSharp\Scripts\Urdf\UrdfComponents\UrdfRobot.cs" />
     <Compile Include="Assets\RosSharp\Scripts\Urdf\UrdfComponents\UrdfVisual.cs" />
     <Compile Include="Assets\RosSharp\Scripts\Urdf\UrdfComponents\UrdfVisuals.cs" />
+    <Compile Include="Assets\RosSharpMessages\WorldMapper\msg\Frame.cs" />
+    <Compile Include="Assets\Scripts\FileManager.cs" />
+    <Compile Include="Assets\Scripts\FileManagerPanel.cs" />
+    <Compile Include="Assets\Scripts\FrameManager.cs" />
     <Compile Include="Assets\Scripts\HeaderMenuController.cs" />
     <Compile Include="Assets\Scripts\MainPanelController.cs" />
     <Compile Include="Assets\Scripts\OpenProjectButton.cs" />
     <Compile Include="Assets\Scripts\PanelController.cs" />
+    <Compile Include="Assets\Scripts\PointCloudManager.cs" />
+    <Compile Include="Assets\Scripts\ProjectManager.cs" />
     <Compile Include="Assets\Scripts\ProjectScene.cs" />
     <Compile Include="Assets\Scripts\TopScene.cs" />
     <Compile Include="Assets\Scripts\old\CP_layout.cs" />
