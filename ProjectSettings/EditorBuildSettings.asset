@@ -23,4 +23,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/old/create new project screen.unity
     guid: 04e0326d4a4077e4191525b79bd29575
+  - enabled: 1
+    path: Assets/Scenes/Top Scene.unity
+    guid: 0f0452a30d518fd4e9fb74859c27c3d1
+  - enabled: 1
+    path: Assets/Scenes/Project Scene.unity
+    guid: 00e71c551a84b0d468dc9112e346d961
   m_configObjects: {}

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mail;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +18,7 @@ public class TopScene : MonoBehaviour {
     public GameObject CreateProjectPanel;
     public GameObject ProjectListEmptyMessage;
     public GameObject ProjectListScrollArea;
+    public Transform ProjectListContentArea;
     public TMP_InputField CreateProjectNameInputField;
     public TMP_InputField CreateProjectPathInputField;
     public List<GameObject> OpenProjectPanelButtons = new List<GameObject>();
@@ -26,6 +29,10 @@ public class TopScene : MonoBehaviour {
     public string LastUsedDirectory {
         get { return PlayerPrefs.GetString("LastUsedDirectory", DefaultDirectory); }
         set { PlayerPrefs.SetString("LastUsedDirectory", value); }
+    }
+    public string ProjectHistory {
+        get { return PlayerPrefs.GetString("ProjectHistory", JsonConvert.SerializeObject(new RecentProjectList())); }
+        set { PlayerPrefs.SetString("ProjectHistory", value);}
     }
 
     void Start() {
@@ -57,7 +64,7 @@ public class TopScene : MonoBehaviour {
     }
 
     public void ActuallyCreateProjectButton_OnClick() {
-        MessageBox.Show("Not Implemented Yet...", "Error!");
+        CreateProject(CreateProjectPathInputField.text, CreateProjectNameInputField.text);
     }
 
     public void CreateProjectBrowseButton_OnClick() {
@@ -77,16 +84,36 @@ public class TopScene : MonoBehaviour {
         DialogResult dialogResult = MessageBox.Show("Not Implemented Yet...", "Error!");
     }
     public void OpenProject(string projectFilePath) {
-        DialogResult dialogResult = MessageBox.Show("Not Implemented Yet...", "Error!");
+        ProjectScene.StartupProjectPath = projectFilePath;
         SceneManager.LoadScene("Project Scene");
     }
 
     public void CreateProject(string parentFolderFilePath, string projectFolderName) {
-        DialogResult dialogResult = MessageBox.Show("Not Implemented Yet...", "Error!");
+        if (!parentFolderFilePath.EndsWith("\\") && parentFolderFilePath.EndsWith("/"))
+            parentFolderFilePath += "/";
+        ProjectScene.StartupProjectPath = parentFolderFilePath + projectFolderName;
         SceneManager.LoadScene("Project Scene");
     }
 
     public void UpdateOpenProjectPanel() {
-        // look up a list of recent projects and add them to the dialog box for quick access.
+        foreach (GameObject openProjectButton in OpenProjectPanelButtons)
+            Destroy(openProjectButton);
+        OpenProjectPanelButtons.Clear();
+
+        RecentProjectList recentProjects = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
+        bool noProjects = recentProjects.projectPaths.Count == 0;
+        ProjectListEmptyMessage.SetActive(noProjects);
+        ProjectListScrollArea.SetActive(!noProjects);
+
+        if (!noProjects)
+            foreach (string recentProjectPath in recentProjects.projectPaths) {
+                GameObject newObject = Instantiate(OpenProjectButtonPrefab, ProjectListContentArea);
+                OpenProjectButton openProjectButton = newObject.GetComponent<OpenProjectButton>();
+                openProjectButton.Setup(this, recentProjectPath);
+            }
     }
+}
+
+public class RecentProjectList {
+    public List<string> projectPaths = new List<string>();
 }
