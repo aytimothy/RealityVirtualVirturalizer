@@ -51,7 +51,7 @@
   <div [hidden]="!isImageDisplayed" class="image_wrapper">
     <img src="{{imageUrl}}" width="{{dashboardWidth}}" height="{{dashboardHeight}}" alt="frame image">
   </div>
-  <div [hidden]="!isCanvasDisplayed" id="canvas" (window:resize)="onResize($event)"></div>
+  <div #canvas [hidden]="!isCanvasDisplayed" id="canvas" (window:resize)="onResize($event)"></div>
 </div>
 <!-- seperate row that displays an alert message that rosbridge is not connected-->
 <div class="container-fluid" *ngIf="!isConnected">
