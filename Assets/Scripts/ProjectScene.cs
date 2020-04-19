@@ -45,12 +45,21 @@ public class ProjectScene : MonoBehaviour {
             frameManager.Frames.Add(new FrameData(frameFilePath));
     }
 
-    public void SaveProject() {
-
+    public void NewProject() {
+        // todo: Create a new project. A project is basically a folder with a manifest.json (defined in ProjectManifest) and links to frame files.
     }
 
-    public void LoadProject() {
+    public void SaveProject() {
+        // todo: Apply changes to the manifest file.
+    }
 
+    public void SaveAsProject(string directory) {
+        throw new NotImplementedException();
+        // todo: Copy an entire project to a new folder...
+    }
+
+    public void LoadProject(string directory) {
+        // todo: Load a project and reset all the variables.
     }
 }
 

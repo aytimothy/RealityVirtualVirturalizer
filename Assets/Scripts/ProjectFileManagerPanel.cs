@@ -5,8 +5,9 @@ using System.Windows.Forms;
 using TMPro;
 using UnityEngine;
 
-public class FileManagerPanel : MonoBehaviour {
+public class ProjectFileManagerPanel : MonoBehaviour {
     public FrameManager frameManager;
+    public PointCloudManager pointsManager;
 
     public TMP_Text TotalFramesCountLabel;
     public TMP_Text TotalFrameSizeLabel;
@@ -30,6 +31,7 @@ public class FileManagerPanel : MonoBehaviour {
         DialogResult dialogResult = openFileDialog.ShowDialog();
         if (dialogResult == DialogResult.OK) {
             LastUsedDirectory = Path.GetDirectoryName(openFileDialog.FileName);
+            // ImportFile(GetRelativePath(ProjectScene.CurrentProjectPath, openFileDialog.FileName));
             ImportFile(openFileDialog.FileName);
         }
     }
@@ -48,15 +50,27 @@ public class FileManagerPanel : MonoBehaviour {
     public void ImportFolder(string folderPath) {
         string[] files = Directory.GetFiles(folderPath);
         foreach (string fileName in files) {
-            if (fileName.EndsWith(".json"))
-                frameManager.Frames.Add(new FrameData(GetRelativePath(ProjectScene.CurrentProjectPath, fileName), true));
+            if (fileName.EndsWith(".json")) {
+                // FrameData frameData = new FrameData(GetRelativePath(ProjectScene.CurrentProjectPath, fileName), true);
+                FrameData frameData = new FrameData(fileName, true);
+                frameManager.Frames.Add(frameData);
+                Vector3[] points = frameData.Data.ToVector3();
+                foreach (Vector3 point in points)
+                    pointsManager.AddPoint(point);
+            }
         }
 
         UpdateLabels();
     }
 
     public void ImportFile(string filePath) {
-        frameManager.Frames.Add(new FrameData(filePath, true));
+        FrameData frameData = new FrameData(filePath, true);
+        frameManager.Frames.Add(frameData);
+
+        Vector3[] points = frameData.Data.ToVector3();
+        foreach (Vector3 point in points)
+            pointsManager.AddPoint(point);
+        
         UpdateLabels();
     }
 

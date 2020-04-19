@@ -9,13 +9,13 @@ public class PointCloudManager : MonoBehaviour {
 
     public void AddPoint(Vector3 position) {
         GameObject newPointObject = Instantiate(PointPrefab, ContainerTransform);
-        newPointObject.transform.position = position;
+        newPointObject.transform.localPosition = position;
         PointObjects.Add(newPointObject);
     }
 
-    public void RemovePoints(Vector3 position, float tolerance = 0.0001f) {
+    public void RemovePoints(Vector3 position, float tolerance = 0.0001f, bool global = true) {
         foreach (GameObject pointObject in PointObjects) {
-            float distance = Vector3.Distance(position, pointObject.transform.position);
+            float distance = Vector3.Distance(position, (global) ? pointObject.transform.position : pointObject.transform.localEulerAngles);
             if (distance <= tolerance)
                 Destroy(pointObject);
         }

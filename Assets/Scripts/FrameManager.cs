@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
 using RosSharp.RosBridgeClient.MessageTypes.WorldMapper;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class FrameData {
 
     public FrameData(string FilePath, bool Load = false) {
         this.FilePath = FilePath;
-        Loaded = false;
+        loaded = false;
         if (Load)
             LoadFrame();
     }
@@ -39,13 +40,14 @@ public class FrameData {
     public FrameData(string FilePath, Frame Data) {
         this.FilePath = FilePath;
         this.Data = Data;
-        Loaded = true;
+        loaded = true;
     }
 
     public Frame LoadFrame() {
         string fullFilePath = Path.GetFullPath(ProjectScene.CurrentProjectPath + FilePath);
         string frameString = File.ReadAllText(fullFilePath);
         Data = JsonConvert.DeserializeObject<Frame>(frameString);
+        loaded = true;
         return Data;
     }
 
@@ -109,4 +111,58 @@ public class Frame {
     public float[] intensities;
     public byte[] img;
     public string imgfmt;
+
+    public Vector3[] ToVector3() {
+        return ToVector3(this);
+    }
+
+    public static Vector3[] ToVector3(Frame frame) {
+        List<Vector3> baseVectors = new List<Vector3>();
+        if (frame.angle_increment >= 0.1f)
+            frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.Length - 1);
+        if (frame.angle_increment == 0) {
+            Debug.LogError("Cannot have an angle increment of 0, because then we'll get nowhere!\nThere are " + frame.ranges.Length.ToString() + " readings.");
+            throw new ArgumentOutOfRangeException();
+        }
+
+        int reps = 500;
+        for (float angle = frame.angle_min; angle < frame.angle_max; angle += frame.angle_increment) {
+            baseVectors.Add(new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0f, Mathf.Sin(angle * Mathf.Deg2Rad)));
+            reps--;
+            if (reps < 0) {
+                Debug.LogError("There's too many vectors to add!");
+                Debug.LogError("frame.ranges.Length = " + frame.ranges.Length.ToString() + "frame.angle_increment = " + frame.angle_increment.ToString() + "\nframe.angle_min = " + frame.angle_min.ToString() + "\nframe.angle_max = " + frame.angle_max.ToString());
+                break;
+            }
+        }
+        List<Vector3> results = new List<Vector3>();
+        for (int i = 0; i < baseVectors.Count; i++) {
+            Vector3 baseVector = baseVectors[i];
+
+            float alpha = frame.rotX * Mathf.Deg2Rad;
+            float beta = frame.rotY * Mathf.Deg2Rad;
+            float gamma = frame.rotZ * Mathf.Deg2Rad;
+
+            float cosa = Mathf.Cos(alpha);
+            float sina = Mathf.Sin(alpha);
+            float cosb = Mathf.Cos(beta);
+            float sinb = Mathf.Sin(beta);
+            float cosc = Mathf.Cos(gamma);
+            float sinc = Mathf.Sin(gamma);
+
+            float axx = cosa*cosb;
+            float axy = cosa*sinb*sinc - sina*cosc;
+            float axz = cosa*sinb*cosc + sina*sinc;
+            float ayx = sina*cosb;
+            float ayy = sina*sinb*sinc + cosa*cosc;
+            float ayz = sina*sinb*cosc - cosa*sinc;
+            float azx = -sinb;
+            float azy = cosb*sinc;
+            float azz = cosb*cosc;
+
+            results.Add((new Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz)) * frame.ranges[i]) + new Vector3(frame.posX, frame.posY, frame.posZ));
+        }
+
+        return results.ToArray();
+    }
 }
