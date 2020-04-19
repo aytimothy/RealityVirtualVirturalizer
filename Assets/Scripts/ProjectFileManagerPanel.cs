@@ -53,10 +53,12 @@ public class ProjectFileManagerPanel : MonoBehaviour {
             if (fileName.EndsWith(".json")) {
                 // FrameData frameData = new FrameData(GetRelativePath(ProjectScene.CurrentProjectPath, fileName), true);
                 FrameData frameData = new FrameData(fileName, true);
-                frameManager.Frames.Add(frameData);
                 Vector3[] points = frameData.Data.ToVector3();
-                foreach (Vector3 point in points)
+                foreach (Vector3 point in points) {
+                    frameData.Points.Add(new Point3(point));
                     pointsManager.AddPoint(point);
+                }
+                frameManager.Frames.Add(frameData);
             }
         }
 
@@ -64,12 +66,16 @@ public class ProjectFileManagerPanel : MonoBehaviour {
     }
 
     public void ImportFile(string filePath) {
+        // FrameData frameData = new FrameData(GetRelativePath(ProjectScene.CurrentProjectPath, filePath), true);
         FrameData frameData = new FrameData(filePath, true);
         frameManager.Frames.Add(frameData);
 
         Vector3[] points = frameData.Data.ToVector3();
-        foreach (Vector3 point in points)
+        foreach (Vector3 point in points) {
+            frameData.Points.Add(new Point3(point));
             pointsManager.AddPoint(point);
+        }
+        frameManager.Frames.Add(frameData);
         
         UpdateLabels();
     }

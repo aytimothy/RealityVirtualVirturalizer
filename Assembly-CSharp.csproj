@@ -135,6 +135,7 @@
     <Compile Include="Assets\RosSharp\Scripts\Urdf\UrdfComponents\UrdfVisual.cs" />
     <Compile Include="Assets\RosSharp\Scripts\Urdf\UrdfComponents\UrdfVisuals.cs" />
     <Compile Include="Assets\RosSharpMessages\WorldMapper\msg\Frame.cs" />
+    <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\FileManager.cs" />
     <Compile Include="Assets\Scripts\FrameManager.cs" />
     <Compile Include="Assets\Scripts\HeaderMenuController.cs" />

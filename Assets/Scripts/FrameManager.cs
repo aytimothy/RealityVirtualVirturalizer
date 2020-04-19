@@ -19,9 +19,29 @@ public class FrameManager : MonoBehaviour {
 }
 
 [Serializable]
+public class Point3 {
+    public float x;
+    public float y;
+    public float z;
+
+    public Point3(Vector3 point) {
+        x = point.x;
+        y = point.y;
+        z = point.z;
+    }
+
+    public Point3(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+}
+
+[Serializable]
 public class FrameData {
     public string FilePath;
     public Frame Data;
+    public List<Point3> Points;
 
     public bool Loaded {
         get { return loaded; }
