@@ -141,6 +141,7 @@
     <Compile Include="Assets\Scripts\MainPanelController.cs" />
     <Compile Include="Assets\Scripts\OpenProjectButton.cs" />
     <Compile Include="Assets\Scripts\PanelController.cs" />
+    <Compile Include="Assets\Scripts\Point.cs" />
     <Compile Include="Assets\Scripts\PointCloudManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFileBrowserPanel.cs" />
     <Compile Include="Assets\Scripts\ProjectFileManagerPanel.cs" />

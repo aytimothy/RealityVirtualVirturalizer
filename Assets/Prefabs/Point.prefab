@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2240713104349404741}
   - component: {fileID: 6110677166355458500}
   - component: {fileID: 1626856973301598317}
+  - component: {fileID: 6854308944281643370}
   m_Layer: 0
-  m_Name: point_cloud
+  m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 43f9d01f8beb9114d8264eb00c985235, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,3 +80,15 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &6854308944281643370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4474276369728188002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af9a0aac4292b4644b9f2c02e9f3a5c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
