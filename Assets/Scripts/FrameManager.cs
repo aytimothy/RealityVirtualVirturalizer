@@ -41,7 +41,7 @@ public class Point3 {
 public class FrameData {
     public string FilePath;
     public Frame Data;
-    public List<Point3> Points;
+    public List<Point3> Points = new List<Point3>();
 
     public bool Loaded {
         get { return loaded; }

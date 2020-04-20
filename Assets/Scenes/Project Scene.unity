@@ -1535,7 +1535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &196126586
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4184,10 +4184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cad6846e3c886a4785353b175d639e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 0.1
+  mouseSensitivity: 0.4
   walkSpeed: 5
   runSpeed: 10
-  invertVertical: 1
+  invertVertical: 0
   invertHorizontal: 0
 --- !u!1 &775618962
 GameObject:
