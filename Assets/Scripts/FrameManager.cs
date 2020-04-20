@@ -19,9 +19,29 @@ public class FrameManager : MonoBehaviour {
 }
 
 [Serializable]
+public class Point3 {
+    public float x;
+    public float y;
+    public float z;
+
+    public Point3(Vector3 point) {
+        x = point.x;
+        y = point.y;
+        z = point.z;
+    }
+
+    public Point3(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+}
+
+[Serializable]
 public class FrameData {
     public string FilePath;
     public Frame Data;
+    public List<Point3> Points = new List<Point3>();
 
     public bool Loaded {
         get { return loaded; }
@@ -117,6 +137,7 @@ public class Frame {
     }
 
     public static Vector3[] ToVector3(Frame frame) {
+        // error checking, because 1 + 0 forever is never going to leave 1.
         List<Vector3> baseVectors = new List<Vector3>();
         if (frame.angle_increment >= 0.1f)
             frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.Length - 1);
@@ -125,16 +146,12 @@ public class Frame {
             throw new ArgumentOutOfRangeException();
         }
 
-        int reps = 500;
+        
+        // calculate the rays normalized (basically as if flat)
         for (float angle = frame.angle_min; angle < frame.angle_max; angle += frame.angle_increment) {
             baseVectors.Add(new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0f, Mathf.Sin(angle * Mathf.Deg2Rad)));
-            reps--;
-            if (reps < 0) {
-                Debug.LogError("There's too many vectors to add!");
-                Debug.LogError("frame.ranges.Length = " + frame.ranges.Length.ToString() + "frame.angle_increment = " + frame.angle_increment.ToString() + "\nframe.angle_min = " + frame.angle_min.ToString() + "\nframe.angle_max = " + frame.angle_max.ToString());
-                break;
-            }
         }
+        // now rotate every single normalized ray by the direction
         List<Vector3> results = new List<Vector3>();
         for (int i = 0; i < baseVectors.Count; i++) {
             Vector3 baseVector = baseVectors[i];
@@ -160,6 +177,7 @@ public class Frame {
             float azy = cosb*sinc;
             float azz = cosb*cosc;
 
+            // since we know the direction of the ray is travelling, now is to apply the distance the ray travelled, which is 'range'.
             results.Add((new Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz)) * frame.ranges[i]) + new Vector3(frame.posX, frame.posY, frame.posZ));
         }
 
