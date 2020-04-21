@@ -81,24 +81,10 @@ public class TopScene : MonoBehaviour {
     #endregion
 
     public void AddProject(string projectFilePath) {
-        if (File.Exists(projectFilePath + "/manifest.json")) {
-            RecentProjectList history = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
-            history.projectPaths.Insert(0, projectFilePath);
-            ProjectHistory = JsonConvert.SerializeObject(history);
-        }
-
-        UpdateOpenProjectPanel();
+        DialogResult dialogResult = MessageBox.Show("Not Implemented Yet...", "Error!");
     }
     public void OpenProject(string projectFilePath) {
         ProjectScene.StartupProjectPath = projectFilePath;
-
-        RecentProjectList history = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
-        int index = history.projectPaths.IndexOf(projectFilePath);
-        if (index != -1)
-            history.projectPaths.RemoveAt(index);
-        history.projectPaths.Insert(0, projectFilePath);
-        ProjectHistory = JsonConvert.SerializeObject(history);
-
         SceneManager.LoadScene("Project Scene");
     }
 
@@ -106,14 +92,6 @@ public class TopScene : MonoBehaviour {
         if (!parentFolderFilePath.EndsWith("\\") && parentFolderFilePath.EndsWith("/"))
             parentFolderFilePath += "/";
         ProjectScene.StartupProjectPath = parentFolderFilePath + projectFolderName;
-
-        RecentProjectList history = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
-        int index = history.projectPaths.IndexOf(parentFolderFilePath);
-        if (index != -1)
-            history.projectPaths.RemoveAt(index);
-        history.projectPaths.Insert(0, parentFolderFilePath);
-        ProjectHistory = JsonConvert.SerializeObject(history);
-
         SceneManager.LoadScene("Project Scene");
     }
 
