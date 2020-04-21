@@ -1,8 +1,7 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { BridgeService } from '../services/rosbridge.service';
 import * as THREE from 'three/build/three';
-import *  as  data from '../../assets/Points.json';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,8 +12,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 export class DashboardComponent implements AfterViewInit {
 
   @ViewChild('canvas', { read: ElementRef, static: false }) elementView: ElementRef;
-  @Input() material: THREE.PointsMaterial;
-  @Input() geometry: THREE.Geometry;
+  @Input() renderer: THREE.WebGLRenderer;
+  @Input() camera: THREE.PerspectiveCamera;
 
   private points = [];
   public isConnected: boolean = false;
@@ -42,9 +41,6 @@ export class DashboardComponent implements AfterViewInit {
     this.__BridgeService.getConnnectionStatus().subscribe(status => {
       this.isConnected = status
     });
-    data.points.forEach(element => {
-      this.points.push(new THREE.Vector3(element.x, element.y, element.z));
-    });
   }
 
   public startListening(): void {
@@ -58,7 +54,7 @@ export class DashboardComponent implements AfterViewInit {
       this.frame = frame;
       // update the image url per frame
       this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
-      //this.generatePoint(frame);
+      this.generatePoint(frame);
     });
     this.create3DCanvas();
   }
@@ -69,58 +65,55 @@ export class DashboardComponent implements AfterViewInit {
     this.isCanvasDisplayed = false;
   }
 
-  /*private generatePoint(frame: any): void {
-    var origin = new THREE.Vector3(frame.posX, frame.posY, frame.posZ);
-    var rotation = new THREE.Vector3(frame.rotX, frame.rotY, frame.rotZ);
-    var directions = this.generateDirections(rotation);
-    this.points = [];
-    for (let i = 0; i < frame.distances.length; i++)
-      this.points = origin + (directions[i] * frame.distances[i])
-    this.generateBox(this.points, 0.0001)
-  }
-
-  private generateDirections(rotation: THREE.Vector3) {
-    // Yaw
-    var cosa = Math.cos(rotation.z);
-    var sina = Math.sin(rotation.z);
-
-    // Pitch
-    var cosb = Math.cos(rotation.y);
-    var sinb = Math.sin(rotation.y);
-
-    // Roll
-    var cosc = Math.cos(rotation.x);
-    var sinc = Math.sin(rotation.x);
-
-    var Axx = cosa * cosb;
-    var Axy = cosa * sinb * sinc - sina * cosc;
-    var Axz = cosa * sinb * cosc + sina * sinc;
-
-    var Ayx = sina * cosb;
-    var Ayy = sina * sinb * sinc + cosa * cosc;
-    var Ayz = sina * sinb * cosc - cosa * sinc;
-
-    var Azx = -sinb;
-    var Azy = cosb * sinc;
-    var Azz = cosb * cosc;
-
-    for (var i = 0; i < this.points.length; i++) {
-      var px = this.points[i].x;
-      var py = this.points[i].y;
-      var pz = this.points[i].z;
-      this.points[i].x = Axx * px + Axy * py + Axz * pz;
-      this.points[i].y = Ayx * px + Ayy * py + Ayz * pz;
-      this.points[i].z = Azx * px + Azy * py + Azz * pz;
+  generatePoint(frame: any): void {
+    var baseVectors = [];
+    if (frame.angle_increment >= 0.1) {
+      frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.length - 1);
     }
-  }
+    if (frame.angle_increment == 0) {
+      console.log("Cannot have an angle increment of 0, because then we'll get nowhere!\nThere are " + frame.ranges.length + " readings.");
+    }
 
-  private generateBox(points, size): THREE.Object3D {
-    //make points at (1, 1, 1), (1, 1, -1), (1, -1, 1), (1, -1, -1), etc.
-    //var l = pos + (0.5 * size) - 1 = pos - (0.5 * size), //for respective axis
-    //join up three four points (or three if we have to make triangles)
-    // add material
-    // MATERIAL
-  }*/
+    var reps = 500;
+    for (var angle = frame.angle_min; angle < frame.angle_max; angle += frame.angle_increment) {
+      baseVectors.push(new THREE.Vector3(Math.cos(angle * (Math.PI / 180)), 0, Math.sin(angle * (Math.PI / 180))));
+      reps--;
+      if (reps < 0) {
+        console.log("There's too many vectors to add!");
+        console.log("frame.ranges.Length = " + frame.ranges.length + "frame.angle_increment = " + frame.angle_increment + "\nframe.angle_min = " + frame.angle_min + "\nframe.angle_max = " + frame.angle_max);
+        break;
+      }
+    }
+    var results = [];
+    for (let i = 0; i < baseVectors.length; i++) {
+      var baseVector = baseVectors[i];
+
+      var alpha = frame.rotX * (Math.PI / 180);
+      var beta = frame.rotY * (Math.PI / 180);
+      var gamma = frame.rotZ * (Math.PI / 180);
+
+      var cosa = Math.cos(alpha);
+      var sina = Math.sin(alpha);
+      var cosb = Math.cos(beta);
+      var sinb = Math.sin(beta);
+      var cosc = Math.cos(gamma);
+      var sinc = Math.sin(gamma);
+
+      var axx = cosa * cosb;
+      var axy = cosa * sinb * sinc - sina * cosc;
+      var axz = cosa * sinb * cosc + sina * sinc;
+      var ayx = sina * cosb;
+      var ayy = sina * sinb * sinc + cosa * cosc;
+      var ayz = sina * sinb * cosc - cosa * sinc;
+      var azx = -sinb;
+      var azy = cosb * sinc;
+      var azz = cosb * cosc;
+
+      results.push(new THREE.Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz)) * frame.ranges[i]) + new THREE.Vector3(frame.posX, frame.posY, frame.posZ);
+    }
+
+    this.addToCanvas(results);
+  }
 
   public onResize(event: any): void {
     /* The event will only detect window resize events, 
@@ -151,25 +144,27 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public create3DCanvas(): void {
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera.position.z = 15;
+    this.camera.position.y = 5;
 
-    camera.position.z = 15;
-    camera.position.y = 5;
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
-    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setClearColor('#00000');
+    this.renderer.setSize(this.dashboardWidth, this.dashboardHeight);
 
-    renderer.setClearColor('#00000');
-    renderer.setSize(this.dashboardWidth, this.dashboardHeight);
-
-    this.elementView.nativeElement.appendChild(renderer.domElement);
+    this.elementView.nativeElement.appendChild(this.renderer.domElement);
 
     window.addEventListener('resize', () => {
-      renderer.setSize(this.dashboardWidth, this.dashboardHeight);
-      camera.aspect = this.dashboardWidth / this.dashboardHeight;
-      camera.updateProjectionMatrix();
+      this.renderer.setSize(this.dashboardWidth, this.dashboardHeight);
+      this.camera.aspect = this.dashboardWidth / this.dashboardHeight;
+      this.camera.updateProjectionMatrix();
     });
+  }
+
+  public addToCanvas(points) {
+    var scene = new THREE.Scene();
 
     // LIGHTS
     var light = new THREE.PointLight(0xFFFFFF, 1, 500);
@@ -177,28 +172,31 @@ export class DashboardComponent implements AfterViewInit {
     scene.add(light);
 
     // MATERIAL
-    this.material = new THREE.PointsMaterial({ size: 1, sizeAttenuation: false });
+    var material = new THREE.PointsMaterial({ size: 1, sizeAttenuation: false });
 
     // GEOMETRY
-    this.geometry = new THREE.Geometry();
+    var geometry = new THREE.Geometry();
 
-    this.points.forEach(element => {
-      this.geometry.vertices.push(element)
+    points.forEach(element => {
+      geometry.vertices.push(element)
     });
 
-    var mesh = new THREE.Points(this.geometry, this.material);
+    var mesh = new THREE.Points(geometry, material);
     scene.add(mesh);
 
-    var controls = new OrbitControls(camera, renderer.domElement);
-
+    var controls = new OrbitControls(this.camera, this.renderer.domElement);
     controls.update();
+    this.passToRenderer(scene, this.camera, controls)
+
+  }
+
+  public passToRenderer(scene, camera, controls) {
 
     var render = function () {
       requestAnimationFrame(render);
       controls.update();
-      renderer.render(scene, camera)
+      this.renderer.render(scene, camera)
     }
-
     render();
   }
 }
