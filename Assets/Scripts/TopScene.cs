@@ -112,6 +112,12 @@ public class TopScene : MonoBehaviour {
                 openProjectButton.Setup(this, recentProjectPath);
             }
     }
+
+    public void RemoveProject(string projectFilePath) {
+        RecentProjectList recentProjects = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
+        recentProjects.projectPaths.Remove(projectFilePath);
+        ProjectHistory = JsonConvert.SerializeObject(recentProjects);
+    }
 }
 
 public class RecentProjectList {
