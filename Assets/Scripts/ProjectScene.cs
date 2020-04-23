@@ -34,6 +34,8 @@ public class ProjectScene : MonoBehaviour {
         string manifestFileString = JsonConvert.SerializeObject(projectManifest);
         if (File.Exists(directory + "/manifest.json"))
             File.Delete(directory + "/manifest.json");
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
         File.WriteAllText(directory + "/manifest.json", manifestFileString);
     }
 

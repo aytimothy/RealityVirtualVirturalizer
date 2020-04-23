@@ -21,6 +21,7 @@ public class TopScene : MonoBehaviour {
     public Transform ProjectListContentArea;
     public TMP_InputField CreateProjectNameInputField;
     public TMP_InputField CreateProjectPathInputField;
+    public TMP_Text CreateProjectPathPlaceholderInputField;
     public List<GameObject> OpenProjectPanelButtons = new List<GameObject>();
 
     public string DefaultDirectory {
@@ -37,6 +38,7 @@ public class TopScene : MonoBehaviour {
 
     void Start() {
         UpdateOpenProjectPanel();
+        CreateProjectPathPlaceholderInputField.text = Application.persistentDataPath;
     }
 
     #region UI Events
@@ -73,9 +75,8 @@ public class TopScene : MonoBehaviour {
         DialogResult dialogResult = saveFileDialog.ShowDialog();
         if (dialogResult == DialogResult.OK) {
             string filePath = Path.GetDirectoryName(saveFileDialog.FileName);
-            CreateProjectPathInputField.text = filePath;
-            CreateProject(CreateProjectPathInputField.text, CreateProjectNameInputField.text);
             LastUsedDirectory = filePath;
+            CreateProjectPathInputField.text = filePath;
         }
     }
     #endregion
@@ -89,7 +90,9 @@ public class TopScene : MonoBehaviour {
     }
 
     public void CreateProject(string parentFolderFilePath, string projectFolderName) {
-        if (!parentFolderFilePath.EndsWith("\\") && parentFolderFilePath.EndsWith("/"))
+        if (String.IsNullOrEmpty(parentFolderFilePath))
+            parentFolderFilePath = Application.persistentDataPath;
+        if (!parentFolderFilePath.EndsWith("\\") && !parentFolderFilePath.EndsWith("/"))
             parentFolderFilePath += "/";
         ProjectScene.StartupProjectPath = parentFolderFilePath + projectFolderName;
         SceneManager.LoadScene("Project Scene");
