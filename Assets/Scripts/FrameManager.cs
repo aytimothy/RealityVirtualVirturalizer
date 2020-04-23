@@ -151,11 +151,11 @@ public class Frame {
             float sinc = Mathf.Sin(gamma);
 
             float axx = cosa*cosb;
-            float axy = cosa*sinb*sinc - sina*cosc;
-            float axz = cosa*sinb*cosc + sina*sinc;
+            float axy = (cosa*sinb*sinc) - (sina*cosc);
+            float axz = (cosa*sinb*cosc) + (sina*sinc);
             float ayx = sina*cosb;
-            float ayy = sina*sinb*sinc + cosa*cosc;
-            float ayz = sina*sinb*cosc - cosa*sinc;
+            float ayy = (sina*sinb*sinc) + (cosa*cosc);
+            float ayz = (sina*sinb*cosc) - (cosa*sinc);
             float azx = -sinb;
             float azy = cosb*sinc;
             float azz = cosb*cosc;
