@@ -5,31 +5,34 @@ using UnityEngine.UI;
 using System.IO;
 public class fileButtonControl : MonoBehaviour
 {
-    [SerializeField]
-    private Text elementName;
-    private GameObject fileViewerPanel;
+    public Text elementName;
+    public GameObject fileViewerPanel;
 
-    public FileInfo associatedFile;
-    public DirectoryInfo associatedDirectory;
-    public bool isFile;
+    public File_button _Button;
+    private void Start()
+    {
 
-    public static bool changeDirectory = false;
-    public void SetButtonText(string name)
+    }
+    public void initializeButton(string name)
     {
         elementName.text = name;
+
     }
 
     public void OnClick()
     {
-        switch(isFile)
+        switch(ProjectFileBrowserPanel.currentFolder_elements[elementName.text].
+            GetComponent<fileButtonControl>()._Button.isFile)
         {
             case false:
-                changeDirectory = true;
-                ProjectFileBrowserPanel.current_directory = associatedDirectory;
+                ProjectFileBrowserPanel.current_directory = 
+                    ProjectFileBrowserPanel.currentFolder_elements[elementName.text].GetComponent<fileButtonControl>()._Button.associatedDirectory;
+                File_button.changeDirectory = true;
                 break;
             case true:
                 fileViewerPanel.SetActive(true);
-                ProjectFileViewerPanel.file = associatedFile;
+                ProjectFileViewerPanel.file = ProjectFileBrowserPanel.currentFolder_elements[elementName.text].
+            GetComponent<fileButtonControl>()._Button.associatedFile;
                 break;
         }
     }

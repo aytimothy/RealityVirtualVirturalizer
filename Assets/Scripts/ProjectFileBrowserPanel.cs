@@ -3,71 +3,124 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 
 public class ProjectFileBrowserPanel : MonoBehaviour {
     //the object of the buttons for files and directories
     public GameObject fileButtonTemplate;
     public Button previousFolderButton;
+    public GameObject scrollView;
 
     public static DirectoryInfo current_directory;
     public static DirectoryInfo previous_directory;
 
-    List<GameObject> currentDirectoryElements;
+    public static Dictionary<string, GameObject> currentFolder_elements = new Dictionary<string, GameObject>();
 
+    public int posY;
+    public int posX = 145;
     void InstantiateCurrentDirectoryElements()
     {
+        posY = 230;
         foreach (DirectoryInfo directory in current_directory.GetDirectories())
         {
-            GameObject directoryButton = Instantiate(fileButtonTemplate) as GameObject;
-            directoryButton.SetActive(true);
-            directoryButton.GetComponent<fileButtonControl>().SetButtonText(directory.Name);
-            directoryButton.transform.SetParent(fileButtonTemplate.transform.parent, true);
-            directoryButton.GetComponent<fileButtonControl>().isFile = false;
-            directoryButton.GetComponent<fileButtonControl>().associatedDirectory = directory;
+            GameObject directoryButton = Instantiate(fileButtonTemplate);
 
-            currentDirectoryElements.Add(directoryButton);
+            print(fileButtonTemplate.name);
+
+            currentFolder_elements.Add(directory.Name, directoryButton);
+
+            currentFolder_elements[directory.Name].SetActive(true);
+
+            currentFolder_elements[directory.Name].GetComponent<fileButtonControl>().initializeButton(directory.Name);
+
+            currentFolder_elements[directory.Name].GetComponent<RectTransform>().SetParent(scrollView.GetComponent<RectTransform>(), true);
+
+            currentFolder_elements[directory.Name].GetComponent<RectTransform>().localScale = fileButtonTemplate.GetComponent<RectTransform>().localScale;
+
+            currentFolder_elements[directory.Name].GetComponent<RectTransform>().sizeDelta = fileButtonTemplate.GetComponent<RectTransform>().sizeDelta;
+
+            currentFolder_elements[directory.Name].GetComponent<RectTransform>().anchoredPosition = fileButtonTemplate.GetComponent<RectTransform>().anchoredPosition;
+            currentFolder_elements[directory.Name].GetComponent<RectTransform>().localPosition = new Vector3(fileButtonTemplate.GetComponent<RectTransform>().position.x - posX,
+                fileButtonTemplate.GetComponent<RectTransform>().position.y - posY);
+            posY += 45;
+
+            currentFolder_elements[directory.Name].GetComponent<fileButtonControl>()._Button = new File_button(false, directory, null);
         }
         foreach (FileInfo file in current_directory.GetFiles())
         {
-            GameObject fileButton = Instantiate(fileButtonTemplate) as GameObject;
-            fileButton.SetActive(true);
-            fileButton.GetComponent<fileButtonControl>().SetButtonText(file.Name);
-            fileButton.transform.SetParent(fileButtonTemplate.transform.parent, true);
-            fileButton.GetComponent<fileButtonControl>().isFile = true;
-            fileButton.GetComponent<fileButtonControl>().associatedFile = file;
+            GameObject fileButton = Instantiate(fileButtonTemplate);
 
-            currentDirectoryElements.Add(fileButton);
+            currentFolder_elements.Add(file.Name, fileButton);
+
+            currentFolder_elements[file.Name].SetActive(true);
+
+            currentFolder_elements[file.Name].GetComponent<fileButtonControl>().initializeButton(file.Name);
+
+            currentFolder_elements[file.Name].GetComponent<RectTransform>().SetParent(scrollView.GetComponent<RectTransform>(), true);
+
+            currentFolder_elements[file.Name].GetComponent<RectTransform>().localScale = fileButtonTemplate.GetComponent<RectTransform>().localScale;
+
+            currentFolder_elements[file.Name].GetComponent<RectTransform>().sizeDelta = fileButtonTemplate.GetComponent<RectTransform>().sizeDelta;
+
+            currentFolder_elements[file.Name].GetComponent<RectTransform>().anchoredPosition = fileButtonTemplate.GetComponent<RectTransform>().anchoredPosition;
+            currentFolder_elements[file.Name].GetComponent<RectTransform>().localPosition = new Vector3(fileButtonTemplate.GetComponent<RectTransform>().position.x - posX,
+                fileButtonTemplate.GetComponent<RectTransform>().position.y - posY);
+            posY += 45;
+
+            currentFolder_elements[file.Name].GetComponent<fileButtonControl>()._Button = new File_button(true, null, file);
         }
     }
     void Start()
     {
         previousFolderButton.enabled = false;
-        currentDirectoryElements = new List<GameObject>();
-        current_directory = new DirectoryInfo(@"C:\Desktop");
+        current_directory = new DirectoryInfo(@"C:\Users\Waleed\Desktop\Tafe Folder");
         InstantiateCurrentDirectoryElements();
     }
 
     public void OnPreviousDirectoryButtonClick()
     {
-        foreach (GameObject element in currentDirectoryElements)
+        foreach (GameObject element in currentFolder_elements.Values)
             Destroy(element);
+        currentFolder_elements.Clear();
         current_directory = previous_directory;
         InstantiateCurrentDirectoryElements();
     }
     void Update()
     {
+        print(previousFolderButton.enabled);
         previous_directory = current_directory.Parent;
-        if(fileButtonControl.changeDirectory)
+        if (File_button.changeDirectory)
         {
-            foreach (GameObject element in currentDirectoryElements)
+            foreach (GameObject element in currentFolder_elements.Values)
                 Destroy(element);
+            currentFolder_elements.Clear();
+            print(current_directory.Name);
             InstantiateCurrentDirectoryElements();
-            fileButtonControl.changeDirectory = false;
+            File_button.changeDirectory = false;
             previousFolderButton.enabled = true;
         }
-        if (current_directory.FullName == ProjectScene.StartupProjectPath)
-            previousFolderButton.enabled = false;
+        if (current_directory.FullName == @"C:\Users\Waleed\Desktop\Tafe Folder")
+            previousFolderButton.gameObject.SetActive(false);
+        else
+            previousFolderButton.gameObject.SetActive(true);
     }
 }
 
-  
+#region Button Control Class
+public class File_button
+{
+    public FileInfo associatedFile;
+    public DirectoryInfo associatedDirectory;
+    public bool isFile;
+    public static bool changeDirectory = false;
+
+    public File_button(bool isFile, DirectoryInfo associatedDirectory, FileInfo associatedFile)
+    {
+        this.isFile = isFile;
+        this.associatedDirectory = associatedDirectory;
+        this.associatedFile = associatedFile;
+    }
+}
+#endregion
+
+
