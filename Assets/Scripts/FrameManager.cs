@@ -112,6 +112,35 @@ public class Frame {
     public byte[] img;
     public string imgfmt;
 
+    public Frame() { }
+
+    public Frame(RosSharp.RosBridgeClient.MessageTypes.WorldMapper.Frame frame) {
+        seq = frame.seq;
+        timestamp = (float) frame.timestamp.secs + ((float)frame.timestamp.nsecs / 1000f);
+        frameid = frame.frameid;
+        posX = frame.posX;
+        posY = frame.posY;
+        posZ = frame.posZ;
+        rotX = frame.rotX;
+        rotY = frame.rotY;
+        rotZ = frame.rotZ;
+        accX = frame.accX;
+        accY = frame.accY;
+        accZ = frame.accZ;
+        gyrX = frame.gyrX;
+        gyrY = frame.gyrY;
+        gyrZ = frame.gyrZ;
+        angle_min = frame.angle_min;
+        angle_max = frame.angle_max;
+        angle_increment = frame.angle_increment;
+        range_min = frame.range_min;
+        range_max = frame.range_max;
+        ranges = frame.ranges;
+        intensities = frame.intensities;
+        img = frame.img;
+        imgfmt = frame.imgfmt;
+    }
+
     public Vector3[] ToVector3() {
         return ToVector3(this);
     }

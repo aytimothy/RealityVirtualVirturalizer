@@ -12,6 +12,14 @@ public class ProjectFileManagerPanel : MonoBehaviour {
     public TMP_Text TotalFramesCountLabel;
     public TMP_Text TotalFrameSizeLabel;
 
+    public string StorePath = "ImportedFrames";
+    public string FileName = "Frame";
+    public string FileExtension = ".json";
+
+    public int Count {
+        get { return frameManager.Frames.Count; }
+    }
+
     public string DefaultDirectory {
         get { return Application.persistentDataPath; }
     }
@@ -64,7 +72,9 @@ public class ProjectFileManagerPanel : MonoBehaviour {
     }
 
     public void ImportFile(string filePath) {
-        FrameData frameData = new FrameData(filePath, true);
+        string importedFilePath = ProjectScene.CurrentProjectPath + "/" + StorePath + "/" + FileName + (Count + 1).ToString("0000") + FileExtension;
+        File.Copy(filePath, importedFilePath);
+        FrameData frameData = new FrameData(importedFilePath, true);
         frameManager.Frames.Add(frameData);
 
         Vector3[] points = frameData.Data.ToVector3();
