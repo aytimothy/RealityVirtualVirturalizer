@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Application = UnityEngine.Application;
+using Button = UnityEngine.UI.Button;
 
 public class TopScene : MonoBehaviour {
     [Header("Prefab References")]
@@ -22,6 +23,7 @@ public class TopScene : MonoBehaviour {
     public TMP_InputField CreateProjectNameInputField;
     public TMP_InputField CreateProjectPathInputField;
     public TMP_Text CreateProjectPathPlaceholderInputField;
+    public Button ReallyCreateProjectButton;
     public List<GameObject> OpenProjectPanelButtons = new List<GameObject>();
 
     public string DefaultDirectory {
@@ -79,6 +81,10 @@ public class TopScene : MonoBehaviour {
             CreateProjectPathInputField.text = filePath;
         }
     }
+
+    public void ProjectNameInputField_OnChanged(string text) {
+        ReallyCreateProjectButton.interactable = !String.IsNullOrEmpty(text);
+    }
     #endregion
 
     public void AddProject(string projectFilePath) {
@@ -94,7 +100,16 @@ public class TopScene : MonoBehaviour {
             parentFolderFilePath = Application.persistentDataPath;
         if (!parentFolderFilePath.EndsWith("\\") && !parentFolderFilePath.EndsWith("/"))
             parentFolderFilePath += "/";
-        ProjectScene.StartupProjectPath = parentFolderFilePath + projectFolderName;
+        string projectPath = parentFolderFilePath + projectFolderName + "/";
+        ProjectScene.StartupProjectPath = projectPath;
+
+        RecentProjectList recentProjects = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
+
+        if (recentProjects.projectPaths.Contains(projectPath))
+            recentProjects.projectPaths.Remove(projectPath);
+        recentProjects.projectPaths.Add(projectPath);
+        ProjectHistory = JsonConvert.SerializeObject(recentProjects);
+
         SceneManager.LoadScene("Project Scene");
     }
 
