@@ -598,6 +598,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileButtonTemplate: {fileID: 1283829435}
   previousFolderButton: {fileID: 902326186}
+  scrollView: {fileID: 0}
+  posY: 0
+  posX: 145
 --- !u!1 &135865323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1403,7 +1406,7 @@ GameObject:
   - component: {fileID: 232521259}
   - component: {fileID: 232521258}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: Protocol Dropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1429,7 +1432,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -190}
-  m_SizeDelta: {x: -40, y: 30}
+  m_SizeDelta: {x: -40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &232521258
 MonoBehaviour:
@@ -2328,8 +2331,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3690,7 +3693,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -120}
-  m_SizeDelta: {x: -40, y: 30}
+  m_SizeDelta: {x: -40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &635119388
 MonoBehaviour:
@@ -4193,18 +4196,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0499e0ff045a4334b8110e1fef1ff59a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &738657066 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6582078105672213599, guid: 0db5fa6bc94459e4e8256dc86b9af008,
-    type: 3}
-  m_PrefabInstance: {fileID: 2397257764239221038}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &757864026
@@ -5249,8 +5240,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6297,7 +6288,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -260}
-  m_SizeDelta: {x: -40, y: 30}
+  m_SizeDelta: {x: -40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1003890808
 MonoBehaviour:
@@ -7591,8 +7582,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8824,7 +8815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementName: {fileID: 549041316}
-  isFile: 0
+  fileViewerPanel: {fileID: 0}
 --- !u!114 &1283829438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9533,6 +9524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1346608873}
   - component: {fileID: 1346608874}
+  - component: {fileID: 1346608875}
   m_Layer: 0
   m_Name: ROS# Listener
   m_TagString: Untagged
@@ -9570,6 +9562,25 @@ MonoBehaviour:
   Serializer: 0
   protocol: 0
   RosBridgeServerUrl: ws://192.168.0.1:9090
+--- !u!114 &1346608875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346608872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfa55e5bfffe88147af9f7fdb4f08054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: output
+  TimeStep: 1000
+  Connector: {fileID: 0}
+  Manager: {fileID: 0}
+  StorePath: ROSFrames
+  FileName: Frame
+  FileExtension: .json
 --- !u!1 &1347159701
 GameObject:
   m_ObjectHideFlags: 0
@@ -10129,8 +10140,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11124,8 +11135,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4441f52ee1b671e4281ede14b86e4ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infoTemplate: {fileID: 1670932255}
-  imageTemplate: {fileID: 738657066}
+  infoTemplate: {fileID: 0}
+  imageTemplate: {fileID: 0}
+  scrollView: {fileID: 0}
+  panel: {fileID: 0}
+  text_x: 0
+  text_y: 0
+  text_y_increment: 0
+  img_x: 0
+  img_y: 0
 --- !u!1 &1507931227
 GameObject:
   m_ObjectHideFlags: 0
@@ -12062,12 +12080,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642990361}
   m_CullTransparentMesh: 0
---- !u!1 &1670932255 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7721863440248284308, guid: 0db5fa6bc94459e4e8256dc86b9af008,
-    type: 3}
-  m_PrefabInstance: {fileID: 2397257764239221038}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1705799642
 GameObject:
   m_ObjectHideFlags: 0
@@ -12647,6 +12659,9 @@ MonoBehaviour:
   pointsManager: {fileID: 1840801254}
   TotalFramesCountLabel: {fileID: 1231586022}
   TotalFrameSizeLabel: {fileID: 1642990363}
+  StorePath: ImportedFrames
+  FileName: Frame
+  FileExtension: .json
 --- !u!1 &1859596874
 GameObject:
   m_ObjectHideFlags: 0
@@ -12665,7 +12680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1859596875
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12735,6 +12750,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cdbddfb9c7e3c44824e9125fd06e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartStopButton: {fileID: 0}
+  StartStopButtonLabel: {fileID: 0}
+  ServerInputField: {fileID: 635119388}
+  CommunicationMethodDropdown: {fileID: 232521258}
+  ROSTopicInputField: {fileID: 1003890808}
+  Listener: {fileID: 1346608875}
+  Connector: {fileID: 1346608874}
 --- !u!1 &1909839253
 GameObject:
   m_ObjectHideFlags: 0
@@ -12818,8 +12840,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
