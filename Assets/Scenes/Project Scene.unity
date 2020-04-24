@@ -517,6 +517,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352847492}
   m_CullTransparentMesh: 0
+--- !u!114 &481985637 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1822639164, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5475872895571016047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &512305146 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 503017959301589043, guid: 8e8c6a8357f48784e94e9cd319d36773,
@@ -797,6 +809,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5475872895571016047}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &765048784 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1768180, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5475872895571016047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &768084944
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,6 +923,18 @@ MonoBehaviour:
   invertVertical: 1
   invertHorizontal: 0
   camera: {fileID: 768084946}
+--- !u!114 &846780060 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1246787172, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5475872895571016047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &968764405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,6 +1203,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1221771886 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1761442028, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5475872895571016047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1346608872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,7 +1277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: output
   TimeStep: 1000
-  Connector: {fileID: 0}
+  Connector: {fileID: 1346608874}
   Manager: {fileID: 1840801253}
   StorePath: ROSFrames
   FileName: Frame
@@ -1820,6 +1868,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1720201013}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1734595793 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1443321994, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5475872895571016047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1735699571
 GameObject:
   m_ObjectHideFlags: 0
@@ -2340,6 +2400,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952172579}
   m_CullTransparentMesh: 0
+--- !u!114 &2120404624 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 315266185, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5475872895571016047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2141023174 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7045286120158343162, guid: 40201c54d721fc243a01180440bd6b30,
@@ -2920,6 +2992,50 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1354907979}
     m_Modifications:
+    - target: {fileID: 315266183, guid: e9ddf858ac8d0f1408aed48602fefdcc, type: 3}
+      propertyPath: m_Name
+      value: Color Preview
+      objectReference: {fileID: 0}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: RedBackgroundColorInputField
+      value: 
+      objectReference: {fileID: 481985637}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: BlueBackgroundColorInputField
+      value: 
+      objectReference: {fileID: 1221771886}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: GreenBackgroundColorInputField
+      value: 
+      objectReference: {fileID: 1734595793}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: LookSensitivityInputField
+      value: 
+      objectReference: {fileID: 765048784}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: CameraSpeedInputField
+      value: 
+      objectReference: {fileID: 846780060}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: Camera
+      value: 
+      objectReference: {fileID: 768084946}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: CameraController
+      value: 
+      objectReference: {fileID: 768084948}
+    - target: {fileID: 5475872896203719144, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: ColorPreviewImage
+      value: 
+      objectReference: {fileID: 2120404624}
     - target: {fileID: 5475872896203719147, guid: e9ddf858ac8d0f1408aed48602fefdcc,
         type: 3}
       propertyPath: m_LocalPosition.x
