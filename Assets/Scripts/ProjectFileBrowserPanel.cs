@@ -73,7 +73,7 @@ public class ProjectFileBrowserPanel : MonoBehaviour {
     void Start()
     {
         previousFolderButton.enabled = false;
-        current_directory = new DirectoryInfo(@"C:\Users\Waleed\Desktop\Tafe Folder");
+        current_directory = new DirectoryInfo(ProjectScene.CurrentProjectPath);
         InstantiateCurrentDirectoryElements();
     }
 
@@ -99,7 +99,7 @@ public class ProjectFileBrowserPanel : MonoBehaviour {
             File_button.changeDirectory = false;
             previousFolderButton.enabled = true;
         }
-        if (current_directory.FullName == @"C:\Users\Waleed\Desktop\Tafe Folder")
+        if (current_directory.FullName == ProjectScene.CurrentProjectPath)
             previousFolderButton.gameObject.SetActive(false);
         else
             previousFolderButton.gameObject.SetActive(true);
