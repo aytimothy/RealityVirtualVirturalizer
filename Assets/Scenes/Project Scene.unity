@@ -808,6 +808,7 @@ GameObject:
   - component: {fileID: 768084947}
   - component: {fileID: 768084946}
   - component: {fileID: 768084945}
+  - component: {fileID: 768084948}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -880,6 +881,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768084948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768084944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0bfda2e64f61348bebd41d22ba60e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 0.1
+  walkSpeed: 5
+  runSpeed: 10
+  invertVertical: 1
+  invertHorizontal: 0
+  camera: {fileID: 768084946}
 --- !u!1 &968764405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,6 +1137,36 @@ MonoBehaviour:
   - {fileID: 512305146}
   - {fileID: 101585513}
   LastMenuID: 0
+--- !u!1 &1069893412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1069893413}
+  m_Layer: 0
+  m_Name: Reconstruction Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1069893413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069893412}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 424.95328, y: 224.45375, z: -592.41284}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1346608872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,7 +1197,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1346608874
 MonoBehaviour:
@@ -2980,6 +3029,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Options Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5475872896203719148, guid: e9ddf858ac8d0f1408aed48602fefdcc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9ddf858ac8d0f1408aed48602fefdcc, type: 3}

@@ -8,9 +8,38 @@ public class CameraController : MonoBehaviour {
     public float runSpeed = 10f;
     public bool invertVertical = true;
     public bool invertHorizontal = false;
+    public Camera camera;
 
     Vector3 mousePosition;
     Vector3 cameraRotation;
+
+    void Awake() {
+        walkSpeed = PlayerPrefs.GetFloat("WalkSpeed", 5f);
+        runSpeed = PlayerPrefs.GetFloat("WalkSpeed", 5f) * 2f;
+        mouseSensitivity = PlayerPrefs.GetFloat("LookSensitivity");
+        float red = PlayerPrefs.GetFloat("BackgroundRed", 0f);
+        float green = PlayerPrefs.GetFloat("BackgroundGreen", 0f);
+        float blue = PlayerPrefs.GetFloat("BackgroundBlue", 0f);
+        camera.backgroundColor = new Color(red, green, blue, 1f);
+    }
+
+    public void UpdateWalkSpeed(float speed) {
+        PlayerPrefs.SetFloat("WalkSpeed", speed);
+        walkSpeed = speed;
+        runSpeed = speed * 2f;
+    }
+
+    public void UpdateMouseSensitivity(float sensitivity) {
+        PlayerPrefs.SetFloat("LookSensitivity", sensitivity);
+        mouseSensitivity = sensitivity;
+    }
+
+    public void UpdateBackgroundColor(Color color) {
+        PlayerPrefs.SetFloat("BackgroundRed", color.r);
+        PlayerPrefs.SetFloat("BackgroundGreen", color.g);
+        PlayerPrefs.SetFloat("BackgroundBlue", color.b);
+        camera.backgroundColor = new Color(color.r, color.g, color.b, 1f);
+    }
 
     void Update() {
         float effectiveMovementSpeed = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? runSpeed : walkSpeed;
