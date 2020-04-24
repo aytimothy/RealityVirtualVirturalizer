@@ -153,6 +153,7 @@
     <Compile Include="Assets\Scripts\ProjectScene.cs" />
     <Compile Include="Assets\Scripts\ProjectViewPanel.cs" />
     <Compile Include="Assets\Scripts\ProjectWindowPanel.cs" />
+    <Compile Include="Assets\Scripts\StoppableRosConnector.cs" />
     <Compile Include="Assets\Scripts\TopScene.cs" />
     <Compile Include="Assets\Scripts\fileButtonControl.cs" />
     <Compile Include="Assets\Scripts\old\CP_layout.cs" />
