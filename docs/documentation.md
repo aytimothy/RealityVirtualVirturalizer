@@ -24,12 +24,25 @@ The goal of this project was to create a handheld scanning device, made with par
 
 ## Scanner Device <a name="scanner"></a>
 
-Build instructions for the device can be found [here](https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/build-instructions/nothing.txt).
+Build instructions for the device can be found [here](https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/build-instructions/README.md).
+
+The scanner device is used for data collection. We make use of a number of sensors to capture all the necessary data to reconstruct a 3D environment. 
+The device consists of 3 sensors:
+* Lidar
+* IMU
+* Camera
+
+The data which is collected is then proessed by an Arduino and a Raspberry Pi. This sticks with the goal of using off the shelf components to build this project.
+
+We used a 3D printed housing to hold all of the sensors. The `STL` files for these can designs can be found [here](https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/case-design).
+
+The image below is the assembled scanner device.
+[Add Image]
 
 
 ### Lidar <a name="lidar"></a>
 
-The LIDAR is a device which uses laser to survey ranges along a plane of its surroundings. For this project, we are using a Hokuyo UTM-30LX. It has a range of up to 30m and a scanning angle of 270&deg;.
+The LIDAR is a device which uses laser to survey ranges along a plane of its surroundings. For this project, we are using a Hokuyo UTM-30LX. It has a range of up to 30m and a scanning angle of 270&deg;. This 90 &deg: 'blindspot' must be accounted for in the generation of the point cloud.
 
 A lidar works by using laser to detect distances (like an ultrasonic sensor), but it rotates around very quickly and thus is able to capture a wider range, as opposed to a single slower and inaccurate sound ray an ultrasonic sensor does. The data that a lidar gives us are a range of with recordings at different angles.
 
@@ -44,12 +57,23 @@ This works for giving us a sense of our surroundings, to see what is near the de
 
 ### IMU <a name="imu"></a>
 
+An IMU, or Inertial Measurement Unit, is a device that allows us to determine the angular and linear (rotational and displacement) movement of any object the sensor is attached to. This allows us to translate and rotate the Lidar readings so that they are in the correct positions in the world when we do raycast calculations.
+
+A manometer allows us to get our orientation by using the magnetic poles on the planet; like a digital compass. 
+
+
+
+
 ### Camera <a name="camera"></a>
 The quality of the camera is not a concern. All that is required from the camera is the ability to capture colour data from the world using its photoreceptors. 
- 
 
+The image below shows how coloured images are simply stored as arrays of pixels. Each pixel has 3 channels; red, green and blue. The range of these intensity values is 0-255. For example, orange is stored as (255,165,0). 
+ 
 <img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/imagepixelarray.png" alt="Images Stored as Pixels" width="400"/>
 
+We need this camera data to be able to perform image stamping once the mesh has been constructed. 
+
+Raw pixel data is sent from the webcam to `framewriter.py` and encoded into a `Frame`.
 
 ## Software <a name="software"></a>
 The aim of this project was to use commonly used software, to ensure that people trying to replicate the project have as many resources as possible. 
