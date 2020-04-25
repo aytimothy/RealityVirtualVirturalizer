@@ -112,6 +112,21 @@ The main problem which needed to be solved was how we can take all of this data 
 
 ### Acceleration Velocity Displacement<a name="acceleration"></a>
 ### Ranges and Position/Rotations to a Point Cloud <a name="pointcloud"></a>
+Now that we have our position/rotation in the world, we are able to work out where the “plane” that the LIDAR resides. A quick way to rotate things is using a rotation matrix.
+
+<img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/rotationmatrix.png" alt="The Rotation Matrix" width="400"/>
+
+For any rotation along α radians along the x-axis, β along the y-axis and γ along the z-axis, we can rotate any coordinate system along the origin. Since our laser readings are relative to the position of the LIDAR, this will work for us perfectly.
+We just generate all the rays relative to the lidar, which is just a long array of:
+
+```(X,Y,Z)=(cos⁡(θ),0,sin⁡(θ))```
+
+Where θ is the LIDAR angle measurement for each reading (this is from angle_min to angle_max, in increments of angle_increment). Simply apply the rotation matrix to every single and multiply each ray by its corresponding intensity and apply (add) the displacement offset, and this is how we get from lidar readings to points.
+
+```P=rLR+D```
+
+P is our final point, 𝑟 range; the reading from the sensor, 𝐿 is the local direction of the laser ray, rotated by 𝑅, the rotation matrix worked out from the reported rotation, and finally offset by 𝐷; the position of the LIDAR.
+
 ### Frame Encoding <a name="frame"></a>
 We use 3 ROS topics to encode a frame:
 * `/webcam/image_raw/compressed`: Receives image data
