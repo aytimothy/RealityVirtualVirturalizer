@@ -14,4 +14,8 @@ For some components, alternative models may also work.
 
 **Estimated Total = ~$7600**
 
+A suitable replacement for the Lidar is:
+
+* [Mapping Sensor](https://core-electronics.com.au/slamtec-mapper-m1m1-360-laser-mapping-sensor-tof-20m.html?utm_source=google_shopping&gclid=CjwKCAjwv4_1BRAhEiwAtMDLslmyMLtp9HueBQvOihmjIKKT8ObRMxG8sU-rGKH1RQgaho2MKJS6XhoCuiAQAvD_BwE), which cuts out the use of a Hokuyo and cuts the cost by at least $6000, down to about $1500.
+
 **Note:** For this project, a higher end Lidar device was used. Obviously this has driven the price of the project up. But this project would also work with cheaper Lidar devices.
