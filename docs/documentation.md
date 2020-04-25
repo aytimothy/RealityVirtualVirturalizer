@@ -1,6 +1,8 @@
 
 # Reality Virtual Virtualiser
-### "Scanning the real world into a virtual space"
+### "Scanning the real world into a virtural space"
+
+(The typo is intentional)
 
 # Table of Contents
 1. [Introduction](#introduction)
