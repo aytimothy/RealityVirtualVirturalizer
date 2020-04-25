@@ -114,7 +114,7 @@ The main problem which needed to be solved was how we can take all of this data 
 ### Ranges and Position/Rotations to a Point Cloud <a name="pointcloud"></a>
 Now that we have our position/rotation in the world, we are able to work out where the “plane” that the LIDAR resides. A quick way to rotate things is using a rotation matrix.
 
-<img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/rotationmatrix.png" alt="The Rotation Matrix" width="400"/>
+<img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/rotationmatrix.png" alt="The Rotation Matrix" width="300"/>
 
 For any rotation along α radians along the x-axis, β along the y-axis and γ along the z-axis, we can rotate any coordinate system along the origin. Since our laser readings are relative to the position of the LIDAR, this will work for us perfectly.
 We just generate all the rays relative to the lidar, which is just a long array of:
