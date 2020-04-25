@@ -61,7 +61,8 @@ An IMU, or Inertial Measurement Unit, is a device that allows us to determine th
 
 A manometer allows us to get our orientation by using the magnetic poles on the planet; like a digital compass. 
 
-
+This image shows the `pitch`, `roll` and `yaw` axis.
+<img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/imu.png" alt="3 Axis IMU" width="400"/>
 
 
 ### Camera <a name="camera"></a>
@@ -78,15 +79,24 @@ Raw pixel data is sent from the webcam to `framewriter.py` and encoded into a `F
 ## Software <a name="software"></a>
 The aim of this project was to use commonly used software, to ensure that people trying to replicate the project have as many resources as possible. 
 
+
 ### ROS <a name="ros"></a>
-ROS or *Robot Operating System* is a robitics middleware which provides us with a communication protocol for sending and recieving data between the sensors, Raspberry Pi and the Desktop/Web UI. Data is sent in the form of messages and services. 
+ROS or *Robot Operating System* is a robitics middleware which provides us with a communication protocol for sending and recieving data between the sensors, Raspberry Pi and the Desktop/Web UI. Data is sent in the form of messages and services.
+
+ROS is used to gather the sensor data and combine it together into a [Frame](#frame). Which is then sent to both the desktop and web user interfaces.
+
+ROS allows us to program in both `C++` and `Python`. 
  
 ### Unity <a name="unity"></a>
 Unity is priimarily a (3D) game engine, however given its functionality it allows us to simulate our device in a 3D environment. A simulation environment was created to allow us to replicate the generation of IMU, Lidar and camera data. As there was only one physical device, this gave all members of the team the ability to work with *real* data.
 The data is then sent and processed in the exact same was as if it was coming from the real scanning device.
 
+Scripts in Unity are programmed in `C#`.
 
-Unity was also used to create the desktop user interface. 
+
+Unity was also used to create the desktop user interface. It was chosen as it provided a lot of functionality write out of the box. 
+
+[Insert Desktop UI Image/s]
 
 ### Angular/NodeJS <a name="angular"></a>
 Angular is a front end web framework which we used to create a web interface. This interface performs similar 
