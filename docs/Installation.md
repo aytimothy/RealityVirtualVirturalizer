@@ -13,7 +13,7 @@ If you have already cloned without `--recurse-submoudles`, just run:
 
 # 1. ROS Installation
 
-First, start by installing ROS. If you do not know how to install, just follow the instructions on the [ROS Wiki](http://wiki.ros.org/kinetic/Installation/Ubuntu).
+First, start by installing ROS. If you do not know how to install, just follow the instructions on the [ROS Wiki](http://wiki.ros.org/melodic/Installation/Ubuntu).
 
 These instructions are basically a repeat of what's on these pages. If you've already installed ROS and Ubuntu, skip over to the next section.
 
@@ -39,11 +39,11 @@ First, make sure your packages are up to date.
 	
 Next, pick how much of ROS you'd like to install. We recommend installing the full package.
 
-    sudo apt-get install ros-kinetic-desktop-full
+    sudo apt-get install ros-melodic-desktop-full
 	
 Otherwise, the barebones will also do.
 
-    sudo apt-get install ros-kinetic-ros-base
+    sudo apt-get install ros-melodic-ros-base
 	
 ## 1.3 Initialize the Environment
 
@@ -54,7 +54,7 @@ Before you can use ROS, you will need to initialize `rosdep`. `rosdep` allows yo
 
 Next, you'll need to have ROS initialize variables (run `setup.bash`) into any command prompt you run.
 
-    echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+    echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
     source ~/.bashrc
 
 ## 1.4 Optional Install Tools
@@ -89,11 +89,11 @@ Before we begin, ensure you have the Arduino IDE installed. You'll need to have 
 
 Next, you'll want to copy the `libraries` (located `/catkin_ws/src/world_mapper/sketches/libraries`) to your own library folder. If not, the Arduino IDE will complain all the files do not exist.
 
-    mv ~/catkin_ws/src/world_mapper/sketch/libraries ~/sketchbook/libraries
+    cp -d ~/catkin_ws/src/world_mapper/sketch/libraries ~/sketchbook/libraries
 
 Next, we'll need to initialize the libraries for our Arduino build. First, ensure `rosserial-arduino` is setup. If not, you can find the steps on the [ROS Wiki](http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup)
 
-    sudo apt-get install ros-kinetic-rosserial ros-kinetic-rosserial-arduino
+    sudo apt-get install ros-melodic-rosserial ros-melodic-rosserial-arduino
 	
 Finally, let ROS create the header files for your currently installed packages. Create a directory anywhere...
 
@@ -109,9 +109,9 @@ Finally, open the Arduino IDE...
 If you have problems building or connecting to the Arduino via the Raspberry Pi, you may want to try instead to move everything to root.
 
     sudo mv ~/sketchbook/libraries
-	mkdir /root/sketchbook
-	sudo mv ~/sketchbook/libraries /root/libraries
-	sudo arduino
+    mkdir /root/sketchbook
+    sudo mv ~/sketchbook/libraries /root/libraries
+    sudo arduino
 
 Using the GUI, open up `/catkin_ws/src/world_mapper/sketches/arduino_imu/arduino_imu.ino`.
 
@@ -132,7 +132,36 @@ Now, let's get a whole bunch of other packages that we used.
 
 ## 2.4 Building the Desktop Code
 
-// todo.
+1. Open the project (`/src/DesktopUI`) in Unity.
+2. In the File Menu, click "Build and Run".
+3. Select where to place the final executable.
+4. Done.
+
+It's that easy. (No seriously)
+
+## 2.5 Building the Web Interface
+
+First, run the Node.js 13.x setup if you haven't already.
+
+    sudo apt-get install curl
+    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+    
+**Note:** If you attempt to `apt-get install nodejs` without doing the above, you'll get 10.x, which has dependencies that will pretty much force you to delete everything you've installed (basically is incompatible). Even if you did install it, the Angular bit won't run anyway.
+    
+Next, install `node` with the newly defined repositories in `apt`.
+
+    sudo apt-get install nodejs
+    
+Now, navigate to the Angular Project Folder and install all the Node dependencies.
+
+    cd ~/Downloads/RealityVirtualVirturaliser/web/-RealityVirtualVirturalizer-Interface
+    npm install
+    
+Now, `make` but for Angular.
+
+    ng build
+    
+Done!
 
 # 3. Assembly
 
@@ -154,14 +183,27 @@ Start up the nodes for the sensors, if they are already not running.
 
     rosrun urg_node urg_node
     roslaunch video_stream_opencv webcam.launch
-    rosrun rosserial_python serial_node.py
+    rosrun world_mapper imureader
 
 Press the button on the Arduino to reset the program so that it syncs with `rosserial_python`).
 
 ## 4.3 Start the Data
 
-// todo.
+Just start up the frame writer.
+
+    rosrun world_mapper framewriter_python.py /path/to/wherever/you/want/to/store/your/frames
+    
+For example:
+
+    rosrun world_mapper framewriter_python.py ~/frames
 
 ## 4.4 Start the Interface
 
-// todo.
+Ensure you have built your interface with:
+
+    cd ~/Downloads/RealityVirtualVirturalizer/web/-RealityVirtualVirturalizer-Interface/
+    ng build
+    
+Finally, just run the Node.js server located in `-RealityVirtualVirturalizer-Interface/Server`
+
+    node ./Server/server.js
