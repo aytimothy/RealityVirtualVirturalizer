@@ -65,7 +65,7 @@ The data is then sent and processed in the exact same was as if it was coming fr
 Unity was also used to create the desktop user interface. 
 
 ### Angular/NodeJS <a name="angular"></a>
-
+Angular is a front end web framework which we used to create a web interface. This interface performs similar 
 
 ### Other Useful Libraries <a name="other"></a>
 Three.JS
@@ -75,6 +75,47 @@ The main problem which needed to be solved was how we can take all of this data 
 
 
 ### IMU Sensor Intensity <a name="intensity"></a>
+
 ### Acceleration Velocity Displacement<a name="acceleration"></a>
 ### Ranges and Position/Rotations to a Point Cloud <a name="pointcloud"></a>
 ### Frame Encoding <a name="frame"></a>
+We use 3 ROS topics to encode a frame:
+* `/webcam/image_raw/compressed`: Receives image data
+* `/imu`: Receives IMU sensor data from the Arduino
+* `/scan`: Receives Lidar sensor data
+
+`framewriter.py` subscribes to these 3 topics. When it receives a message from all 3 topics, it will publish a `Frame`.
+
+
+The following is the `Frame` message which is constructed and sent over the `/output` topic.
+```Python
+# Timestamp
+uint32 seq					# The sequential frame number. Always in order.
+time timestamp				# Timestamp in actual unix time. It's 64-bit so we should be fine for another trillion or so years.
+string frameid				# A string tag for this frame.
+# Arduino Data
+float32 posX				# Position of sensor (x-axis), worked locally from accelorometer deltas.
+float32 posY				# Position of sensor (y-axis), worked locally from accelorometer deltas.
+float32 posZ				# Position of sensor (z-axis), worked locally from accelorometer deltas.
+float32 rotX				# Current gyroscope rotation (x-axis) at the current frame.
+float32 rotY				# Current gyroscope rotation (y-axis) at the current frame.
+float32 rotZ				# Current gyroscope rotation (z-axis) at the current frame.
+float32 accX				# Accelorometer Delta (x-axis) at the current frame.
+float32 accY				# Accelorometer Delta (y-axis) at the current frame.
+float32 accZ				# Accelorometer Delta (z-axis) at the current frame.
+float32 gyrX				# Gyroscope Delta (x-axis) at the current frame.
+float32 gyrY				# Gyroscope Delta (y-axis) at the current frame.
+float32 gyrZ				# Gyroscope Delta (Z-axis) at the current frame.
+# Laser Data (sensor_msgs/LaserScan)
+float32 angle_min			# Minimum angle from lidar's local origin (0 degrees).
+float32 angle_max			# Maximum angle from lidar's local origin (0 degrees).
+float32 angle_increment		# The angle step for each laser scan.
+float32 range_min			# The minimum range the lidar can detect.
+float32 range_max			# The maximum range the lidar can detect.
+float32[] ranges			# An array of all the distance data collected in the current frame.
+float32[] intensities		# An array of all the response intensity data collected in the current frame.
+# Image Data (sensor_msgs/Image)
+uint8[] img                		# Image data. This is a PNG/JPEG file as a byte stream.
+string imgfmt				# Image format. This is either "PNG" or "JPEG".
+```
+Both the desktop and web user interfaces subscribe to the `/output` topic to receive the data.
