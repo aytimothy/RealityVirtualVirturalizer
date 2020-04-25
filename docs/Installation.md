@@ -44,6 +44,10 @@ Next, pick how much of ROS you'd like to install. We recommend installing the fu
 Otherwise, the barebones will also do.
 
     sudo apt-get install ros-melodic-ros-base
+    
+If you choose barebones, ensure that you have:
+
+    sudo apt-get install ros-melodic-serial ros-melodic-rosbridge-suite ros-melodic-serial-arduino
 	
 ## 1.3 Initialize the Environment
 
@@ -57,7 +61,7 @@ Next, you'll need to have ROS initialize variables (run `setup.bash`) into any c
     echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
     source ~/.bashrc
 
-## 1.4 Optional Install Tools
+## 1.4 ~~Optional~~ Install Tools
 
 If you are going to get additional packages, which we will, you will want some additional tools, such as `rosinstall`.
 
@@ -106,16 +110,11 @@ Finally, open the Arduino IDE...
 
     arduino
 	
-If you have problems building or connecting to the Arduino via the Raspberry Pi, you may want to try instead to move everything to root.
+If you have problems building or connecting to the Arduino via the Raspberry Pi, you may want to try instead to move everything to root or add yourself to `dialout` and run it all as root (not recommended, and dangerous, passively).
 
-    sudo mv ~/sketchbook/libraries
-    mkdir /root/sketchbook
-    sudo mv ~/sketchbook/libraries /root/libraries
-    sudo arduino
+    sudo usermod -a -G dialout $USER
 
 Using the GUI, open up `/catkin_ws/src/world_mapper/sketches/arduino_imu/arduino_imu.ino`.
-
-Ensure in the second line, `#define ROS` is uncommented.
 
 Now, just build and publish to the Arduino.
 
