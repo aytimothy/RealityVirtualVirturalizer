@@ -39,7 +39,7 @@ namespace RosSharp.RosBridgeClient
             new Thread(ConnectAndWait).Start();
         }
 
-        protected void ConnectAndWait()
+        protected virtual void ConnectAndWait()
         {
             RosSocket = ConnectToRos(protocol, RosBridgeServerUrl, OnConnected, OnClosed, Serializer);
 
