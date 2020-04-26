@@ -16,11 +16,6 @@ public class OpenProjectButton : MonoBehaviour {
         sceneController.OpenProject(projectFilePath);
     }
 
-    public void DeleteButton_OnClick() {
-        sceneController.RemoveProject(projectFilePath);
-        Destroy(gameObject);
-    }
-
     public void Setup(TopScene sceneController, string projectFilePath) {
         this.projectFilePath = projectFilePath;
         this.sceneController = sceneController;

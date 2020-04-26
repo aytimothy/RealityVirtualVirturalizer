@@ -2,21 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
 using TMPro;
-public class ProjectFileViewerPanel : MonoBehaviour
+using System.IO;
+
+public class ProjectFileBrowserButton : MonoBehaviour
 {
-    public GameObject infoTemplate;
-    public GameObject imageTemplate;
-    public GameObject panel;
+    public File_button _Button;
+    public TextMeshProUGUI elementName;
+    public GameObject fileInfo;
+    public GameObject fileImage;
 
-    public static FileInfo file;
-
-    void Start()
+    public void initializeButton(string name)
     {
+        elementName.text = name;
+    }
+
+    public void ShowFileInfo()
+    {
+        foreach (GameObject element in ProjectImportFileBrowserPanel.currentDirectoryElements.Values)
+            Destroy(element);
+        fileInfo.SetActive(true);
+        fileImage.SetActive(true);
+
+        FileInfo file = ProjectImportFileBrowserPanel.
+                     currentDirectoryElements[elementName.text].
+                     GetComponent<ProjectFileBrowserButton>().
+                     _Button.associatedFile;
         FrameData data = new FrameData(file.FullName);
 
-        infoTemplate.GetComponent<TextMeshProUGUI>().text =
+        fileInfo.GetComponent<TextMeshProUGUI>().text =
             "seq: " + data.LoadFrame().seq.ToString() + "\n" +
             "timestamp: " + data.LoadFrame().timestamp.ToString() + "\n" +
             "frameid: " + data.LoadFrame().frameid.ToString() + "\n" +
@@ -39,11 +53,11 @@ public class ProjectFileViewerPanel : MonoBehaviour
             "range max: " + data.LoadFrame().range_max.ToString() + "\n" +
             "ranges: " + "\n";
         foreach (float range in data.LoadFrame().ranges)
-            infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, range + "\n");
+            fileInfo.GetComponent<TextMeshProUGUI>().text.Insert(fileInfo.GetComponent<TextMeshProUGUI>().text.Length - 1, range + "\n");
         foreach (float intensity in data.LoadFrame().intensities)
-            infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, intensity + "\n");
+            fileInfo.GetComponent<TextMeshProUGUI>().text.Insert(fileInfo.GetComponent<TextMeshProUGUI>().text.Length - 1, intensity + "\n");
 
-        infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, data.LoadFrame().imgfmt);
+        fileInfo.GetComponent<TextMeshProUGUI>().text.Insert(fileInfo.GetComponent<TextMeshProUGUI>().text.Length - 1, data.LoadFrame().imgfmt);
 
         try
         {
@@ -62,17 +76,30 @@ public class ProjectFileViewerPanel : MonoBehaviour
             Texture2D texture = new Texture2D(200, 200);
             texture.SetPixels32(img_clArray);
 
-            imageTemplate.GetComponent<RawImage>().texture = texture;
+            fileImage.GetComponent<RawImage>().texture = texture;
         }
         catch { }
-    }
-
-    public void onXButtonClick()
+        }
+    public void OnClick()
     {
-        panel.SetActive(false);
-    }
-    void Update()
-    {
-        
+        switch(_Button.isFile)
+        {
+            case false:
+                ProjectImportFileBrowserPanel.currentDirectory = 
+                    ProjectImportFileBrowserPanel.
+                    currentDirectoryElements[elementName.text].
+                    GetComponent<ProjectFileBrowserButton>().
+                    _Button.associatedDirectory;
+                File_button.changeDirectory = true;
+                break;
+            case true:
+                ProjectImportFileBrowserPanel.fileView = true;
+                ProjectImportFileBrowserPanel.currentFile = ProjectImportFileBrowserPanel.
+                     currentDirectoryElements[elementName.text].
+                     GetComponent<ProjectFileBrowserButton>().
+                     _Button.associatedFile;
+                ShowFileInfo();
+                break;
+        }
     }
 }

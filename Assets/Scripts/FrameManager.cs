@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
 using RosSharp.RosBridgeClient.MessageTypes.WorldMapper;
 using UnityEngine;
@@ -111,35 +112,6 @@ public class Frame {
     public byte[] img;
     public string imgfmt;
 
-    public Frame() { }
-
-    public Frame(RosSharp.RosBridgeClient.MessageTypes.WorldMapper.Frame frame) {
-        seq = frame.seq;
-        timestamp = (float) frame.timestamp.secs + ((float)frame.timestamp.nsecs / 1000f);
-        frameid = frame.frameid;
-        posX = frame.posX;
-        posY = frame.posY;
-        posZ = frame.posZ;
-        rotX = frame.rotX;
-        rotY = frame.rotY;
-        rotZ = frame.rotZ;
-        accX = frame.accX;
-        accY = frame.accY;
-        accZ = frame.accZ;
-        gyrX = frame.gyrX;
-        gyrY = frame.gyrY;
-        gyrZ = frame.gyrZ;
-        angle_min = frame.angle_min;
-        angle_max = frame.angle_max;
-        angle_increment = frame.angle_increment;
-        range_min = frame.range_min;
-        range_max = frame.range_max;
-        ranges = frame.ranges;
-        intensities = frame.intensities;
-        img = frame.img;
-        imgfmt = frame.imgfmt;
-    }
-
     public Vector3[] ToVector3() {
         return ToVector3(this);
     }
@@ -179,11 +151,11 @@ public class Frame {
             float sinc = Mathf.Sin(gamma);
 
             float axx = cosa*cosb;
-            float axy = (cosa*sinb*sinc) - (sina*cosc);
-            float axz = (cosa*sinb*cosc) + (sina*sinc);
+            float axy = cosa*sinb*sinc - sina*cosc;
+            float axz = cosa*sinb*cosc + sina*sinc;
             float ayx = sina*cosb;
-            float ayy = (sina*sinb*sinc) + (cosa*cosc);
-            float ayz = (sina*sinb*cosc) - (cosa*sinc);
+            float ayy = sina*sinb*sinc + cosa*cosc;
+            float ayz = sina*sinb*cosc - cosa*sinc;
             float azx = -sinb;
             float azy = cosb*sinc;
             float azz = cosb*cosc;

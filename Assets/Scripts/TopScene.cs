@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Application = UnityEngine.Application;
-using Button = UnityEngine.UI.Button;
 
 public class TopScene : MonoBehaviour {
     [Header("Prefab References")]
@@ -22,14 +21,13 @@ public class TopScene : MonoBehaviour {
     public Transform ProjectListContentArea;
     public TMP_InputField CreateProjectNameInputField;
     public TMP_InputField CreateProjectPathInputField;
-    public TMP_Text CreateProjectPathPlaceholderInputField;
-    public Button ReallyCreateProjectButton;
     public List<GameObject> OpenProjectPanelButtons = new List<GameObject>();
+    public GameObject BrowseNewProjectPanel;
 
-    public string DefaultDirectory {
+    public static string DefaultDirectory {
         get { return Application.persistentDataPath; }
     }
-    public string LastUsedDirectory {
+    public static string LastUsedDirectory {
         get { return PlayerPrefs.GetString("LastUsedDirectory", DefaultDirectory); }
         set { PlayerPrefs.SetString("LastUsedDirectory", value); }
     }
@@ -40,7 +38,6 @@ public class TopScene : MonoBehaviour {
 
     void Start() {
         UpdateOpenProjectPanel();
-        CreateProjectPathPlaceholderInputField.text = Application.persistentDataPath;
     }
 
     #region UI Events
@@ -72,18 +69,7 @@ public class TopScene : MonoBehaviour {
     }
 
     public void CreateProjectBrowseButton_OnClick() {
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        saveFileDialog.InitialDirectory = LastUsedDirectory;
-        DialogResult dialogResult = saveFileDialog.ShowDialog();
-        if (dialogResult == DialogResult.OK) {
-            string filePath = Path.GetDirectoryName(saveFileDialog.FileName);
-            LastUsedDirectory = filePath;
-            CreateProjectPathInputField.text = filePath;
-        }
-    }
-
-    public void ProjectNameInputField_OnChanged(string text) {
-        ReallyCreateProjectButton.interactable = !String.IsNullOrEmpty(text);
+        BrowseNewProjectPanel.SetActive(true);
     }
     #endregion
 
@@ -96,20 +82,9 @@ public class TopScene : MonoBehaviour {
     }
 
     public void CreateProject(string parentFolderFilePath, string projectFolderName) {
-        if (String.IsNullOrEmpty(parentFolderFilePath))
-            parentFolderFilePath = Application.persistentDataPath;
-        if (!parentFolderFilePath.EndsWith("\\") && !parentFolderFilePath.EndsWith("/"))
+        if (!parentFolderFilePath.EndsWith("\\") && parentFolderFilePath.EndsWith("/"))
             parentFolderFilePath += "/";
-        string projectPath = parentFolderFilePath + projectFolderName + "/";
-        ProjectScene.StartupProjectPath = projectPath;
-
-        RecentProjectList recentProjects = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
-
-        if (recentProjects.projectPaths.Contains(projectPath))
-            recentProjects.projectPaths.Remove(projectPath);
-        recentProjects.projectPaths.Add(projectPath);
-        ProjectHistory = JsonConvert.SerializeObject(recentProjects);
-
+        ProjectScene.StartupProjectPath = parentFolderFilePath + projectFolderName;
         SceneManager.LoadScene("Project Scene");
     }
 
@@ -129,12 +104,6 @@ public class TopScene : MonoBehaviour {
                 OpenProjectButton openProjectButton = newObject.GetComponent<OpenProjectButton>();
                 openProjectButton.Setup(this, recentProjectPath);
             }
-    }
-
-    public void RemoveProject(string projectFilePath) {
-        RecentProjectList recentProjects = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
-        recentProjects.projectPaths.Remove(projectFilePath);
-        ProjectHistory = JsonConvert.SerializeObject(recentProjects);
     }
 }
 

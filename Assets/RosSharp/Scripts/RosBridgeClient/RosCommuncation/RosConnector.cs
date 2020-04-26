@@ -26,12 +26,12 @@ namespace RosSharp.RosBridgeClient
     {
         public int SecondsTimeout = 10;
 
-        public RosSocket RosSocket { get; protected set; }
+        public RosSocket RosSocket { get; private set; }
         public RosSocket.SerializerEnum Serializer;
         public Protocol protocol;
         public string RosBridgeServerUrl = "ws://192.168.0.1:9090";
 
-        public ManualResetEvent IsConnected { get; protected set; }
+        public ManualResetEvent IsConnected { get; private set; }
 
         public virtual void Awake()
         {
@@ -39,7 +39,7 @@ namespace RosSharp.RosBridgeClient
             new Thread(ConnectAndWait).Start();
         }
 
-        protected virtual void ConnectAndWait()
+        protected void ConnectAndWait()
         {
             RosSocket = ConnectToRos(protocol, RosBridgeServerUrl, OnConnected, OnClosed, Serializer);
 
@@ -56,18 +56,18 @@ namespace RosSharp.RosBridgeClient
             return new RosSocket(protocol, serializer);
         }
 
-        protected void OnApplicationQuit()
+        private void OnApplicationQuit()
         {
             RosSocket.Close();
         }
 
-        protected virtual void OnConnected(object sender, EventArgs e)
+        private void OnConnected(object sender, EventArgs e)
         {
             IsConnected.Set();
             Debug.Log("Connected to RosBridge: " + RosBridgeServerUrl, gameObject);
         }
 
-        protected virtual void OnClosed(object sender, EventArgs e)
+        private void OnClosed(object sender, EventArgs e)
         {
             IsConnected.Reset();
             Debug.Log("Disconnected from RosBridge: " + RosBridgeServerUrl, gameObject);

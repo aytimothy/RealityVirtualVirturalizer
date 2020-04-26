@@ -9,10 +9,7 @@ public class fileButtonControl : MonoBehaviour
     public GameObject fileViewerPanel;
 
     public File_button _Button;
-    private void Start()
-    {
 
-    }
     public void initializeButton(string name)
     {
         elementName.text = name;

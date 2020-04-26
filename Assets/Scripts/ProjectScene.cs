@@ -9,23 +9,26 @@ public class ProjectScene : MonoBehaviour {
     public static string StartupProjectPath;
     public static string CurrentProjectPath;
 
-    public ProjectManifest projectManifest;
+    public static ProjectManifest projectManifest;
     public bool modified;
 
     public PointCloudManager pointCloudManager;
     public FrameManager frameManager;
 
+    public GameObject CreateNewProjectPanel;
+    DirectoryInfo CurrentProject;
     void Start() {
+        CurrentProjectPath = StartupProjectPath;
         bool existingManifestExists = File.Exists(StartupProjectPath + "/manifest.json");
         if (existingManifestExists) 
             PrepareExistingProject(StartupProjectPath);
         if (!existingManifestExists)
             PrepareNewProject(StartupProjectPath);
     }
-
     public void PrepareNewProject(string directory) {
         projectManifest = new ProjectManifest();
-        projectManifest.Name = "NOT_IMPLEMENTED";
+        CurrentProject = new DirectoryInfo(directory);
+        projectManifest.Name = CurrentProject.Name;
         projectManifest.Created = DateTime.Now;
         projectManifest.Modified = DateTime.Now;
         projectManifest.Description = "NOT IMPLEMENTED";
@@ -34,9 +37,9 @@ public class ProjectScene : MonoBehaviour {
         string manifestFileString = JsonConvert.SerializeObject(projectManifest);
         if (File.Exists(directory + "/manifest.json"))
             File.Delete(directory + "/manifest.json");
-        if (!Directory.Exists(directory))
-            Directory.CreateDirectory(directory);
         File.WriteAllText(directory + "/manifest.json", manifestFileString);
+
+        Directory.CreateDirectory(directory + @"\Frames Folder");
     }
 
     public void PrepareExistingProject(string directory) {
@@ -46,22 +49,41 @@ public class ProjectScene : MonoBehaviour {
         foreach (string frameFilePath in projectManifest.Frames)
             frameManager.Frames.Add(new FrameData(frameFilePath));
     }
-
+    
+    public void NewProjectButton_OnClick()
+    {
+        CreateNewProjectPanel.SetActive(true);
+    }
     public void NewProject() {
-        // todo: Create a new project. A project is basically a folder with a manifest.json (defined in ProjectManifest) and links to frame files.
+        CurrentProjectPath = StartupProjectPath;
+        PrepareNewProject(CurrentProjectPath); 
     }
 
     public void SaveProject() {
-        // todo: Apply changes to the manifest file.
+        projectManifest.Modified = DateTime.Now;
+        string manifestInformation = JsonConvert.SerializeObject(projectManifest);
+
+        File.WriteAllText(CurrentProjectPath + @"\manifest.json", manifestInformation);
     }
 
-    public void SaveAsProject(string directory) {
-        throw new NotImplementedException();
-        // todo: Copy an entire project to a new folder...
+    public static string projectName;
+    public void SaveAsProject(TextMeshProUGUI directory)
+    {
+        DirectoryInfo newProjectDirectory = Directory.CreateDirectory(directory.text + @"\" + projectName);
+
+        Directory.CreateDirectory(directory.text + @"\" + projectName + @"\Frames Folder");
+
+        DirectoryInfo FramesFolder = new DirectoryInfo(CurrentProject + @"\Frames Folder");
+
+        foreach (FileInfo frame in FramesFolder.GetFiles())
+            frame.CopyTo(newProjectDirectory + @"\Frames Folder" + @"\" + frame.Name);
+        foreach (FileInfo manifest in CurrentProject.GetFiles())
+            manifest.CopyTo(newProjectDirectory + @"\" + manifest.Name);
     }
 
-    public void LoadProject(string directory) {
-        // todo: Load a project and reset all the variables.
+    public void LoadProject() {
+        CurrentProjectPath = StartupProjectPath;
+        PrepareExistingProject(CurrentProjectPath);
     }
 }
 
