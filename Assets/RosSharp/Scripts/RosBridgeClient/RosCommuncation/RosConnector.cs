@@ -56,18 +56,18 @@ namespace RosSharp.RosBridgeClient
             return new RosSocket(protocol, serializer);
         }
 
-        private void OnApplicationQuit()
+        protected virtual void OnApplicationQuit()
         {
             RosSocket.Close();
         }
 
-        private void OnConnected(object sender, EventArgs e)
+        protected virtual void OnConnected(object sender, EventArgs e)
         {
             IsConnected.Set();
             Debug.Log("Connected to RosBridge: " + RosBridgeServerUrl, gameObject);
         }
 
-        private void OnClosed(object sender, EventArgs e)
+        protected virtual void OnClosed(object sender, EventArgs e)
         {
             IsConnected.Reset();
             Debug.Log("Disconnected from RosBridge: " + RosBridgeServerUrl, gameObject);
