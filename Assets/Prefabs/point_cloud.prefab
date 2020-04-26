@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2240713104349404741}
   - component: {fileID: 6110677166355458500}
   - component: {fileID: 1626856973301598317}
-  - component: {fileID: -5100214761058626197}
+  - component: {fileID: 6266485176308628250}
   m_Layer: 0
   m_Name: point_cloud
   m_TagString: Untagged
@@ -80,7 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &-5100214761058626197
+--- !u!114 &6266485176308628250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,8 +89,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4474276369728188002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f61470cc0c5f7c46b6a1a335cba085e, type: 3}
+  m_Script: {fileID: 11500000, guid: 41c418bdbccbd1e4e872340325acc51a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementName: {fileID: 0}
-  isFile: 0
+  renderer: {fileID: 1626856973301598317}

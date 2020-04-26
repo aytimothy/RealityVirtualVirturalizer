@@ -135,15 +135,20 @@
     <Compile Include="Assets\RosSharp\Scripts\Urdf\UrdfComponents\UrdfVisual.cs" />
     <Compile Include="Assets\RosSharp\Scripts\Urdf\UrdfComponents\UrdfVisuals.cs" />
     <Compile Include="Assets\RosSharpMessages\WorldMapper\msg\Frame.cs" />
+<<<<<<< HEAD
     <Compile Include="Assets\Scripts\BrowseNewProjectPanel.cs" />
     <Compile Include="Assets\Scripts\DirectoryButtonControl.cs" />
     <Compile Include="Assets\Scripts\FileManager.cs" />
+=======
+    <Compile Include="Assets\Scripts\CameraController.cs" />
+>>>>>>> 3f3c25a814097c8018aba57167cdcb39ab694b65
     <Compile Include="Assets\Scripts\FrameListener.cs" />
     <Compile Include="Assets\Scripts\FrameManager.cs" />
     <Compile Include="Assets\Scripts\HeaderMenuController.cs" />
     <Compile Include="Assets\Scripts\MainPanelController.cs" />
     <Compile Include="Assets\Scripts\OpenProjectButton.cs" />
     <Compile Include="Assets\Scripts\PanelController.cs" />
+    <Compile Include="Assets\Scripts\Point.cs" />
     <Compile Include="Assets\Scripts\PointCloudManager.cs" />
     <Compile Include="Assets\Scripts\ProjectCreateNewProjectPanel.cs" />
     <Compile Include="Assets\Scripts\ProjectFileBrowserButton.cs" />
@@ -153,9 +158,12 @@
     <Compile Include="Assets\Scripts\ProjectFileViewerPanel.cs" />
     <Compile Include="Assets\Scripts\ProjectImportFileBrowserPanel.cs" />
     <Compile Include="Assets\Scripts\ProjectLiveConnectPanel.cs" />
+<<<<<<< HEAD
     <Compile Include="Assets\Scripts\ProjectManager.cs" />
     <Compile Include="Assets\Scripts\ProjectOpenProjectButton.cs" />
     <Compile Include="Assets\Scripts\ProjectOpenProjectPanel.cs" />
+=======
+>>>>>>> 3f3c25a814097c8018aba57167cdcb39ab694b65
     <Compile Include="Assets\Scripts\ProjectOptionsMenu.cs" />
     <Compile Include="Assets\Scripts\ProjectReconstructPanel.cs" />
     <Compile Include="Assets\Scripts\ProjectScene.cs" />
