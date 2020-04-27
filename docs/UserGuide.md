@@ -27,8 +27,22 @@ Once the device has been configured correctly, use either of the following appli
 
 # 2. Desktop UI <a name="desktop"></a>
 
-## Creating Projects <a name="projects"></a>
-[TODO]
+## Managing Projects <a name="projects"></a>
+
+A project can be created to store all of the point and mesh data together.
+
+A project must first be created.
+
+  1. Click **CREATE**
+  2. Enter a **Name** for the project
+  3. Choose the **Path** of where the project will be located
+  4. Click **Create**
+
+<img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/create.png" alt="Creating a Project" width="500"/>
+
+An existing project can be opened by clicking **OPEN** and selecting the project file.
+
+Frame files can be added to an existing project by clicking **ADD** and choosing the files.
 
 ## Scanning Data <a name="scan"></a>
 
