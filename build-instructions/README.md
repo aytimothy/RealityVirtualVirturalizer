@@ -1,16 +1,35 @@
-# Build Instructions
+The following are the steps required to assemble the physical scanning device.
+This is assuming that all the [necessary parts](https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/bill-of-materials/README.md) have been acquired.
 
-The following are the steps required to assemble the scanning device.
-This is assuming that all the [necessary parts](#) have been acquired.
+These instructions should be used alongside the software installation guide which can be found [here](https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/Installation.md).
 
-1) 3D print the [case](#) for the device.
-2) Clone the repository and install the [necessary software](#) to the Raspberry Pi.
-3) Upload the [IMU code](#) to the Arduino. 
-4) Ensure that the IMU is connected to the Arduino following these pins...
-5) Connect the Lidar and webcam to the Raspberry Pi.
-6) Connect the Arduino to the Raspberry Pi.
-7) Connect the fan to the Raspberry Pi.
-8) Assemble the case. 
-9) Connect the Raspberry Pi to the battery.
-10) Power on the device
+# Printing The Case
+
+A case has been designed which will house all of the components for the device.
+
+The STL files for these parts can be found [here](https://github.com/aytimothy/RealityVirtualVirturalizer/tree/master/case-design).
+
+<img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/Base.PNG" alt="Base" width="350"/>
+
+<img src="https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/docs/img/roof.PNG" alt="Roof" width="350"/>
+
+# Connecting Components
+
+Connect the Lidar sensor to the Raspberry Pi using USB.
+
+Connect the webcam to the Raspberry Pi using USB.
+
+Connect the IMU to the Arduino by following te following pin guide.
+
+<img src="https://www.electronicshub.org/wp-content/uploads/2017/11/MPU6050-Image-Circuit-Diagram.jpg" alt="Arduino - IMU Pin Guide" width="350"/>
+
+Connect the fan to the Raspberry Pi.
+
+Connect the battery to the Raspberry Pi.
+
+# Finishing Up
+
+Assemble the 2 parts of the case around the components.
+
+Power the Raspberry Pi and verify that all components have power and are working.
 
