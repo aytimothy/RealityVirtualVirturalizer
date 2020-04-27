@@ -19,7 +19,7 @@ Connect the Lidar sensor to the Raspberry Pi using USB.
 
 Connect the webcam to the Raspberry Pi using USB.
 
-Connect the IMU to the Arduino by following te following pin guide.
+Connect the IMU to the Arduino by following the following pin guide.
 
 <img src="https://www.electronicshub.org/wp-content/uploads/2017/11/MPU6050-Image-Circuit-Diagram.jpg" alt="Arduino - IMU Pin Guide" width="350"/>
 
