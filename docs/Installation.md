@@ -164,7 +164,7 @@ Done!
 
 # 3. Assembly
 
-// todo.
+Full build instructions can be found [here](https://github.com/aytimothy/RealityVirtualVirturalizer/blob/master/build-instructions/README.md). They should be followed before moving on to the next step.
 
 # 4. Usage
 
