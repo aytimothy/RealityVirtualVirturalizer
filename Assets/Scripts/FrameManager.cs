@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
 using RosSharp.RosBridgeClient.MessageTypes.WorldMapper;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class FrameManager : MonoBehaviour
-{
-    public List<FrameData> Frames = new List<FrameData>();
+public class FrameManager : MonoBehaviour {
+    public static List<FrameData> Frames = new List<FrameData>();
 
-    public void LoadAllFrames()
-    {
-        foreach (FrameData frameData in Frames)
-        {
+    public void LoadAllFrames() {
+        foreach (FrameData frameData in Frames) {
             if (!frameData.Loaded)
                 frameData.LoadFrame();
         }
@@ -21,36 +19,31 @@ public class FrameManager : MonoBehaviour
 }
 
 [Serializable]
-public class FrameData
-{
+public class FrameData {
     public string FilePath;
     public Frame Data;
 
-    public bool Loaded
-    {
+    public bool Loaded {
         get { return loaded; }
         private set { loaded = value; }
     }
     [SerializeField]
     bool loaded;
 
-    public FrameData(string FilePath, bool Load = false)
-    {
+    public FrameData(string FilePath, bool Load = false) {
         this.FilePath = FilePath;
         loaded = false;
         if (Load)
             LoadFrame();
     }
 
-    public FrameData(string FilePath, Frame Data)
-    {
+    public FrameData(string FilePath, Frame Data) {
         this.FilePath = FilePath;
         this.Data = Data;
         loaded = true;
     }
 
-    public Frame LoadFrame()
-    {
+    public Frame LoadFrame() {
         string fullFilePath = Path.GetFullPath(ProjectScene.CurrentProjectPath + FilePath);
         string frameString = File.ReadAllText(fullFilePath);
         Data = JsonConvert.DeserializeObject<Frame>(frameString);
@@ -58,16 +51,14 @@ public class FrameData
         return Data;
     }
 
-    public static Frame LoadFrame(string filePath)
-    {
+    public static Frame LoadFrame(string filePath) {
         return JsonConvert.DeserializeObject<Frame>(File.ReadAllText(filePath));
     }
 
-    public static Frame LoadFrame(RosSharp.RosBridgeClient.MessageTypes.WorldMapper.Frame message)
-    {
+    public static Frame LoadFrame(RosSharp.RosBridgeClient.MessageTypes.WorldMapper.Frame message) {
         Frame frame = new Frame();
         frame.seq = message.seq;
-        frame.timestamp = (float)message.timestamp.secs + (((float)message.timestamp.nsecs) / 1000f);
+        frame.timestamp = (float) message.timestamp.secs + (((float)message.timestamp.nsecs) / 1000f);
         frame.frameid = message.frameid;
         frame.accX = message.accX;
         frame.accY = message.accY;
@@ -91,12 +82,11 @@ public class FrameData
         frame.img = message.img;
         frame.imgfmt = message.imgfmt;
         return frame;
-    }
+    } 
 }
 
 [Serializable]
-public class Frame
-{
+public class Frame {
     public uint seq;
     public float timestamp;
     public string frameid;
@@ -122,67 +112,31 @@ public class Frame
     public byte[] img;
     public string imgfmt;
 
-    public Frame() { }
-
-    public Frame(RosSharp.RosBridgeClient.MessageTypes.WorldMapper.Frame frame)
-    {
-        seq = frame.seq;
-        timestamp = (float)frame.timestamp.secs + ((float)frame.timestamp.nsecs / 1000f);
-        frameid = frame.frameid;
-        posX = frame.posX;
-        posY = frame.posY;
-        posZ = frame.posZ;
-        rotX = frame.rotX;
-        rotY = frame.rotY;
-        rotZ = frame.rotZ;
-        accX = frame.accX;
-        accY = frame.accY;
-        accZ = frame.accZ;
-        gyrX = frame.gyrX;
-        gyrY = frame.gyrY;
-        gyrZ = frame.gyrZ;
-        angle_min = frame.angle_min;
-        angle_max = frame.angle_max;
-        angle_increment = frame.angle_increment;
-        range_min = frame.range_min;
-        range_max = frame.range_max;
-        ranges = frame.ranges;
-        intensities = frame.intensities;
-        img = frame.img;
-        imgfmt = frame.imgfmt;
-    }
-
-    public Vector3[] ToVector3()
-    {
+    public Vector3[] ToVector3() {
         return ToVector3(this);
     }
 
-    public static Vector3[] ToVector3(Frame frame)
-    {
+    public static Vector3[] ToVector3(Frame frame) {
         List<Vector3> baseVectors = new List<Vector3>();
         if (frame.angle_increment >= 0.1f)
             frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.Length - 1);
-        if (frame.angle_increment == 0)
-        {
+        if (frame.angle_increment == 0) {
             Debug.LogError("Cannot have an angle increment of 0, because then we'll get nowhere!\nThere are " + frame.ranges.Length.ToString() + " readings.");
             throw new ArgumentOutOfRangeException();
         }
 
         int reps = 500;
-        for (float angle = frame.angle_min; angle < frame.angle_max; angle += frame.angle_increment)
-        {
+        for (float angle = frame.angle_min; angle < frame.angle_max; angle += frame.angle_increment) {
             baseVectors.Add(new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0f, Mathf.Sin(angle * Mathf.Deg2Rad)));
             reps--;
-            if (reps < 0)
-            {
+            if (reps < 0) {
                 Debug.LogError("There's too many vectors to add!");
                 Debug.LogError("frame.ranges.Length = " + frame.ranges.Length.ToString() + "frame.angle_increment = " + frame.angle_increment.ToString() + "\nframe.angle_min = " + frame.angle_min.ToString() + "\nframe.angle_max = " + frame.angle_max.ToString());
                 break;
             }
         }
         List<Vector3> results = new List<Vector3>();
-        for (int i = 0; i < baseVectors.Count; i++)
-        {
+        for (int i = 0; i < baseVectors.Count; i++) {
             Vector3 baseVector = baseVectors[i];
 
             float alpha = frame.rotX * Mathf.Deg2Rad;
@@ -196,15 +150,15 @@ public class Frame
             float cosc = Mathf.Cos(gamma);
             float sinc = Mathf.Sin(gamma);
 
-            float axx = cosa * cosb;
-            float axy = (cosa * sinb * sinc) - (sina * cosc);
-            float axz = (cosa * sinb * cosc) + (sina * sinc);
-            float ayx = sina * cosb;
-            float ayy = (sina * sinb * sinc) + (cosa * cosc);
-            float ayz = (sina * sinb * cosc) - (cosa * sinc);
+            float axx = cosa*cosb;
+            float axy = cosa*sinb*sinc - sina*cosc;
+            float axz = cosa*sinb*cosc + sina*sinc;
+            float ayx = sina*cosb;
+            float ayy = sina*sinb*sinc + cosa*cosc;
+            float ayz = sina*sinb*cosc - cosa*sinc;
             float azx = -sinb;
-            float azy = cosb * sinc;
-            float azz = cosb * cosc;
+            float azy = cosb*sinc;
+            float azz = cosb*cosc;
 
             results.Add((new Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz)) * frame.ranges[i]) + new Vector3(frame.posX, frame.posY, frame.posZ));
         }

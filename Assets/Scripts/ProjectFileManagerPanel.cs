@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine;
 
 public class ProjectFileManagerPanel : MonoBehaviour {
-    public FrameManager frameManager;
     public PointCloudManager pointsManager;
 
     public GameObject ImportFrameBrowser;
@@ -53,7 +52,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
             if (fileName.EndsWith(".json")) {
                 // FrameData frameData = new FrameData(GetRelativePath(ProjectScene.CurrentProjectPath, fileName), true);
                 FrameData frameData = new FrameData(fileName, true);
-                frameManager.Frames.Add(frameData);
+                FrameManager.Frames.Add(frameData);
                 Vector3[] points = frameData.Data.ToVector3();
                 foreach (Vector3 point in points)
                     pointsManager.AddPoint(point);
@@ -65,7 +64,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
 
     public void ImportFile(string filePath) {
         FrameData frameData = new FrameData(filePath, true);
-        frameManager.Frames.Add(frameData);
+        FrameManager.Frames.Add(frameData);
 
         Vector3[] points = frameData.Data.ToVector3();
         foreach (Vector3 point in points)
@@ -76,7 +75,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
 
     public void UpdateLabels() {
         TotalFrameSizeLabel.text = "(Not Implemented Yet...)";
-        TotalFramesCountLabel.text = frameManager.Frames.Count.ToString();
+        TotalFramesCountLabel.text = FrameManager.Frames.Count.ToString();
     }
 
     // https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path

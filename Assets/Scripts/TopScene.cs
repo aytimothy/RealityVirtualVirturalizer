@@ -82,8 +82,8 @@ public class TopScene : MonoBehaviour {
     }
 
     public void CreateProject(string parentFolderFilePath, string projectFolderName) {
-        if (!parentFolderFilePath.EndsWith("\\") && parentFolderFilePath.EndsWith("/"))
-            parentFolderFilePath += "/";
+        if (!parentFolderFilePath.EndsWith("\\"))
+            parentFolderFilePath += "\\";
         ProjectScene.StartupProjectPath = parentFolderFilePath + projectFolderName;
         SceneManager.LoadScene("Project Scene");
     }

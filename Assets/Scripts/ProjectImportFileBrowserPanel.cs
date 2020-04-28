@@ -22,10 +22,10 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
 
     public static Dictionary<string, GameObject> currentDirectoryElements = new Dictionary<string, GameObject>();
 
-    public static bool fileView;
+    public static bool fileView = false;
     public static bool importFile = false;
 
-    public int posY;
+    int posY = 290;
     public void InstantiateElements()
     {
         //instantiate directories
@@ -37,7 +37,7 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
 
             currentDirectoryElements[directory.Name].SetActive(true);
 
-            currentDirectoryElements[directory.Name].GetComponent<DirectoryButtonControl>().InitializeButton(directory.Name);
+            currentDirectoryElements[directory.Name].GetComponent<ProjectFileBrowserButton>().initializeButton(directory.Name);
 
             currentDirectoryElements[directory.Name].GetComponent<RectTransform>().SetParent(scrollContent.GetComponent<RectTransform>(), true);
 
@@ -46,7 +46,7 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
             currentDirectoryElements[directory.Name].GetComponent<RectTransform>().sizeDelta = directoryButton.GetComponent<RectTransform>().sizeDelta;
 
             currentDirectoryElements[directory.Name].GetComponent<RectTransform>().anchoredPosition = directoryButton.GetComponent<RectTransform>().anchoredPosition;
-            currentDirectoryElements[directory.Name].GetComponent<RectTransform>().localPosition = new Vector3(directoryButton.GetComponent<RectTransform>().position.x,
+            currentDirectoryElements[directory.Name].GetComponent<RectTransform>().localPosition = new Vector3(directoryButton.GetComponent<RectTransform>().position.x + 45,
                 directoryButton.GetComponent<RectTransform>().position.y - posY);
             posY += 45;
 
@@ -62,7 +62,7 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
 
             currentDirectoryElements[file.Name].SetActive(true);
 
-            currentDirectoryElements[file.Name].GetComponent<DirectoryButtonControl>().InitializeButton(file.Name);
+            currentDirectoryElements[file.Name].GetComponent<ProjectFileBrowserButton>().initializeButton(file.Name);
 
             currentDirectoryElements[file.Name].GetComponent<RectTransform>().SetParent(scrollContent.GetComponent<RectTransform>(), true);
 
@@ -71,12 +71,13 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
             currentDirectoryElements[file.Name].GetComponent<RectTransform>().sizeDelta = directoryButton.GetComponent<RectTransform>().sizeDelta;
 
             currentDirectoryElements[file.Name].GetComponent<RectTransform>().anchoredPosition = directoryButton.GetComponent<RectTransform>().anchoredPosition;
-            currentDirectoryElements[file.Name].GetComponent<RectTransform>().localPosition = new Vector3(directoryButton.GetComponent<RectTransform>().position.x,
+            currentDirectoryElements[file.Name].GetComponent<RectTransform>().localPosition = new Vector3(directoryButton.GetComponent<RectTransform>().position.x + 45,
                 directoryButton.GetComponent<RectTransform>().position.y - posY);
             posY += 45;
 
-            currentDirectoryElements[file.Name].GetComponent<ProjectFileBrowserButton>()._Button = new File_button(false, null, file);
+            currentDirectoryElements[file.Name].GetComponent<ProjectFileBrowserButton>()._Button = new File_button(true, null, file);
         }
+        posY = 290;
     }
 
     void Start()
@@ -87,7 +88,8 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
 
     void Update()
     {
-        currentFolderPath.text = currentDirectory.FullName;
+        if(!fileView)
+            currentFolderPath.text = currentDirectory.FullName;
         previousDirectory = currentDirectory.Parent;
         if(File_button.changeDirectory)
         {
@@ -95,6 +97,7 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
                 Destroy(element);
             currentDirectoryElements.Clear();
             File_button.changeDirectory = false;
+            InstantiateElements();
         }
     }
 
@@ -110,17 +113,22 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
         }
         else
         {
+            fileImage.GetComponent<RectTransform>().localPosition = new Vector3(fileImage.GetComponent<RectTransform>().localPosition.x, fileImage.GetComponent<RectTransform>().localPosition.y + fileInfo.GetComponent<RectTransform>().localScale.y * 320);
+            try { File.Delete(ProjectScene.CurrentProjectPath + @"\" + currentFile.Name); }
+            catch { }
             fileInfo.SetActive(false);
             fileImage.SetActive(false);
         }
+        currentDirectoryElements.Clear();
         InstantiateElements();
     }
 
     public void OnSelectFileButtonClick()
     {
-        File.Copy(currentFile.FullName, ProjectScene.CurrentProjectPath + @"\Frames Folder");
+        if(!File.Exists(ProjectScene.CurrentProjectPath + @"\" + currentFile.Name))
+            File.Copy(currentFile.FullName, ProjectScene.CurrentProjectPath + @"\" + currentFile.Name);
         importFile = true;
-        ProjectFileManagerPanel.toImportFilePath = currentFile.FullName;
+        ProjectFileManagerPanel.toImportFilePath = @"\" + currentFile.Name;
 
         ProjectScene.projectManifest.Frames.Add(currentFile.Name);
         BrowserPanel.SetActive(false);
@@ -128,6 +136,8 @@ public class ProjectImportFileBrowserPanel : MonoBehaviour
 
     public void OnCancelButtonClick()
     {
+        try { File.Delete(ProjectScene.CurrentProjectPath + @"\" + currentFile.Name); }
+        catch { }
         BrowserPanel.SetActive(false);
     }
 }

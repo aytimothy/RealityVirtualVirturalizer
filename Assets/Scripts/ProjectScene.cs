@@ -16,6 +16,9 @@ public class ProjectScene : MonoBehaviour {
     public FrameManager frameManager;
 
     public GameObject CreateNewProjectPanel;
+    public GameObject OpenProjectPanel;
+    public GameObject SaveAsProjectPanel;
+
     DirectoryInfo CurrentProject;
     void Start() {
         CurrentProjectPath = StartupProjectPath;
@@ -34,6 +37,7 @@ public class ProjectScene : MonoBehaviour {
         projectManifest.Description = "NOT IMPLEMENTED";
         projectManifest.Frames = new List<string>();
 
+        Directory.CreateDirectory(directory);
         string manifestFileString = JsonConvert.SerializeObject(projectManifest);
         if (File.Exists(directory + "/manifest.json"))
             File.Delete(directory + "/manifest.json");
@@ -45,14 +49,23 @@ public class ProjectScene : MonoBehaviour {
     public void PrepareExistingProject(string directory) {
         string manifestFileContents = File.ReadAllText(directory + "/manifest.json");
         projectManifest = JsonConvert.DeserializeObject<ProjectManifest>(manifestFileContents);
-        frameManager.Frames.Clear();
+        try { FrameManager.Frames.Clear(); }
+        catch { }
         foreach (string frameFilePath in projectManifest.Frames)
-            frameManager.Frames.Add(new FrameData(frameFilePath));
+            FrameManager.Frames.Add(new FrameData(frameFilePath));
     }
     
     public void NewProjectButton_OnClick()
     {
         CreateNewProjectPanel.SetActive(true);
+    }
+    public void OpenProjectButton_onClick()
+    {
+        OpenProjectPanel.SetActive(true);
+    }
+    public void SaveAsProject_OnClick()
+    {
+        SaveAsProjectPanel.SetActive(true);
     }
     public void NewProject() {
         CurrentProjectPath = StartupProjectPath;

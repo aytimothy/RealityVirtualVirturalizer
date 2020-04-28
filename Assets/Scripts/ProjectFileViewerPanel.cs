@@ -14,7 +14,7 @@ public class ProjectFileViewerPanel : MonoBehaviour
 
     void Start()
     {
-        FrameData data = new FrameData(file.FullName);
+        FrameData data = new FrameData(@"\" + file.Name);
 
         infoTemplate.GetComponent<TextMeshProUGUI>().text =
             "seq: " + data.LoadFrame().seq.ToString() + "\n" +
@@ -38,12 +38,23 @@ public class ProjectFileViewerPanel : MonoBehaviour
             "range min: " + data.LoadFrame().range_min.ToString() + "\n" +
             "range max: " + data.LoadFrame().range_max.ToString() + "\n" +
             "ranges: " + "\n";
-        foreach (float range in data.LoadFrame().ranges)
-            infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, range + "\n");
-        foreach (float intensity in data.LoadFrame().intensities)
-            infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, intensity + "\n");
+        if (data.LoadFrame().ranges != null)
+        {
+            foreach (float range in data.LoadFrame().ranges)
+                infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, range + ", ");
+        }
+
+        infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, "\n intensities: " + "\n");
+
+        if (data.LoadFrame().intensities != null)
+        {
+            foreach (float intensity in data.LoadFrame().intensities)
+                infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, intensity + ", ");
+        }
 
         infoTemplate.GetComponent<TextMeshProUGUI>().text.Insert(infoTemplate.GetComponent<TextMeshProUGUI>().text.Length - 1, data.LoadFrame().imgfmt);
+
+        imageTemplate.GetComponent<RectTransform>().localPosition = new Vector3(imageTemplate.GetComponent<RectTransform>().localPosition.x, imageTemplate.GetComponent<RectTransform>().localPosition.y - infoTemplate.GetComponent<RectTransform>().localScale.y * 320);
 
         try
         {
