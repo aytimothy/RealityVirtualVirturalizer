@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ElementRef, ViewChild, Input } from '@angular
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { BridgeService } from '../services/rosbridge.service';
 import * as THREE from 'three/build/three';
+//import * as data from '../../assets/Points.json';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,10 +13,13 @@ import * as THREE from 'three/build/three';
 export class DashboardComponent implements AfterViewInit {
 
   @ViewChild('canvas', { read: ElementRef, static: false }) elementView: ElementRef;
-  @Input() renderer: THREE.WebGLRenderer;
-  @Input() camera: THREE.PerspectiveCamera;
 
-  private points = [];
+  private renderer: THREE.WebGLRenderer;
+  private camera: THREE.PerspectiveCamera;
+  private scene: THREE.Scene;
+  private points: THREE.Points;
+  private controls: OrbitControls;
+
   public isConnected: boolean = false;
   public listeningForMessages: boolean = false;
   public isCanvasDisplayed: boolean = true;
@@ -41,6 +45,9 @@ export class DashboardComponent implements AfterViewInit {
     this.__BridgeService.getConnnectionStatus().subscribe(status => {
       this.isConnected = status
     });
+    /*data.points.forEach(element => {
+      this.test.push(new THREE.Vector3(element.x, element.y, element.z));
+    });*/
   }
 
   public startListening(): void {
@@ -65,8 +72,9 @@ export class DashboardComponent implements AfterViewInit {
     this.isCanvasDisplayed = false;
   }
 
-  generatePoint(frame: any): void {
+  private generatePoint(frame): void {
     var baseVectors = [];
+
     if (frame.angle_increment >= 0.1) {
       frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.length - 1);
     }
@@ -84,6 +92,7 @@ export class DashboardComponent implements AfterViewInit {
         break;
       }
     }
+
     var results = [];
     for (let i = 0; i < baseVectors.length; i++) {
       var baseVector = baseVectors[i];
@@ -109,7 +118,7 @@ export class DashboardComponent implements AfterViewInit {
       var azy = cosb * sinc;
       var azz = cosb * cosc;
 
-      results.push(new THREE.Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz)) * frame.ranges[i]) + new THREE.Vector3(frame.posX, frame.posY, frame.posZ);
+      results.push(new THREE.Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz) * frame.ranges[i]) + new THREE.Vector3(frame.posX, frame.posY, frame.posZ));
     }
 
     this.addToCanvas(results);
@@ -143,7 +152,7 @@ export class DashboardComponent implements AfterViewInit {
     }
   }
 
-  public create3DCanvas(): void {
+  private create3DCanvas(): void {
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     this.camera.position.z = 15;
@@ -161,15 +170,17 @@ export class DashboardComponent implements AfterViewInit {
       this.camera.aspect = this.dashboardWidth / this.dashboardHeight;
       this.camera.updateProjectionMatrix();
     });
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
   }
 
-  public addToCanvas(points) {
-    var scene = new THREE.Scene();
+  private addToCanvas(points) {
+    this.scene = new THREE.Scene();
 
     // LIGHTS
     var light = new THREE.PointLight(0xFFFFFF, 1, 500);
     light.position.set(10, 0, 25);
-    scene.add(light);
+    this.scene.add(light);
 
     // MATERIAL
     var material = new THREE.PointsMaterial({ size: 1, sizeAttenuation: false });
@@ -177,26 +188,21 @@ export class DashboardComponent implements AfterViewInit {
     // GEOMETRY
     var geometry = new THREE.Geometry();
 
+    // Add vertices
     points.forEach(element => {
       geometry.vertices.push(element)
     });
 
-    var mesh = new THREE.Points(geometry, material);
-    scene.add(mesh);
+    this.points = new THREE.Points(geometry, material);
+    // Add points to Scene
+    this.scene.add(this.points);
 
-    var controls = new OrbitControls(this.camera, this.renderer.domElement);
-    controls.update();
-    this.passToRenderer(scene, this.camera, controls)
-
-  }
-
-  public passToRenderer(scene, camera, controls) {
-
-    var render = function () {
+    let component: DashboardComponent = this;
+    // Render the animation in the canvas
+    (function render() {
       requestAnimationFrame(render);
-      controls.update();
-      this.renderer.render(scene, camera)
-    }
-    render();
+      component.controls.update();
+      component.renderer.render(component.scene, component.camera);
+    }());
   }
 }
