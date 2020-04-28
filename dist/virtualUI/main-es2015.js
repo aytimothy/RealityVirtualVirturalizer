@@ -630,7 +630,7 @@ class DashboardComponent {
             var azx = -sinb;
             var azy = cosb * sinc;
             var azz = cosb * cosc;
-            results.push(new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz) * frame.ranges[i]) + new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](frame.posX, frame.posY, frame.posZ));
+            results.push(new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz) * frame.ranges[i]).add(new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](frame.posX, frame.posY, frame.posZ)));
         }
         this.addToCanvas(results);
     }
