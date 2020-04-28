@@ -118,7 +118,7 @@ export class DashboardComponent implements AfterViewInit {
       var azy = cosb * sinc;
       var azz = cosb * cosc;
 
-      results.push(new THREE.Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz) * frame.ranges[i]) + new THREE.Vector3(frame.posX, frame.posY, frame.posZ));
+      results.push(new THREE.Vector3(baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz) * frame.ranges[i]).add(new THREE.Vector3(frame.posX, frame.posY, frame.posZ)));
     }
 
     this.addToCanvas(results);
