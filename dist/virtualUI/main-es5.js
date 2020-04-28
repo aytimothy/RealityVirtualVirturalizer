@@ -1062,7 +1062,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
       }
-    }
+    } //import * as data from '../../assets/Points.json';
+
 
     var DashboardComponent = /*#__PURE__*/function () {
       function DashboardComponent(__BridgeService, elementRef) {
@@ -1070,7 +1071,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.__BridgeService = __BridgeService;
         this.elementRef = elementRef;
-        this.points = [];
         this.isConnected = false;
         this.listeningForMessages = false;
         this.isCanvasDisplayed = true;
@@ -1089,6 +1089,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.__BridgeService.getConnnectionStatus().subscribe(function (status) {
             _this.isConnected = status;
           });
+          /*data.points.forEach(element => {
+            this.test.push(new THREE.Vector3(element.x, element.y, element.z));
+          });*/
+
         }
       }, {
         key: "startListening",
@@ -1165,7 +1169,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             var azx = -sinb;
             var azy = cosb * sinc;
             var azz = cosb * cosc;
-            results.push(new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz)) * frame.ranges[i]) + new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](frame.posX, frame.posY, frame.posZ);
+            results.push(new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz) * frame.ranges[i]) + new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](frame.posX, frame.posY, frame.posZ));
           }
 
           this.addToCanvas(results);
@@ -1220,41 +1224,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             _this3.camera.updateProjectionMatrix();
           });
+          this.controls = new three_examples_jsm_controls_OrbitControls_js__WEBPACK_IMPORTED_MODULE_1__["OrbitControls"](this.camera, this.renderer.domElement);
         }
       }, {
         key: "addToCanvas",
         value: function addToCanvas(points) {
-          var scene = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Scene"](); // LIGHTS
+          this.scene = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Scene"](); // LIGHTS
 
           var light = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["PointLight"](0xFFFFFF, 1, 500);
           light.position.set(10, 0, 25);
-          scene.add(light); // MATERIAL
+          this.scene.add(light); // MATERIAL
 
           var material = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["PointsMaterial"]({
             size: 1,
             sizeAttenuation: false
           }); // GEOMETRY
 
-          var geometry = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Geometry"]();
+          var geometry = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Geometry"](); // Add vertices
+
           points.forEach(function (element) {
             geometry.vertices.push(element);
           });
-          var mesh = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Points"](geometry, material);
-          scene.add(mesh);
-          var controls = new three_examples_jsm_controls_OrbitControls_js__WEBPACK_IMPORTED_MODULE_1__["OrbitControls"](this.camera, this.renderer.domElement);
-          controls.update();
-          this.passToRenderer(scene, this.camera, controls);
-        }
-      }, {
-        key: "passToRenderer",
-        value: function passToRenderer(scene, camera, controls) {
-          var render = function render() {
-            requestAnimationFrame(render);
-            controls.update();
-            this.renderer.render(scene, camera);
-          };
+          this.points = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Points"](geometry, material); // Add points to Scene
 
-          render();
+          this.scene.add(this.points);
+          var component = this; // Render the animation in the canvas
+
+          (function render() {
+            requestAnimationFrame(render);
+            component.controls.update();
+            component.renderer.render(component.scene, component.camera);
+          })();
         }
       }]);
 
@@ -1278,10 +1278,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.elementView = _t.first);
         }
-      },
-      inputs: {
-        renderer: "renderer",
-        camera: "camera"
       },
       decls: 2,
       vars: 2,
@@ -1327,12 +1323,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"],
             "static": false
           }]
-        }],
-        renderer: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }],
-        camera: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
         }]
       });
     })();

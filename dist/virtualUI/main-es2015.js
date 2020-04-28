@@ -550,11 +550,11 @@ function DashboardComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
+//import * as data from '../../assets/Points.json';
 class DashboardComponent {
     constructor(__BridgeService, elementRef) {
         this.__BridgeService = __BridgeService;
         this.elementRef = elementRef;
-        this.points = [];
         this.isConnected = false;
         this.listeningForMessages = false;
         this.isCanvasDisplayed = true;
@@ -567,6 +567,9 @@ class DashboardComponent {
         this.__BridgeService.getConnnectionStatus().subscribe(status => {
             this.isConnected = status;
         });
+        /*data.points.forEach(element => {
+          this.test.push(new THREE.Vector3(element.x, element.y, element.z));
+        });*/
     }
     startListening() {
         this.msg_listener = this.__BridgeService.subscribeToTopic('/output', 'world_mapper/Frame');
@@ -627,7 +630,7 @@ class DashboardComponent {
             var azx = -sinb;
             var azy = cosb * sinc;
             var azz = cosb * cosc;
-            results.push(new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz)) * frame.ranges[i]) + new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](frame.posX, frame.posY, frame.posZ);
+            results.push(new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](baseVector.x * (axx + axy + axz), baseVector.y * (ayx + ayy + ayz), baseVector.z * (azx + azy + azz) * frame.ranges[i]) + new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Vector3"](frame.posX, frame.posY, frame.posZ));
         }
         this.addToCanvas(results);
     }
@@ -669,33 +672,32 @@ class DashboardComponent {
             this.camera.aspect = this.dashboardWidth / this.dashboardHeight;
             this.camera.updateProjectionMatrix();
         });
+        this.controls = new three_examples_jsm_controls_OrbitControls_js__WEBPACK_IMPORTED_MODULE_1__["OrbitControls"](this.camera, this.renderer.domElement);
     }
     addToCanvas(points) {
-        var scene = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Scene"]();
+        this.scene = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Scene"]();
         // LIGHTS
         var light = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["PointLight"](0xFFFFFF, 1, 500);
         light.position.set(10, 0, 25);
-        scene.add(light);
+        this.scene.add(light);
         // MATERIAL
         var material = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["PointsMaterial"]({ size: 1, sizeAttenuation: false });
         // GEOMETRY
         var geometry = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Geometry"]();
+        // Add vertices
         points.forEach(element => {
             geometry.vertices.push(element);
         });
-        var mesh = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Points"](geometry, material);
-        scene.add(mesh);
-        var controls = new three_examples_jsm_controls_OrbitControls_js__WEBPACK_IMPORTED_MODULE_1__["OrbitControls"](this.camera, this.renderer.domElement);
-        controls.update();
-        this.passToRenderer(scene, this.camera, controls);
-    }
-    passToRenderer(scene, camera, controls) {
-        var render = function () {
+        this.points = new three_build_three__WEBPACK_IMPORTED_MODULE_2__["Points"](geometry, material);
+        // Add points to Scene
+        this.scene.add(this.points);
+        let component = this;
+        // Render the animation in the canvas
+        (function render() {
             requestAnimationFrame(render);
-            controls.update();
-            this.renderer.render(scene, camera);
-        };
-        render();
+            component.controls.update();
+            component.renderer.render(component.scene, component.camera);
+        }());
     }
 }
 DashboardComponent.ɵfac = function DashboardComponent_Factory(t) { return new (t || DashboardComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_rosbridge_service__WEBPACK_IMPORTED_MODULE_3__["BridgeService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])); };
@@ -704,7 +706,7 @@ DashboardComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
     } if (rf & 2) {
         var _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.elementView = _t.first);
-    } }, inputs: { renderer: "renderer", camera: "camera" }, decls: 2, vars: 2, consts: [["class", "row no-gutters", 4, "ngIf"], ["class", "container-fluid", 4, "ngIf"], [1, "row", "no-gutters"], ["id", "options-bar"], ["mat-flat-button", "", 3, "click", 4, "ngIf"], [1, "spacer"], [4, "ngIf"], ["id", "coordinates-bar", "color", "primary", 4, "ngIf"], [1, "image_wrapper", 3, "hidden"], ["alt", "frame image", 3, "src", "width", "height"], ["id", "canvas", 3, "hidden", "resize"], ["canvas", ""], ["mat-flat-button", "", 3, "click"], ["mat-icon-button", "", "matTooltip", "Display Options", 3, "matMenuTriggerFor", "click"], ["menuTrigger", "matMenuTrigger"], [3, "overlapTrigger"], ["menu", "matMenu"], [3, "mouseleave"], ["mat-button", "", "matTooltip", "Toggle Images", 3, "click"], ["mat-button", "", "matTooltip", "Toggle 3D Canvas", 3, "click"], ["id", "coordinates-bar", "color", "primary"], [1, "container-fluid"], [1, "image_wrapper"], ["src", "assets/error.png", "alt", "error"], ["mat-button", ""]], template: function DashboardComponent_Template(rf, ctx) { if (rf & 1) {
+    } }, decls: 2, vars: 2, consts: [["class", "row no-gutters", 4, "ngIf"], ["class", "container-fluid", 4, "ngIf"], [1, "row", "no-gutters"], ["id", "options-bar"], ["mat-flat-button", "", 3, "click", 4, "ngIf"], [1, "spacer"], [4, "ngIf"], ["id", "coordinates-bar", "color", "primary", 4, "ngIf"], [1, "image_wrapper", 3, "hidden"], ["alt", "frame image", 3, "src", "width", "height"], ["id", "canvas", 3, "hidden", "resize"], ["canvas", ""], ["mat-flat-button", "", 3, "click"], ["mat-icon-button", "", "matTooltip", "Display Options", 3, "matMenuTriggerFor", "click"], ["menuTrigger", "matMenuTrigger"], [3, "overlapTrigger"], ["menu", "matMenu"], [3, "mouseleave"], ["mat-button", "", "matTooltip", "Toggle Images", 3, "click"], ["mat-button", "", "matTooltip", "Toggle 3D Canvas", 3, "click"], ["id", "coordinates-bar", "color", "primary"], [1, "container-fluid"], [1, "image_wrapper"], ["src", "assets/error.png", "alt", "error"], ["mat-button", ""]], template: function DashboardComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, DashboardComponent_div_0_Template, 12, 9, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, DashboardComponent_div_1_Template, 9, 0, "div", 1);
     } if (rf & 2) {
@@ -722,10 +724,6 @@ DashboardComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
     }], function () { return [{ type: _services_rosbridge_service__WEBPACK_IMPORTED_MODULE_3__["BridgeService"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] }]; }, { elementView: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
             args: ['canvas', { read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], static: false }]
-        }], renderer: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }], camera: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
         }] }); })();
 
 
