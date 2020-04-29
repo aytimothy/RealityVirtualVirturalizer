@@ -1,3 +1,0 @@
-[submodule "rossharpwiki"]
-	path = Assets/ros-sharp.wiki
-	url = https://github.com/siemens/ros-sharp.wiki.git
