@@ -18,6 +18,7 @@ public class ProjectScene : MonoBehaviour {
 
     public GameObject CreateNewProjectPanel;
     DirectoryInfo CurrentProject;
+    public TMP_InputField ChangeNameInputField;
     void Start() {
         CurrentProjectPath = StartupProjectPath;
         bool existingManifestExists = File.Exists(StartupProjectPath + "/manifest.json");
@@ -44,6 +45,7 @@ public class ProjectScene : MonoBehaviour {
         File.WriteAllText(directory + "/manifest.json", manifestFileString);
 
         Directory.CreateDirectory(directory + @"\Frames Folder");
+        ChangeNameInputField.text = projectManifest.Name;
     }
 
     public void PrepareExistingProject(string directory) {
@@ -52,6 +54,7 @@ public class ProjectScene : MonoBehaviour {
         frameManager.Frames.Clear();
         foreach (string frameFilePath in projectManifest.Frames)
             frameManager.Frames.Add(new FrameData(frameFilePath));
+        ChangeNameInputField.text = projectManifest.Name;
     }
     
     public void NewProjectButton_OnClick()
@@ -89,7 +92,16 @@ public class ProjectScene : MonoBehaviour {
         CurrentProjectPath = StartupProjectPath;
         PrepareExistingProject(CurrentProjectPath);
     }
+        public void OnChangeName_OnClick()
+    {
+        projectManifest.Name = ChangeNameInputField.text;
+
+        string manifestInformation = JsonConvert.SerializeObject(projectManifest);
+
+        File.WriteAllText(CurrentProjectPath + @"\manifest.json", manifestInformation);
+    }
 }
+
 
 [Serializable]
 public class ProjectManifest {
