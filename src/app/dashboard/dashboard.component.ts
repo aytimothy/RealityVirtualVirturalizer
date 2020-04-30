@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ElementRef, ViewChild, Input } from '@angular
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { BridgeService } from '../services/rosbridge.service';
 import { ScannerService } from '../services/scanner.service';
+import { SidenavService } from '../services/sidenav.service';
 import * as THREE from 'three/build/three';
 //import * as data from '../../assets/Points.json'; // Code for testing Points.js
 
@@ -28,6 +29,8 @@ export class DashboardComponent implements AfterViewInit {
   public isCanvasDisplayed: boolean = true;
   public isImageDisplayed: boolean = false;
   public isFullScreen: boolean = false;
+  public rotateX: boolean = false;
+  public rotateY: boolean = false;
   private msg_listener: any;
   public frame: any;
   public imageUrl: string;
@@ -38,6 +41,7 @@ export class DashboardComponent implements AfterViewInit {
   constructor(
     public __BridgeService: BridgeService,
     public __ScannerService: ScannerService,
+    private __SidenavService: SidenavService,
     private elementRef: ElementRef
   ) { }
 
@@ -167,16 +171,16 @@ export class DashboardComponent implements AfterViewInit {
 
   public onResize(event: any): void {
     if (this.isFullScreen) {
-    /* The event will only detect window resize events, 
-    Therefore we need to substract 520 pixels from the innerWidth manually 
-    to take into account the two side navigation panels which are both 260*/
+      /* The event will only detect window resize events, 
+      Therefore we need to substract 520 pixels from the innerWidth manually 
+      to take into account the two side navigation panels which are both 260*/
       this.dashboardWidth = event.target.innerWidth;
       this.dashboardHeight = event.target.innerHeight;
     }
     else {
-    this.dashboardWidth = event.target.innerWidth - 520;
-    this.dashboardHeight = event.target.innerHeight - 164;
-  }
+      this.dashboardWidth = event.target.innerWidth - 520;
+      this.dashboardHeight = event.target.innerHeight - 164;
+    }
   }
 
   public toggleImages(): void {
@@ -230,7 +234,7 @@ export class DashboardComponent implements AfterViewInit {
     this.scene.add(light);
 
     // MATERIAL
-    var material = new THREE.PointsMaterial({ size: 1, sizeAttenuation: false });
+    var material = new THREE.PointsMaterial({ size: 1, sizeAttenuation: false, color: this.color });
 
     // GEOMETRY
     var geometry = new THREE.Geometry();
@@ -248,6 +252,14 @@ export class DashboardComponent implements AfterViewInit {
     // Render the animation in the canvas
     (function render() {
       requestAnimationFrame(render);
+      // check if our rotation controls are enabled for x,y axis
+      if (component.rotateX) {
+        component.points.rotation.x += 0.01;
+      }
+      if (component.rotateY) {
+        component.points.rotation.y += 0.01;
+      }
+
       component.controls.update();
       component.renderer.render(component.scene, component.camera);
     }());

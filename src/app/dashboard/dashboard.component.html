@@ -21,6 +21,15 @@
       Disable Full Screen
     </button>
     <span class="spacer"></span>
+    <button mat-flat-button (click)="rotateX = !rotateX" *ngIf="listeningForMessages">
+      <mat-icon>more_horiz</mat-icon>
+      Rotate X Axis
+    </button>
+    <span class="spacer"></span>
+    <button mat-flat-button (click)="rotateY = !rotateY" *ngIf="listeningForMessages">
+      <mat-icon>more_vert</mat-icon>
+      Rotate Y Axis
+    </button>
     <span class="spacer"></span>
     <button mat-flat-button (click)="switchColor()" *ngIf="listeningForMessages">
       <mat-icon>color_lens</mat-icon>
