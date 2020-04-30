@@ -1,8 +1,9 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, Input } from '@angular/core';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { BridgeService } from '../services/rosbridge.service';
+import { ScannerService } from '../services/scanner.service';
 import * as THREE from 'three/build/three';
-//import * as data from '../../assets/Points.json';
+//import * as data from '../../assets/Points.json'; // Code for testing Points.js
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,7 @@ export class DashboardComponent implements AfterViewInit {
   private controls: OrbitControls;
 
   public isConnected: boolean = false;
+  public isScanning: boolean = false;
   public listeningForMessages: boolean = false;
   public isCanvasDisplayed: boolean = true;
   public isImageDisplayed: boolean = false;
@@ -34,6 +36,7 @@ export class DashboardComponent implements AfterViewInit {
 
   constructor(
     public __BridgeService: BridgeService,
+    public __ScannerService: ScannerService,
     private elementRef: ElementRef
   ) { }
 
@@ -43,8 +46,13 @@ export class DashboardComponent implements AfterViewInit {
     this.dashboardHeight = this.elementRef.nativeElement.offsetHeight;
 
     this.__BridgeService.getConnnectionStatus().subscribe(status => {
-      this.isConnected = status
+      this.isConnected = status;
     });
+
+    this.__ScannerService.getScannerStatus().subscribe(status => {
+      this.isScanning = status;
+    });
+    // Code for testing Points.js
     /*data.points.forEach(element => {
       this.test.push(new THREE.Vector3(element.x, element.y, element.z));
     });*/
