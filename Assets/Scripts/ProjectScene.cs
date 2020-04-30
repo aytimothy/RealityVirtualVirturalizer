@@ -16,9 +16,10 @@ public class ProjectScene : MonoBehaviour {
     public PointCloudManager pointCloudManager;
     public FrameManager frameManager;
 
-    public GameObject CreateNewProjectPanel;
     DirectoryInfo CurrentProject;
-    public TMP_InputField ChangeNameInputField;
+    public TMP_InputField ProjectNameInputField;
+    public bool ProjectLoaded = false;
+
     void Start() {
         CurrentProjectPath = StartupProjectPath;
         bool existingManifestExists = File.Exists(StartupProjectPath + "/manifest.json");
@@ -45,7 +46,7 @@ public class ProjectScene : MonoBehaviour {
         File.WriteAllText(directory + "/manifest.json", manifestFileString);
 
         Directory.CreateDirectory(directory + @"\Frames Folder");
-        ChangeNameInputField.text = projectManifest.Name;
+        ProjectNameInputField.text = projectManifest.Name;
     }
 
     public void PrepareExistingProject(string directory) {
@@ -54,13 +55,10 @@ public class ProjectScene : MonoBehaviour {
         frameManager.Frames.Clear();
         foreach (string frameFilePath in projectManifest.Frames)
             frameManager.Frames.Add(new FrameData(frameFilePath));
-        ChangeNameInputField.text = projectManifest.Name;
+        ProjectNameInputField.text = projectManifest.Name;
+        ProjectLoaded = true;
     }
-    
-    public void NewProjectButton_OnClick()
-    {
-        CreateNewProjectPanel.SetActive(true);
-    }
+
     public void NewProject() {
         CurrentProjectPath = StartupProjectPath;
         PrepareNewProject(CurrentProjectPath); 
@@ -92,13 +90,12 @@ public class ProjectScene : MonoBehaviour {
         CurrentProjectPath = StartupProjectPath;
         PrepareExistingProject(CurrentProjectPath);
     }
-        public void OnChangeName_OnClick()
-    {
-        projectManifest.Name = ChangeNameInputField.text;
 
-        string manifestInformation = JsonConvert.SerializeObject(projectManifest);
+    public void ProjectNameInputField_OnEndEdit(string newValue) {
+        if (!ProjectLoaded)
+            return;
 
-        File.WriteAllText(CurrentProjectPath + @"\manifest.json", manifestInformation);
+        projectManifest.Name = newValue;
     }
 }
 
