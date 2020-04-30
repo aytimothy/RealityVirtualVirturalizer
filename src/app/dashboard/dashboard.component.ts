@@ -26,7 +26,7 @@ export class DashboardComponent implements AfterViewInit {
   public listeningForMessages: boolean = false;
   public isCanvasDisplayed: boolean = true;
   public isImageDisplayed: boolean = false;
-
+  public isFullScreen: boolean = false;
   private msg_listener: any;
   public frame: any;
   public imageUrl: string;
@@ -80,6 +80,17 @@ export class DashboardComponent implements AfterViewInit {
     this.isCanvasDisplayed = false;
   }
 
+  public enableFullScreenMode() {
+    this.isFullScreen = true;
+    this.__SidenavService.enableFullScreen();
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  public disableFullScreenMode() {
+    this.isFullScreen = false;
+    this.__SidenavService.disableFullScreen();
+    window.dispatchEvent(new Event('resize'));
+  }
   private generatePoint(frame): void {
     var baseVectors = [];
 
@@ -137,11 +148,17 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public onResize(event: any): void {
+    if (this.isFullScreen) {
     /* The event will only detect window resize events, 
     Therefore we need to substract 520 pixels from the innerWidth manually 
     to take into account the two side navigation panels which are both 260*/
+      this.dashboardWidth = event.target.innerWidth;
+      this.dashboardHeight = event.target.innerHeight;
+    }
+    else {
     this.dashboardWidth = event.target.innerWidth - 520;
     this.dashboardHeight = event.target.innerHeight - 164;
+  }
   }
 
   public toggleImages(): void {

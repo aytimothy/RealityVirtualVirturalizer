@@ -11,18 +11,51 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class SidenavService {
   private left: MatSidenav;
   private right: MatSidenav;
+  private leftOpen: Boolean;
+  private rightOpen: Boolean;
+
   constructor() { }
 
   public setSidenav(left: MatSidenav, right: MatSidenav): void {
     this.left = left;
     this.right = right;
+    this.leftOpen = this.left.opened;
+    this.rightOpen = this.right.opened;
+  }
+
+  public enableFullScreen() {
+    if (this.leftOpen && this.rightOpen) {
+      this.toggleRight();
+      this.toggleLeft();
+    }
+    if (this.leftOpen && !this.rightOpen) {
+      this.toggleLeft();
+    }
+    if (!this.leftOpen && this.rightOpen) {
+      this.toggleRight();
+    }
+  }
+
+  public disableFullScreen() {
+    if (!this.leftOpen && !this.rightOpen) {
+      this.toggleRight();
+      this.toggleLeft();
+    }
+    if (this.leftOpen && !this.rightOpen) {
+      this.toggleRight();
+    }
+    if (!this.leftOpen && this.rightOpen) {
+      this.toggleLeft();
+    }
   }
 
   public toggleRight(): void {
     this.right.toggle();
+    this.rightOpen = this.right.opened;
   }
 
   public toggleLeft(): void {
     this.left.toggle();
+    this.leftOpen = this.left.opened;
   }
 }
