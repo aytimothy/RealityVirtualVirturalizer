@@ -12482,8 +12482,7 @@ MonoBehaviour:
   modified: 0
   pointCloudManager: {fileID: 1840801254}
   frameManager: {fileID: 1840801253}
-  CreateNewProjectPanel: {fileID: 0}
-  ProjectNameInputField: {fileID: 0}
+  ProjectNameInputField: {fileID: 3015608331664328079}
   ProjectLoaded: 0
 --- !u!114 &1476278658
 MonoBehaviour:
@@ -17826,10 +17825,10 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 28.6
-  m_fontSizeBase: 14
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 2
@@ -18018,8 +18017,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
