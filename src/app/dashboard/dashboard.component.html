@@ -21,6 +21,11 @@
       Disable Full Screen
     </button>
     <span class="spacer"></span>
+    <span class="spacer"></span>
+    <button mat-flat-button (click)="switchColor()" *ngIf="listeningForMessages">
+      <mat-icon>color_lens</mat-icon>
+      Change Color
+    </button>
     <span *ngIf="listeningForMessages">
       <button mat-icon-button matTooltip="Display Options" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
         (click)="menuTrigger.openMenu()">

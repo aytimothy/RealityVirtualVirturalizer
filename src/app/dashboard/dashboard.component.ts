@@ -20,6 +20,7 @@ export class DashboardComponent implements AfterViewInit {
   private scene: THREE.Scene;
   private points: THREE.Points;
   private controls: OrbitControls;
+  private color: any = 0xfcfcfc;
 
   public isConnected: boolean = false;
   public isScanning: boolean = false;
@@ -74,6 +75,22 @@ export class DashboardComponent implements AfterViewInit {
     this.create3DCanvas();
   }
 
+  public switchColor() {
+    // color array
+    let colors = [0xffff00, 0xfcfcfc, 0x55b0dd, 0xdd5555];
+    // current index of the current color of the color array
+    let index = colors.indexOf(this.color);
+
+    // get next color
+    if (index >= 0 && index < colors.length - 1) {
+      this.color = colors[index + 1]
+    }
+    // reset color index
+    if (index == 3) {
+      this.color = colors[0];
+    }
+  }
+
   public stopListening(): void {
     this.msg_listener.unsubstribe();
     this.listeningForMessages = false;
@@ -91,6 +108,7 @@ export class DashboardComponent implements AfterViewInit {
     this.__SidenavService.disableFullScreen();
     window.dispatchEvent(new Event('resize'));
   }
+
   private generatePoint(frame): void {
     var baseVectors = [];
 
