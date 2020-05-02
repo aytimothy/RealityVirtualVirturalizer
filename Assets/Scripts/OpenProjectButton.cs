@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,12 +26,20 @@ public class OpenProjectButton : MonoBehaviour {
     }
 
     public void Setup(TopScene sceneController, string projectFilePath) {
+        try {
+            ProjectManifest manifest = JsonConvert.DeserializeObject<ProjectManifest>(File.ReadAllText(projectFilePath));
+        }
+        catch (Exception ex) {
+            Debug.LogException(ex);
+            manifest = null;
+        }
+
         this.projectFilePath = projectFilePath;
         this.sceneController = sceneController;
 
-        nameLabel.text = "// not implemented yet.";
+        nameLabel.text = (manifest == null) ? "<color=#FF0000>Error: Could not read manifest file...</color>" : manifest.Name;
         pathLabel.text = projectFilePath;
-        modifiedLabel.text = "// not implemented yet.";
+        modifiedLabel.text = (manifest == null) ? "Unknown" : manifest.Modified.ToShortDateString() + " " + manifest.Modified.ToShortTimeString();
          string manifestFileContents = File.ReadAllText(projectFilePath);
 
         manifest = JsonConvert.DeserializeObject<ProjectManifest>(manifestFileContents);
