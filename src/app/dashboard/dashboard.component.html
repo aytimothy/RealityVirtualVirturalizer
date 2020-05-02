@@ -10,33 +10,51 @@
         <mat-icon>sync_alt</mat-icon>
         Stop Listening
       </button>
+      <button mat-flat-button matTooltip="New Scene" (click)="createNewScene()" *ngIf="listeningForMessages">
+        <mat-icon>refresh</mat-icon>
+        New Scene
+      </button>
     </span>
     <span class="spacer"></span>
-    <button mat-flat-button (click)="enableFullScreenMode()" *ngIf="listeningForMessages && !isFullScreen">
-      <mat-icon>fullscreen</mat-icon>
-      Enable Full Screen
-    </button>
-    <button mat-flat-button (click)="disableFullScreenMode()" *ngIf="listeningForMessages && isFullScreen">
-      <mat-icon>fullscreen</mat-icon>
-      Disable Full Screen
-    </button>
-    <span class="spacer"></span>
-    <button mat-flat-button (click)="rotateX = !rotateX" *ngIf="listeningForMessages">
-      <mat-icon>more_horiz</mat-icon>
-      Rotate X Axis
-    </button>
-    <span class="spacer"></span>
-    <button mat-flat-button (click)="rotateY = !rotateY" *ngIf="listeningForMessages">
-      <mat-icon>more_vert</mat-icon>
-      Rotate Y Axis
-    </button>
-    <span class="spacer"></span>
-    <button mat-flat-button (click)="switchColor()" *ngIf="listeningForMessages">
-      <mat-icon>color_lens</mat-icon>
-      Change Color
-    </button>
     <span *ngIf="listeningForMessages">
       <button mat-icon-button matTooltip="Display Options" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+        (click)="menuTrigger.openMenu()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" [overlapTrigger]="false">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+          <button mat-button matTooltip="Enable Full Screen" (click)="enableFullScreenMode()"
+            *ngIf="listeningForMessages && !isFullScreen">
+            <mat-icon>fullscreen</mat-icon>
+            Enable Full Screen
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Disable Full Screen" (click)="disableFullScreenMode()"
+            *ngIf="listeningForMessages && isFullScreen">
+            <mat-icon>fullscreen</mat-icon>
+            Disable Full Screen
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Change Color" (click)="switchColor()" *ngIf="listeningForMessages">
+            <mat-icon>color_lens</mat-icon>
+            Change Color
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Rotate X Axis" (click)="rotateX = !rotateX" *ngIf="listeningForMessages">
+            <mat-icon>more_horiz</mat-icon>
+            Rotate X Axis
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Rotate Y Axis" (click)="rotateY = !rotateY" *ngIf="listeningForMessages">
+            <mat-icon>more_vert</mat-icon>
+            Rotate Y Axis
+          </button>
+          <mat-divider></mat-divider>
+        </span>
+      </mat-menu>
+    </span>
+    <span *ngIf="listeningForMessages">
+      <button mat-icon-button matTooltip="Mode" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
         (click)="menuTrigger.openMenu()">
         <mat-icon>menu</mat-icon>
       </button>
