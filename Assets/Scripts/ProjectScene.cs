@@ -55,6 +55,12 @@ public class ProjectScene : MonoBehaviour {
         frameManager.Frames.Clear();
         foreach (string frameFilePath in projectManifest.Frames)
             frameManager.Frames.Add(new FrameData(frameFilePath));
+        foreach (FrameData frameData in frameManager.Frames) {
+            frameData.LoadFrame();
+            Vector3[] points = frameData.Data.ToVector3();
+            foreach (Vector3 point in points)
+                pointCloudManager.AddPoint(point);
+        } 
         ProjectNameInputField.text = projectManifest.Name;
         ProjectLoaded = true;
     }

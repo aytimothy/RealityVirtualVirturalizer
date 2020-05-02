@@ -106,9 +106,9 @@ public class Frame {
     public float angle_increment;
     public float range_min;
     public float range_max;
-    public float[] ranges;
-    public float[] intensities;
-    public byte[] img;
+    public float[] ranges = new float[] { };
+    public float[] intensities = new float[] { };
+    public byte[] img = new byte[] { };
     public string imgfmt;
 
     public Frame() { }
@@ -145,6 +145,8 @@ public class Frame {
     }
 
     public static Vector3[] ToVector3(Frame frame) {
+        if (frame == null)
+            return new Vector3[] { };
         List<Vector3> baseVectors = new List<Vector3>();
         if (frame.angle_increment >= 0.1f)
             frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.Length - 1);
