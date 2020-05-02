@@ -4,39 +4,16 @@ import subprocess
 
 status = "off"
 running = False
-
-win1 = None
-win2 = None
-win3 = None
-win4 = None
+rc = None
 
 def turn_on():
-    global win1, win2, win3, win4
-    running = True
-    status = "on"
-    # os.system("rosrun urg_node urg_node")
-    # os.system("rosrun world_mapper imureader")
-    # os.system("roslaunch video_stream_opencv webcam.launch")
-    # os.system("rosrun world_mapper framewriter.py")
-    win1 = subprocess.Popen("rosrun urg_node urg_node", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    win2 = subprocess.Popen("rosrun world_mapper imureader", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    win3 = subprocess.Popen("roslaunch video_stream_opencv webcam.launch", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    win4 = subprocess.Popen("rosrun world_mapper framewriter.py", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    
+    rc = subprocess.call("~/catkin_ws/switch_start.sh")
+
     running = False
     
 def turn_off():
-    global win1, win2, win3, win4
-    running = True
-    status = "off"
-    # os.system("rosnode kill urg_node")
-    # os.system("rosnode kill mpu6050")       # imureader
-    # os.system("rosnode kill webcam/webcam_stream")
-    # os.system("rosnode kill framewriter")
-    subprocess.Popen("rosnode kill urg_node", shell=True)
-    subprocess.Popen("rosnode kill mpu6050", shell=True)
-    subprocess.Popen("rosnode kill webcam/webcam_stream", shell=True)
-    subprocess.Popen("rosnode kill framewriter", shell=True)
+    rc = subprocess.call("~/catkin_ws/switch_stop.sh")
+
     running = False
 
 def handle_request(req):
