@@ -30,6 +30,7 @@ export class DialogService {
       disableClose: true,
       data: {
         name: file.name,
+        attr: JSON.parse(file.data),
         data: file.data,
         ext: file.ext
       }

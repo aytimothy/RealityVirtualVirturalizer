@@ -3,11 +3,38 @@
   {{data.name}}
 </h1>
 
+<button mat-flat-button (click)="rawFormat()">
+  <mat-icon>sort</mat-icon>
+  Raw Format
+</button>
+<button mat-flat-button (click)="expandFormat()">
+  <mat-icon>view_list</mat-icon>
+  Expandable Format
+</button>
+
 <div mat-dialog-content>
-  <pre>
-    <code *ngIf="data.ext === '.json' || data.ext === '.bson'">{{data.data}}</code>
-    <p *ngIf="data.ext !== '.json'">{{data.data}}</p>
+  <pre *ngIf="isRawFormat">
+    <code *ngIf="data.ext === '.json' || data.ext === '.bson'">
+      {{data.data}}
+  </code>
+  <p *ngIf="data.ext !== '.json'">{{data.data}}</p>
 </pre>
+  <div *ngIf="isExpandFormat">
+    <mat-expansion-panel *ngFor="let attribute of data.attr | keyvalue;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{attribute.key}}
+        </mat-panel-title>
+        <mat-divider></mat-divider>
+        <mat-panel-description>
+          Frame Attribute
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <pre>
+      <code>{{attribute.value | json}}</code>
+    </pre>
+    </mat-expansion-panel>
+  </div>
 </div>
 
 <div mat-dialog-actions>
