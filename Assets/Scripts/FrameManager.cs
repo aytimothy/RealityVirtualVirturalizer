@@ -159,7 +159,7 @@ public class Frame {
             reps--;
             if (reps < 0) {
                 Debug.LogError("There's too many vectors to add!");
-                Debug.LogError("frame.ranges.Length = " + frame.ranges.Length.ToString() + "frame.angle_increment = " + frame.angle_increment.ToString() + "\nframe.angle_min = " + frame.angle_min.ToString() + "\nframe.angle_max = " + frame.angle_max.ToString());
+                Debug.LogError("frame.ranges.Length = " + frame.ranges.Length.ToString() + "\nframe.angle_increment = " + frame.angle_increment.ToString() + "\nframe.angle_min = " + frame.angle_min.ToString() + "\nframe.angle_max = " + frame.angle_max.ToString());
                 break;
             }
         }
