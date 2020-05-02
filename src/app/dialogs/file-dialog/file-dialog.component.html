@@ -1,12 +1,15 @@
 <h1 mat-dialog-title>
-    <mat-icon>file_copy</mat-icon>
-    {{data.name}}
+  <mat-icon>file_copy</mat-icon>
+  {{data.name}}
 </h1>
 
 <div mat-dialog-content>
-    <p>{{data.data}}</p>
+  <pre>
+    <code *ngIf="data.ext === '.json' || data.ext === '.bson'">{{data.data}}</code>
+    <p *ngIf="data.ext !== '.json'">{{data.data}}</p>
+</pre>
 </div>
 
 <div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="onDismiss()">Close</button>
+  <button mat-raised-button color="primary" (click)="onDismiss()">Close</button>
 </div>

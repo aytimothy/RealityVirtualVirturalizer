@@ -30,7 +30,8 @@ export class DialogService {
       disableClose: true,
       data: {
         name: file.name,
-        data: JSON.stringify(file.data)
+        data: file.data,
+        ext: file.ext
       }
     });
   }

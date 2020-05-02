@@ -107,7 +107,13 @@ router.post('/readfile', async function (req, res) {
             // if the file is any other format encode in utf-8
             fs.readFile(file.path, 'utf-8', (error, data) => {
                 if (error) throw error;
-                file.data = data
+                // if json format, make the output readable
+                if (file.ext == '.json') {
+                    file.data = JSON.stringify(JSON.parse(data), null, '\t');
+                }
+                else {
+                    file.data = data
+                }
                 res.send(file);
             });
         }
