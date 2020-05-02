@@ -4,7 +4,6 @@ import { BridgeService } from '../services/rosbridge.service';
 import { ScannerService } from '../services/scanner.service';
 import { SidenavService } from '../services/sidenav.service';
 import * as THREE from 'three/build/three';
-//import * as data from '../../assets/Points.json'; // Code for testing Points.js
 
 @Component({
   selector: 'app-dashboard',
@@ -57,10 +56,6 @@ export class DashboardComponent implements AfterViewInit {
     this.__ScannerService.getScannerStatus().subscribe(status => {
       this.isScanning = status;
     });
-    // Code for testing Points.js
-    /*data.points.forEach(element => {
-      this.test.push(new THREE.Vector3(element.x, element.y, element.z));
-    });*/
   }
 
   public startListening(): void {
@@ -113,8 +108,9 @@ export class DashboardComponent implements AfterViewInit {
     window.dispatchEvent(new Event('resize'));
   }
 
-  private generatePoint(frame): void {
+  private generatePoint(frames): void {
     var baseVectors = [];
+    var frame = frames.default;
 
     if (frame.angle_increment >= 0.1) {
       frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.length - 1);
@@ -166,7 +162,7 @@ export class DashboardComponent implements AfterViewInit {
       results.push(new THREE.Vector3(mx * frame.ranges[i], my * frame.ranges[i], mz * frame.ranges[i]).add(new THREE.Vector3(frame.posX, frame.posY, frame.posZ)));
     }
 
-    this.addToCanvas(results);
+    this.addToScene(results);
   }
 
   public onResize(event: any): void {
@@ -221,18 +217,21 @@ export class DashboardComponent implements AfterViewInit {
       this.camera.aspect = this.dashboardWidth / this.dashboardHeight;
       this.camera.updateProjectionMatrix();
     });
-
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
+    this.createNewScene();
   }
 
-  private addToCanvas(points) {
+  public createNewScene() {
     this.scene = new THREE.Scene();
 
     // LIGHTS
     var light = new THREE.PointLight(0xFFFFFF, 1, 500);
     light.position.set(10, 0, 25);
     this.scene.add(light);
+  }
 
+  private addToScene(points) {
     // MATERIAL
     var material = new THREE.PointsMaterial({ size: 1, sizeAttenuation: false, color: this.color });
 
