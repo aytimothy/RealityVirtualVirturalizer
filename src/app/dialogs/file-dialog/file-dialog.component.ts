@@ -25,8 +25,4 @@ export class FileDialogComponent {
     this.isExpandFormat = true;
     this.isRawFormat = false;
   }
-  showContent(key, value) {
-    console.log(key);
-    console.log(value);
-  }
 }
