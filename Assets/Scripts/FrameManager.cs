@@ -144,7 +144,7 @@ public class Frame {
         return ToVector3(this);
     }
 
-    public static Vector3[] ToVector3(Frame frame) {
+    public static Vector3[] ToVector3(Frame frame, bool removeOutliers = false, float outlierThreshold = 0.9f) {
         if (frame == null)
             return new Vector3[] { };
         List<Vector3> baseVectors = new List<Vector3>();
@@ -168,6 +168,8 @@ public class Frame {
         List<Vector3> results = new List<Vector3>();
         for (int i = 0; i < baseVectors.Count; i++) {
             Vector3 baseVector = baseVectors[i];
+            if (frame.ranges[i] >= frame.angle_max * outlierThreshold && removeOutliers)
+                continue;
 
             float alpha = frame.rotX * Mathf.Deg2Rad;
             float beta = frame.rotY * Mathf.Deg2Rad;
