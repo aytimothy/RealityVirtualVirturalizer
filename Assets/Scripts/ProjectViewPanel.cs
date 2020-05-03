@@ -14,28 +14,48 @@ public class ProjectViewPanel : MonoBehaviour
     public Toggle PointCloudClassificationColor;
     public Toggle ReconstructionColor;
     public Toggle ReconstructionUVs;
+    public bool isUpdating;
+
+    void Start() {
+        isUpdating = true;
+        PointCloudImageColor.isOn = false;
+        PointCloudClassificationColor.isOn = false;
+        ReconstructionColor.isOn = false;
+        ReconstructionUVs.isOn = false;
+        UpdateColors();
+        isUpdating = false;
+    }
+
+    void Update() {
+        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.R))
+            ResetCameraButton_OnClick();
+    }
 
     public void ViewPointCloudButton_OnClick()
     {
         pointCloudCanvas.SetActive(true);
         reconstructCanvas.SetActive(false);
-
     }
 
-    public void PointCloudImageColorToggle_OnValueChanged(bool newValue)
-    {
-        PointCloudClassificationColor.isOn = false;
-        UpdateColors();
+    public void PointCloudImageColorToggle_OnValueChanged(bool newValue) {
+        if (!isUpdating) {
+            isUpdating = true;
+            PointCloudClassificationColor.isOn = false;
+            UpdateColors();
+            isUpdating = false;
+        }
     }
 
-    public void PointCloudClassificationColorToggle_OnValueChanged(bool newValue)
-    {
-        PointCloudImageColor.isOn = false;
-        UpdateColors();
+    public void PointCloudClassificationColorToggle_OnValueChanged(bool newValue) {
+        if (!isUpdating) {
+            isUpdating = true;
+            PointCloudImageColor.isOn = false;
+            UpdateColors();
+            isUpdating = false;
+        }
     }
 
-    public void ViewReconstructionButton_OnClick()
-    {
+    public void ViewReconstructionButton_OnClick() {
         pointCloudCanvas.SetActive(false);
         reconstructCanvas.SetActive(true);
 
@@ -43,14 +63,21 @@ public class ProjectViewPanel : MonoBehaviour
 
     public void ReconstructionColorToggle_OnValueChanged(bool newValue)
     {
-        ReconstructionUVs.isOn = false;
-        UpdateColors();
+        if (!isUpdating) {
+            isUpdating = true;
+            ReconstructionUVs.isOn = false;
+            UpdateTextures();
+            isUpdating = false;
+        }
     }
 
-    public void ReconstructionUVsToggle_OnValueChanged(bool newValue)
-    {
-        ReconstructionColor.isOn = false;
-        UpdateColors();
+    public void ReconstructionUVsToggle_OnValueChanged(bool newValue) {
+        if (isUpdating) {
+            isUpdating = true;
+            ReconstructionColor.isOn = false;
+            UpdateTextures();
+            isUpdating = false;
+        }
     }
 
     public void ResetCameraButton_OnClick()
@@ -103,9 +130,11 @@ public class ProjectViewPanel : MonoBehaviour
             foreach (GameObject point in CloudManager.PointObjects)
             {
                 point.GetComponent<Point>().SetColor(255, 255, 255);
-                print(point.transform.position);
             }
         }
     }
 
+    public void UpdateTextures() {
+        // todo.
+    }
 }
