@@ -72,7 +72,7 @@ public class ProjectViewPanel : MonoBehaviour
     }
 
     public void ReconstructionUVsToggle_OnValueChanged(bool newValue) {
-        if (isUpdating) {
+        if (!isUpdating) {
             isUpdating = true;
             ReconstructionColor.isOn = false;
             UpdateTextures();
