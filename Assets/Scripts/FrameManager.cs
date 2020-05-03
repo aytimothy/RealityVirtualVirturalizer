@@ -152,7 +152,7 @@ public class Frame {
             frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.Length - 1);
         if (frame.angle_increment == 0) {
             Debug.LogError("Cannot have an angle increment of 0, because then we'll get nowhere!\nThere are " + frame.ranges.Length.ToString() + " readings.");
-            throw new ArgumentOutOfRangeException();
+            return new Vector3[] { };
         }
 
         int reps = 500;
