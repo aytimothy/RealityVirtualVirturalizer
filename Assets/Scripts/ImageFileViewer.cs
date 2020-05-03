@@ -2,21 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ImageFileViewer : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+public class ImageFileViewer : MonoBehaviour {
     public void Show(string filePath) {
+        gameObject.SetActive(true);
         throw new System.NotImplementedException();
     }
 }
