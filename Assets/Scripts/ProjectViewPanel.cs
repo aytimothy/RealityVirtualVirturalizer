@@ -1,36 +1,111 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
-public class ProjectViewPanel : MonoBehaviour {
+public class ProjectViewPanel : MonoBehaviour
+{
+    public PointCloudManager CloudManager;
+    public GameObject pointCloudCanvas;
+    public GameObject reconstructCanvas;
     public Camera camera;
+    public Toggle PointCloudImageColor;
+    public Toggle PointCloudClassificationColor;
+    public Toggle ReconstructionColor;
+    public Toggle ReconstructionUVs;
 
-    public void ViewPointCloudButton_OnClick() {
-
-    }
-
-    public void PointCloudImageColorToggle_OnValueChanged(bool newValue) {
-
-    }
-
-    public void PointCloudClassificationColorToggle_OnValueChanged(bool newValue) {
-
-    }
-
-    public void ViewReconstructionButton_OnClick() {
+    public void ViewPointCloudButton_OnClick()
+    {
+        pointCloudCanvas.SetActive(true);
+        reconstructCanvas.SetActive(false);
 
     }
 
-    public void ReconstructionColorToggle_OnValueChanged(bool newValue) {
+    public void PointCloudImageColorToggle_OnValueChanged(bool newValue)
+    {
+        PointCloudClassificationColor.isOn = false;
+        UpdateColors();
+    }
+
+    public void PointCloudClassificationColorToggle_OnValueChanged(bool newValue)
+    {
+        PointCloudImageColor.isOn = false;
+        UpdateColors();
+    }
+
+    public void ViewReconstructionButton_OnClick()
+    {
+        pointCloudCanvas.SetActive(false);
+        reconstructCanvas.SetActive(true);
 
     }
 
-    public void ReconstructionUVsToggle_OnValueChanged(bool newValue) {
-
+    public void ReconstructionColorToggle_OnValueChanged(bool newValue)
+    {
+        ReconstructionUVs.isOn = false;
+        UpdateColors();
     }
 
-    public void ResetCameraButton_OnClick() {
+    public void ReconstructionUVsToggle_OnValueChanged(bool newValue)
+    {
+        ReconstructionColor.isOn = false;
+        UpdateColors();
+    }
+
+    public void ResetCameraButton_OnClick()
+    {
         camera.transform.position = Vector3.zero;
         camera.transform.rotation = Quaternion.identity;
     }
+
+    public void UpdateColors()
+    {
+        float maxX = 0;
+        float minX = 0;
+        float maxZ = 0;
+        float minZ = 0;
+        if (PointCloudImageColor.isOn)
+        {
+            foreach (GameObject point in CloudManager.PointObjects)
+            {
+                point.GetComponent<Point>().SetColor(255, 255, 255, 0.0006f);
+                print(point.transform.position);
+            }
+        }
+        if (PointCloudClassificationColor.isOn)
+        {
+            foreach (Vector3 point in CloudManager.GetAllPoints())
+            {
+                if (point.x > maxX)
+                    maxX = point.x;
+                if (point.x < minX)
+                    minX = point.x;
+                if (point.z > maxZ)
+                    maxZ = point.z;
+                if (point.z < minZ)
+                    minZ = point.z;
+            }
+
+            foreach (GameObject point in CloudManager.PointObjects)
+            {
+                if (point.transform.position.x >= maxX - 0.2f || point.transform.position.x <= minX + 0.2f)
+                    point.GetComponent<Point>().SetColor(255, 0, 0, 1);
+                else if (point.transform.position.z >= maxZ - 0.2f || point.transform.position.z <= minZ + 0.2f)
+                    point.GetComponent<Point>().SetColor(255, 255, 0, 1);
+                else
+                    point.GetComponent<Point>().SetColor(0, 0, 255, 1);
+            }
+        }
+
+        if (!PointCloudClassificationColor.isOn && !PointCloudImageColor.isOn)
+        {
+            foreach (GameObject point in CloudManager.PointObjects)
+            {
+                point.GetComponent<Point>().SetColor(255, 255, 255);
+                print(point.transform.position);
+            }
+        }
+    }
+
 }
