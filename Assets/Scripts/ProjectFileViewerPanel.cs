@@ -25,6 +25,7 @@ public class ProjectFileViewerPanel : MonoBehaviour {
         PanelController.OpenButton_OnClick(5);
         
         string extension = Path.GetExtension(filePath);
+        extension = extension.Trim(new char[] { '.', ' ' });
         switch (extension) {
             case "json":
                 FrameViewer.Show(filePath);
