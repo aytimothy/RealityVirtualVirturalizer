@@ -86,7 +86,7 @@ public class ProjectViewPanel : MonoBehaviour
         camera.transform.rotation = Quaternion.identity;
     }
 
-    public void UpdateColors()
+    public void UpdateColors(bool useDummyData = true)
     {
         float maxX = 0;
         float minX = 0;
@@ -96,8 +96,13 @@ public class ProjectViewPanel : MonoBehaviour
         {
             foreach (GameObject point in CloudManager.PointObjects)
             {
-                point.GetComponent<Point>().SetColor(255, 255, 255, 0.0006f);
-                print(point.transform.position);
+                if (useDummyData) {
+                    point.GetComponent<Point>().SetColor(255, 255, 255, 0.0006f);
+                }
+                if (!useDummyData) {
+                    Point pointComponent = point.GetComponent<Point>();
+                    pointComponent.SetColor(pointComponent.ClassificationColor);
+                }
             }
         }
         if (PointCloudClassificationColor.isOn)
@@ -114,21 +119,25 @@ public class ProjectViewPanel : MonoBehaviour
                     minZ = point.z;
             }
 
-            foreach (GameObject point in CloudManager.PointObjects)
-            {
-                if (point.transform.position.x >= maxX - 0.2f || point.transform.position.x <= minX + 0.2f)
-                    point.GetComponent<Point>().SetColor(255, 0, 0, 1);
-                else if (point.transform.position.z >= maxZ - 0.2f || point.transform.position.z <= minZ + 0.2f)
-                    point.GetComponent<Point>().SetColor(255, 255, 0, 1);
-                else
-                    point.GetComponent<Point>().SetColor(0, 0, 255, 1);
+            foreach (GameObject point in CloudManager.PointObjects) {
+                Point pointComponent = point.GetComponent<Point>();
+                if (useDummyData) {
+                    if (point.transform.position.x >= maxX - 0.2f || point.transform.position.x <= minX + 0.2f)
+                        pointComponent.SetColor(255, 0, 0, 1);
+                    else if (point.transform.position.z >= maxZ - 0.2f || point.transform.position.z <= minZ + 0.2f)
+                        pointComponent.SetColor(255, 255, 0, 1);
+                    else
+                        pointComponent.SetColor(0, 0, 255, 1);
+                }
+                if (!useDummyData) {
+                    pointComponent.SetColor(pointComponent.ClassificationColor);
+                }
             }
         }
 
         if (!PointCloudClassificationColor.isOn && !PointCloudImageColor.isOn)
         {
-            foreach (GameObject point in CloudManager.PointObjects)
-            {
+            foreach (GameObject point in CloudManager.PointObjects) {
                 point.GetComponent<Point>().SetColor(255, 255, 255);
             }
         }

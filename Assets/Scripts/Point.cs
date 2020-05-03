@@ -2,6 +2,8 @@
 
 public class Point : MonoBehaviour {
     public MeshRenderer renderer;
+    public Color TextureColor;
+    public Color ClassificationColor;
 
     public void SetColor(Color color) {
         renderer.material.color = color;
