@@ -63,8 +63,6 @@ export class DashboardComponent implements AfterViewInit {
     // listen for basic messages
     this.listeningForMessages = true;
     this.msg_listener.subscribe((frame: any) => {
-      // output entire frame to console
-      console.log(frame);
       // update the current frame
       this.frame = frame;
       // update the image url per frame
