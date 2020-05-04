@@ -99,6 +99,7 @@ def checkFrame():
     j["rotZ"] = frame.rotZ
     j["angle_max"] = frame.angle_max
     j["angle_min"] = frame.angle_min
+    j["angle_increment"] = frame.angle_increment
     j["ranges"] = frame.ranges
     j["intensities"] = frame.intensities
     j["img"] = base64.b64encode(frame.img)
