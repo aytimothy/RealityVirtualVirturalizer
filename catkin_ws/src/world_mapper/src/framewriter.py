@@ -73,9 +73,10 @@ def checkFrame():
     frame.gyrX = imu_msg.angular_velocity.x
     frame.gyrY = imu_msg.angular_velocity.y
     frame.gyrZ = imu_msg.angular_velocity.z
-    frame.angle_min = laser_msg.angle_min
-    frame.angle_max = laser_msg.angle_max
-    frame.angle_increment = laser_msg.angle_increment
+    # lidar reports in radians, not degrees. needs to be degrees
+    frame.angle_min = laser_msg.angle_min * (180 / pi)
+    frame.angle_max = laser_msg.angle_max * (180 / pi)
+    frame.angle_increment = laser_msg.angle_increment * (180 / pi)
     frame.range_min = laser_msg.range_min
     frame.range_max = laser_msg.range_max
     frame.ranges = laser_msg.ranges
