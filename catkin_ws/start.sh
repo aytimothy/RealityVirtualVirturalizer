@@ -6,7 +6,6 @@ cd ~/catkin_ws
 source ./devel/setup.bash
 
 # Run the stuffs we just built.
-screen -S roscore -d -m roscore
 screen -S rosswitch -d -m rosrun world_mapper starter.py
 screen -S videostream -d -m roslaunch video_stream_opencv webcam.launch
 screen -S urgnode -d -m rosrun urg_node urg_node
