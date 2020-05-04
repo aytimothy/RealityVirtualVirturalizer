@@ -1,16 +1,28 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using System.IO;
 using UnityEngine.UI;
+using TMPro;
 
-public class TextFileViewer : MonoBehaviour {
-    public TMP_Text Label;
-    public string FilePath;
-    public void Show(string filePath) {
+public class TextFileViewer : MonoBehaviour
+{
+    public TMP_Text FileName;
+    public TMP_Text FileContent;
+    RectTransform textTransform;
+
+    void Update()
+    {
+        if (textTransform == null || FileContent == null)
+            return;
+        Vector2 size = new Vector2(textTransform.sizeDelta.x, FileContent.preferredHeight);
+        textTransform.sizeDelta = size;
+    }
+    public void Show(string filePath)
+    {
         gameObject.SetActive(true);
-        Label.text = "<color=#FFFF00>" + Path.GetFileName(filePath) + "</color>";
-        FilePath = filePath;
+        FileName.text = "<color=#FFFF00> File: </color>" + Path.GetFileName(filePath);
+        FileContent.text = File.ReadAllText(filePath);
+        textTransform = FileContent.GetComponent<RectTransform>();
     }
 }

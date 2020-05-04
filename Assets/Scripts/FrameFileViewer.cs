@@ -1,11 +1,16 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
-public class FrameFileViewer : MonoBehaviour {
-
-    public void Show(string filePath) {
+public class FrameFileViewer : MonoBehaviour
+{
+    public TMP_Text FileName;
+    public void Show(string filePath)
+    {
         gameObject.SetActive(true);
-        throw new System.NotImplementedException();
+        FileName.text = "<color=#FFFF00> File: </color>" + Path.GetFileName(filePath);
     }
 }
