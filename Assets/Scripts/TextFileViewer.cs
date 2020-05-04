@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System.IO;
-using TMPro.EditorUtilities;
 using UnityEngine.UI;
 
 public class TextFileViewer : MonoBehaviour {

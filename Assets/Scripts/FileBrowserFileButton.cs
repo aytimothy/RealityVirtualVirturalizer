@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class FileBrowserFileButton : MonoBehaviour {

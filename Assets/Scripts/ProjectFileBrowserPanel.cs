@@ -5,8 +5,6 @@ using UnityEngine;
 using System.IO;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.TestTools;
-using UnityEngine.WSA;
 using GameObject = UnityEngine.GameObject;
 
 public class ProjectFileBrowserPanel : MonoBehaviour {
