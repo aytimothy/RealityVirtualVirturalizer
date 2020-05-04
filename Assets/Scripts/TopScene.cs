@@ -138,6 +138,7 @@ public class TopScene : MonoBehaviour {
                     continue;
                 }
                 GameObject newObject = Instantiate(OpenProjectButtonPrefab, ProjectListContentArea);
+                OpenProjectPanelButtons.Add(newObject);
                 OpenProjectButton openProjectButton = newObject.GetComponent<OpenProjectButton>();
                 openProjectButton.Setup(this, recentProjectPath);
             }
