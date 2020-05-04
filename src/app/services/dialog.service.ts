@@ -25,16 +25,29 @@ export class DialogService {
   }
 
   openFileDialog(file: any) {
-    return this.dialog.open(FileDialogComponent, {
-      width: '50%',
-      disableClose: true,
-      data: {
-        name: file.name,
-        attr: JSON.parse(file.data),
-        data: file.data,
-        ext: file.ext
-      }
-    });
+    if (file.ext == '.json') {
+      return this.dialog.open(FileDialogComponent, {
+        width: '50%',
+        disableClose: true,
+        data: {
+          name: file.name,
+          attr: JSON.parse(file.data),
+          data: file.data,
+          ext: file.ext
+        }
+      });
+    }
+    else {
+      return this.dialog.open(FileDialogComponent, {
+        width: '50%',
+        disableClose: true,
+        data: {
+          name: file.name,
+          data: file.data,
+          ext: file.ext
+        }
+      });
+    }
   }
 
   openRosconfigDialog() {

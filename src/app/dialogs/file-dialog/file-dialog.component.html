@@ -3,11 +3,11 @@
   {{data.name}}
 </h1>
 
-<button mat-flat-button (click)="rawFormat()">
+<button mat-flat-button *ngIf="data.ext == '.json'" (click)="rawFormat()">
   <mat-icon>sort</mat-icon>
   Raw Format
 </button>
-<button mat-flat-button (click)="expandFormat()">
+<button mat-flat-button *ngIf="data.ext == '.json'" (click)="expandFormat()">
   <mat-icon>view_list</mat-icon>
   Expandable Format
 </button>
