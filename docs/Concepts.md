@@ -20,6 +20,9 @@
     2. [Acceleration Velocity Displacement](#acceleration)
     3. [Ranges and Position/Rotations to a Point Cloud](#pointcloud)
     4. [Frame Encoding](#frame)
+    5. [Mesh Generation](#mesh)
+    6. [Texture Stamping](#stamp)
+5. [Reflection](#reflection)
 
 ## Introduction <a name="introduction"></a>
 The goal of this project was to create a handheld scanning device, made with parts that are accessible to everyone to recreate. The device is capable of scanning the real world and reconstructing the data into a 3D virtual environment. 
@@ -224,4 +227,14 @@ string imgfmt				# Image format. This is either "PNG" or "JPEG".
 ```
 Both the desktop and web user interfaces subscribe to the `/output` topic to receive the data.
 
+### Mesh Generation <a name="mesh"></a>
 
+// todo.
+
+### Texture Stamping <a name="stamp"></a>
+
+// todo.
+
+## Reflection <a name="reflection"></a>
+
+// todo.
