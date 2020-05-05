@@ -2637,7 +2637,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _angular_material_divider__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+    var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+    /*! @angular/material/tooltip */
+    "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/tooltip.js");
+    /* harmony import */
+
+
+    var _angular_material_divider__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
     /*! @angular/material/divider */
     "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/divider.js");
 
@@ -2677,7 +2683,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     function FilesystemComponent_mat_list_item_11_mat_icon_3_Template(rf, ctx) {
       if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-icon", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-icon", 9);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "folder");
 
@@ -2687,7 +2693,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     function FilesystemComponent_mat_list_item_11_mat_icon_4_Template(rf, ctx) {
       if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-icon", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-icon", 9);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "file_copy");
 
@@ -2699,9 +2705,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       if (rf & 1) {
         var _r75 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-list-item", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-list-item");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function FilesystemComponent_mat_list_item_11_Template_mat_list_item_click_0_listener() {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 5);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "button", 6);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function FilesystemComponent_mat_list_item_11_Template_button_click_2_listener() {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r75);
 
           var index_r71 = ctx.index;
@@ -2712,13 +2722,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return ctx_r74.navigateFileSystem(index_r71, item_r70);
         });
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, FilesystemComponent_mat_list_item_11_mat_icon_3_Template, 2, 0, "mat-icon", 7);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "button", 7);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, FilesystemComponent_mat_list_item_11_mat_icon_3_Template, 2, 0, "mat-icon", 8);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, FilesystemComponent_mat_list_item_11_mat_icon_4_Template, 2, 0, "mat-icon", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, FilesystemComponent_mat_list_item_11_mat_icon_4_Template, 2, 0, "mat-icon", 7);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5);
 
@@ -2726,13 +2732,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](6, "mat-divider");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "button", 8);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "button", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function FilesystemComponent_mat_list_item_11_Template_button_click_6_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r75);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "mat-icon", 10);
+          var index_r71 = ctx.index;
+          var item_r70 = ctx.$implicit;
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](9, "keyboard_arrow_right");
+          var ctx_r76 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          return ctx_r76.removeItem(index_r71, item_r70);
+        });
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "mat-icon", 9);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8, "delete");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](9, "mat-divider");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](10, "button", 10);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function FilesystemComponent_mat_list_item_11_Template_button_click_10_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r75);
+
+          var index_r71 = ctx.index;
+          var item_r70 = ctx.$implicit;
+
+          var ctx_r77 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          return ctx_r77.navigateFileSystem(index_r71, item_r70);
+        });
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "mat-icon", 9);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](12, "keyboard_arrow_right");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -2749,7 +2787,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassProp"]("active", ctx_r67.selectedItemIndex === index_r71);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpropertyInterpolate1"]("matTooltip", "Open ", item_r70.name, "");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", item_r70.isDir);
 
@@ -2813,10 +2855,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 // output the data in a dialog
                 _this5.__DialogService.openFileDialog(file).afterClosed().subscribe();
               } else {
-                _this5.__DialogService.openConfirmDialog('The file no longer exists', 'Whoops', 'warning').afterClosed().subscribe();
+                _this5.__DialogService.openConfirmDialog("".concat(item.name, " no longer exists, try refreshing"), 'Whoops', 'warning').afterClosed().subscribe();
               }
             });
           }
+        }
+      }, {
+        key: "removeItem",
+        value: function removeItem(index, item) {
+          var _this6 = this;
+
+          this.__DataService.requestRemoveItem(item).subscribe(function (response) {
+            if (response.valid) {
+              _this6.directoryList.splice(index, 1);
+            } else {
+              _this6.__DialogService.openConfirmDialog("".concat(item.name, " no longer exists, try refreshing"), 'Whoops', 'warning').afterClosed().subscribe();
+            }
+          });
         }
       }]);
 
@@ -2832,7 +2887,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       selectors: [["app-filesystem"]],
       decls: 12,
       vars: 2,
-      consts: [[1, "sidenav-header"], [2, "margin", "0"], ["mat-button", "", 3, "click", 4, "ngIf"], ["mat-button", "", 3, "click"], [3, "active", "click", 4, "ngFor", "ngForOf"], [3, "click"], ["matLine", ""], ["mat-button", ""], ["mat-list-icon", "", 4, "ngIf"], ["mat-icon-button", ""], ["mat-list-icon", ""]],
+      consts: [[1, "sidenav-header"], [2, "margin", "0"], ["mat-button", "", 3, "click", 4, "ngIf"], ["mat-button", "", 3, "click"], [3, "active", 4, "ngFor", "ngForOf"], ["matLine", ""], ["mat-button", "", 3, "matTooltip", "click"], ["mat-list-icon", "", 4, "ngIf"], ["mat-icon-button", "", "matTooltip", "Remove", 3, "click"], ["mat-list-icon", ""], ["mat-icon-button", "", 3, "click"]],
       template: function FilesystemComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
@@ -2871,7 +2926,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](10, "mat-nav-list");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](11, FilesystemComponent_mat_list_item_11_Template, 10, 5, "mat-list-item", 4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](11, FilesystemComponent_mat_list_item_11_Template, 13, 6, "mat-list-item", 4);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         }
@@ -2886,8 +2941,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.directoryList);
         }
       },
-      directives: [_angular_material_icon__WEBPACK_IMPORTED_MODULE_3__["MatIcon"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgIf"], _angular_material_button__WEBPACK_IMPORTED_MODULE_5__["MatButton"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatNavList"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgForOf"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatListItem"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatLine"], _angular_material_divider__WEBPACK_IMPORTED_MODULE_8__["MatDivider"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatListIconCssMatStyler"]],
-      styles: [".sidenav-header[_ngcontent-%COMP%] {\n  padding: 20px;\n  background: #475bcf;\n  text-align: center;\n  color: #fff;\n}\n\n.mat-list-item.active[_ngcontent-%COMP%] {\n  background-color: #3f51b5;\n  color: #fff;\n}\n\n.mat-list-item[_ngcontent-%COMP%]:hover {\n  background: white;\n  color: #475bcf;\n}\n\n.mat-list-item.active[_ngcontent-%COMP%]:hover {\n  background-color: #3f51b5;\n  color: #fff;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2NyeXB0by9Qcm9qZWN0cy8tUmVhbGl0eVZpcnR1YWxWaXJ0dXJhbGl6ZXItSW50ZXJmYWNlL3NyYy9hcHAvZmlsZXN5c3RlbS9maWxlc3lzdGVtLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9maWxlc3lzdGVtL2ZpbGVzeXN0ZW0uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7QUNDRjs7QURFQTtFQUNFLHlCQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsaUJBQUE7RUFDQSxjQUFBO0FDQ0Y7O0FERUE7RUFDRSx5QkFBQTtFQUNBLFdBQUE7QUNDRiIsImZpbGUiOiJzcmMvYXBwL2ZpbGVzeXN0ZW0vZmlsZXN5c3RlbS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5zaWRlbmF2LWhlYWRlciB7XG4gIHBhZGRpbmc6IDIwcHg7XG4gIGJhY2tncm91bmQ6ICM0NzViY2Y7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgY29sb3I6ICNmZmY7XG59XG5cbi5tYXQtbGlzdC1pdGVtLmFjdGl2ZSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICMzZjUxYjU7XG4gIGNvbG9yOiAjZmZmO1xufVxuXG4ubWF0LWxpc3QtaXRlbTpob3ZlciB7XG4gIGJhY2tncm91bmQ6IHdoaXRlO1xuICBjb2xvcjogIzQ3NWJjZjtcbn1cblxuLm1hdC1saXN0LWl0ZW0uYWN0aXZlOmhvdmVyIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzNmNTFiNTtcbiAgY29sb3I6ICNmZmY7XG59IiwiLnNpZGVuYXYtaGVhZGVyIHtcbiAgcGFkZGluZzogMjBweDtcbiAgYmFja2dyb3VuZDogIzQ3NWJjZjtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBjb2xvcjogI2ZmZjtcbn1cblxuLm1hdC1saXN0LWl0ZW0uYWN0aXZlIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzNmNTFiNTtcbiAgY29sb3I6ICNmZmY7XG59XG5cbi5tYXQtbGlzdC1pdGVtOmhvdmVyIHtcbiAgYmFja2dyb3VuZDogd2hpdGU7XG4gIGNvbG9yOiAjNDc1YmNmO1xufVxuXG4ubWF0LWxpc3QtaXRlbS5hY3RpdmU6aG92ZXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjM2Y1MWI1O1xuICBjb2xvcjogI2ZmZjtcbn0iXX0= */"]
+      directives: [_angular_material_icon__WEBPACK_IMPORTED_MODULE_3__["MatIcon"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgIf"], _angular_material_button__WEBPACK_IMPORTED_MODULE_5__["MatButton"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatNavList"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgForOf"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatListItem"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatLine"], _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_8__["MatTooltip"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatListIconCssMatStyler"], _angular_material_divider__WEBPACK_IMPORTED_MODULE_9__["MatDivider"]],
+      styles: [".sidenav-header[_ngcontent-%COMP%] {\n  padding: 20px;\n  background: #475bcf;\n  text-align: center;\n  color: #fff;\n}\n\n.mat-list-item.active[_ngcontent-%COMP%] {\n  background-color: #3f51b5;\n  color: #fff;\n}\n\n.mat-list-item[_ngcontent-%COMP%]:hover {\n  background: white;\n  color: #475bcf;\n}\n\n.mat-list-item.active[_ngcontent-%COMP%]:hover {\n  background-color: #3f51b5;\n  color: #fff;\n}\n\n[_nghost-%COMP%]     .mat-list-item-content {\n  padding: 0px !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2NyeXB0by9Qcm9qZWN0cy8tUmVhbGl0eVZpcnR1YWxWaXJ0dXJhbGl6ZXItSW50ZXJmYWNlL3NyYy9hcHAvZmlsZXN5c3RlbS9maWxlc3lzdGVtLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9maWxlc3lzdGVtL2ZpbGVzeXN0ZW0uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7QUNDRjs7QURFQTtFQUNFLHlCQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsaUJBQUE7RUFDQSxjQUFBO0FDQ0Y7O0FERUE7RUFDRSx5QkFBQTtFQUNBLFdBQUE7QUNDRjs7QURFQTtFQUNFLHVCQUFBO0FDQ0YiLCJmaWxlIjoic3JjL2FwcC9maWxlc3lzdGVtL2ZpbGVzeXN0ZW0uY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuc2lkZW5hdi1oZWFkZXIge1xuICBwYWRkaW5nOiAyMHB4O1xuICBiYWNrZ3JvdW5kOiAjNDc1YmNmO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIGNvbG9yOiAjZmZmO1xufVxuXG4ubWF0LWxpc3QtaXRlbS5hY3RpdmUge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjM2Y1MWI1O1xuICBjb2xvcjogI2ZmZjtcbn1cblxuLm1hdC1saXN0LWl0ZW06aG92ZXIge1xuICBiYWNrZ3JvdW5kOiB3aGl0ZTtcbiAgY29sb3I6ICM0NzViY2Y7XG59XG5cbi5tYXQtbGlzdC1pdGVtLmFjdGl2ZTpob3ZlciB7XG4gIGJhY2tncm91bmQtY29sb3I6ICMzZjUxYjU7XG4gIGNvbG9yOiAjZmZmO1xufVxuXG46aG9zdCA6Om5nLWRlZXAgLm1hdC1saXN0LWl0ZW0tY29udGVudCB7XG4gIHBhZGRpbmc6IDBweCAhaW1wb3J0YW50O1xufVxuIiwiLnNpZGVuYXYtaGVhZGVyIHtcbiAgcGFkZGluZzogMjBweDtcbiAgYmFja2dyb3VuZDogIzQ3NWJjZjtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBjb2xvcjogI2ZmZjtcbn1cblxuLm1hdC1saXN0LWl0ZW0uYWN0aXZlIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzNmNTFiNTtcbiAgY29sb3I6ICNmZmY7XG59XG5cbi5tYXQtbGlzdC1pdGVtOmhvdmVyIHtcbiAgYmFja2dyb3VuZDogd2hpdGU7XG4gIGNvbG9yOiAjNDc1YmNmO1xufVxuXG4ubWF0LWxpc3QtaXRlbS5hY3RpdmU6aG92ZXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjM2Y1MWI1O1xuICBjb2xvcjogI2ZmZjtcbn1cblxuOmhvc3QgOjpuZy1kZWVwIC5tYXQtbGlzdC1pdGVtLWNvbnRlbnQge1xuICBwYWRkaW5nOiAwcHggIWltcG9ydGFudDtcbn0iXX0= */"]
     });
     /*@__PURE__*/
 
@@ -2971,6 +3026,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "requestReadFile",
         value: function requestReadFile(file) {
           return this.http.post(SERVER_URL + "/readfile", file, httpOptions);
+        }
+      }, {
+        key: "requestRemoveItem",
+        value: function requestRemoveItem(file) {
+          return this.http.post(SERVER_URL + "/removeItem", file, httpOptions);
         }
       }]);
 
@@ -3222,28 +3282,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "estabishConnection",
         value: function estabishConnection(next) {
-          var _this6 = this;
+          var _this7 = this;
 
           // establish a new ws connection
           this.socket = new roslib__WEBPACK_IMPORTED_MODULE_2__["Ros"]({
             url: "ws://".concat(this.host, ":").concat(this.port)
           });
           this.socket.on('connection', function (response) {
-            _this6.updateConnectionStatus(true);
+            _this7.updateConnectionStatus(true);
 
-            console.log("Success! Connected to rosbridge on: ".concat(_this6.host, ":").concat(_this6.port));
+            console.log("Success! Connected to rosbridge on: ".concat(_this7.host, ":").concat(_this7.port));
             next(response);
           });
           this.socket.on('error', function (response) {
-            _this6.updateConnectionStatus(false);
+            _this7.updateConnectionStatus(false);
 
-            console.log("Error! Failed to connect to rosbridge on: ".concat(_this6.host, ":").concat(_this6.port));
+            console.log("Error! Failed to connect to rosbridge on: ".concat(_this7.host, ":").concat(_this7.port));
             next(response);
           });
           this.socket.on('close', function (response) {
-            _this6.updateConnectionStatus(false);
+            _this7.updateConnectionStatus(false);
 
-            console.log("Closed rosbridge connection on: ".concat(_this6.host, ":").concat(_this6.port));
+            console.log("Closed rosbridge connection on: ".concat(_this7.host, ":").concat(_this7.port));
             next(response);
           });
         }
@@ -3364,7 +3424,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "requestScannerStatus",
         value: function requestScannerStatus() {
-          var _this7 = this;
+          var _this8 = this;
 
           if (!this.scanService) {
             // ensure the scanner service has been created
@@ -3374,11 +3434,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var statusRequest = new roslib__WEBPACK_IMPORTED_MODULE_2__["ServiceRequest"]('status');
           this.scanService.callService(statusRequest, function (status) {
             if (status == 'on') {
-              _this7.updateScannerStatus(true);
+              _this8.updateScannerStatus(true);
             }
 
             if (status === 'off') {
-              _this7.updateScannerStatus(false);
+              _this8.updateScannerStatus(false);
             }
           });
         }
@@ -3617,16 +3677,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     function SidenavComponent_a_11_Template(rf, ctx) {
       if (rf & 1) {
-        var _r80 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r82 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "a", 6);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SidenavComponent_a_11_Template_a_click_0_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r80);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r82);
 
-          var ctx_r79 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+          var ctx_r81 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r79.toggleScanner();
+          return ctx_r81.toggleScanner();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-icon");
@@ -3643,16 +3703,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     function SidenavComponent_a_12_Template(rf, ctx) {
       if (rf & 1) {
-        var _r82 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r84 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "a", 6);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SidenavComponent_a_12_Template_a_click_0_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r82);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r84);
 
-          var ctx_r81 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+          var ctx_r83 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r81.toggleScanner();
+          return ctx_r83.toggleScanner();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-icon");
@@ -3697,20 +3757,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(SidenavComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this8 = this;
+          var _this9 = this;
 
           // subscribe to connection status
           this.__BridgeService.getConnnectionStatus().subscribe(function (status) {
-            _this8.isConnected = status; // update status in local component when changes
+            _this9.isConnected = status; // update status in local component when changes
 
-            if (_this8.isConnected) {
-              _this8.__ScannerService.requestScannerStatus();
+            if (_this9.isConnected) {
+              _this9.__ScannerService.requestScannerStatus();
             }
           }); // subscribe to scanner status
 
 
           this.__ScannerService.getScannerStatus().subscribe(function (status) {
-            _this8.isScanning = status;
+            _this9.isScanning = status;
           });
         }
       }, {
@@ -4002,39 +4062,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(StatusbarComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this9 = this;
+          var _this10 = this;
 
           // connect to rosbridge
           this.__BridgeService.estabishConnection(function (response) {
             if (response.type == "open") {
-              _this9.bridge_status_msg = "Connected";
-              _this9.bridge_status_icon = 'phonelink';
-              _this9.loading = false;
+              _this10.bridge_status_msg = "Connected";
+              _this10.bridge_status_icon = 'phonelink';
+              _this10.loading = false;
             }
 
             if (response.type == 'close') {
-              _this9.bridge_status_msg = 'Connection Closed';
-              _this9.bridge_status_icon = 'close';
-              _this9.loading = false;
+              _this10.bridge_status_msg = 'Connection Closed';
+              _this10.bridge_status_icon = 'close';
+              _this10.loading = false;
             }
 
             if (response.type == 'error') {
-              _this9.bridge_status_msg = "Connection Failed";
-              _this9.bridge_status_icon = 'error';
-              _this9.loading = false;
+              _this10.bridge_status_msg = "Connection Failed";
+              _this10.bridge_status_icon = 'error';
+              _this10.loading = false;
             }
           }); // subscribe to scanner status
 
 
           this.__ScannerService.getScannerStatus().subscribe(function (isScanning) {
             if (isScanning) {
-              _this9.scan_status_msg = 'Enabled';
-              _this9.scan_status_icon = 'cast';
+              _this10.scan_status_msg = 'Enabled';
+              _this10.scan_status_icon = 'cast';
             }
 
             if (!isScanning) {
-              _this9.scan_status_msg = 'Disabled';
-              _this9.scan_status_icon = 'close';
+              _this10.scan_status_msg = 'Disabled';
+              _this10.scan_status_icon = 'close';
             }
           });
         } // open/close left side navigation pane
