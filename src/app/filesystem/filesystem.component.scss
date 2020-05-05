@@ -19,3 +19,7 @@
   background-color: #3f51b5;
   color: #fff;
 }
+
+:host ::ng-deep .mat-list-item-content {
+  padding: 0px !important;
+}

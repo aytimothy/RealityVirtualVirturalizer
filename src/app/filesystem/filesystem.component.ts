@@ -54,17 +54,31 @@ export class FilesystemComponent implements OnInit {
           // output the data in a dialog
           this.__DialogService.openFileDialog(file)
             .afterClosed()
-            .subscribe()
+            .subscribe();
         }
         else {
           this.__DialogService.openConfirmDialog(
-            'The file no longer exists', 'Whoops', 'warning')
+            `${item.name} no longer exists, try refreshing`, 'Whoops', 'warning')
             .afterClosed()
             .subscribe()
         }
 
       });
     }
+  }
+
+  public removeItem(index: number, item: any): void {
+    this.__DataService.requestRemoveItem(item).subscribe((response: any) => {
+      if (response.valid) {
+        this.directoryList.splice(index, 1);
+      }
+      else {
+        this.__DialogService.openConfirmDialog(
+          `${item.name} no longer exists, try refreshing`, 'Whoops', 'warning')
+          .afterClosed()
+          .subscribe()
+      }
+    })
   }
 
 }

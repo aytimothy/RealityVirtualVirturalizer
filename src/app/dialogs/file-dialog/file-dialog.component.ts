@@ -12,16 +12,16 @@ export class FileDialogComponent {
   public isRawFormat: boolean = true;
   public isExpandFormat: boolean = false;
 
-  onDismiss(): void {
+  public onDismiss(): void {
     this.__DialogRef.close(false);
   }
 
-  public rawFormat() {
+  public rawFormat(): void {
     this.isExpandFormat = false;
     this.isRawFormat = true;
   }
 
-  public expandFormat() {
+  public expandFormat(): void {
     this.isExpandFormat = true;
     this.isRawFormat = false;
   }

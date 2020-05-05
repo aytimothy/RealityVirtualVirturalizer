@@ -26,4 +26,7 @@ export class DataService {
     return this.http.post(SERVER_URL + `/readfile`, file, httpOptions);
   }
 
+  requestRemoveItem(file: any) {
+    return this.http.post(SERVER_URL + `/removeItem`, file, httpOptions);
+  }
 }

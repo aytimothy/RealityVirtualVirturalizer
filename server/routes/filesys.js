@@ -123,4 +123,24 @@ router.post('/readfile', async function (req, res) {
     }
 });
 
+router.post('/removeItem', async function (req, res) {
+    let item = req.body;
+    if (fs.existsSync(item.path)) {
+        if (item.isDir) {
+            fs.rmdir(item.path, { recursive: true }, (error) => {
+                if (error) throw error;
+                res.send({ "valid": true });
+            });
+        } else {
+            fs.unlink(item.path, (error) => {
+                if (error) throw error;
+                res.send({ "valid": true });
+            });
+        }
+    }
+    else {
+        res.send({ "valid": false });
+    }
+});
+
 module.exports = router;
