@@ -7,10 +7,15 @@ using TMPro;
 
 public class ImageFileViewer : MonoBehaviour
 {
+    public FrameFileViewer FrameViewer;
+    public TextFileViewer TextViewer;
     public TMP_Text FileName;
     public Image ImageContent;
     public void Show(string filePath)
     {
+        // Ensure that the frame and text viewer gameobjects are not active
+        TextViewer.gameObject.SetActive(false);
+        FrameViewer.gameObject.SetActive(false);
         gameObject.SetActive(true);
         FileName.text = "<color=#FFFF00> File: </color>" + Path.GetFileName(filePath);
         ImageContent.sprite = LoadNewSprite(filePath);

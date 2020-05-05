@@ -7,6 +7,8 @@ using TMPro;
 
 public class TextFileViewer : MonoBehaviour
 {
+    public FrameFileViewer FrameViewer;
+    public ImageFileViewer ImageViewer;
     public TMP_Text FileName;
     public TMP_Text FileContent;
     RectTransform textTransform;
@@ -20,6 +22,9 @@ public class TextFileViewer : MonoBehaviour
     }
     public void Show(string filePath)
     {
+        // Ensure that the frame and image viewer gameobjects are not active
+        FrameViewer.gameObject.SetActive(false);
+        ImageViewer.gameObject.SetActive(false);
         gameObject.SetActive(true);
         FileName.text = "<color=#FFFF00> File: </color>" + Path.GetFileName(filePath);
         FileContent.text = File.ReadAllText(filePath);

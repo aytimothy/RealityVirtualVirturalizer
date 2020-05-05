@@ -14,6 +14,9 @@ public class ProjectFileViewerPanel : MonoBehaviour {
 
     public void XButton_OnClick() {
         PanelController.CloseButton_OnClick();
+        FrameViewer.gameObject.SetActive(false);
+        ImageViewer.gameObject.SetActive(false);
+        TextViewer.gameObject.SetActive(false);
     }
 
     public void Show(string filePath) {

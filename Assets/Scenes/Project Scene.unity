@@ -171,6 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c24ba0748d058146bd54b6740128513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FrameViewer: {fileID: 313543528}
+  TextViewer: {fileID: 1857046494}
   FileName: {fileID: 1890020246}
   ImageContent: {fileID: 1266594843}
 --- !u!1 &74318832
@@ -1937,6 +1939,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8499faed0251747428e405c0e17653bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TextViewer: {fileID: 1857046494}
+  ImageViewer: {fileID: 59709969}
   FileName: {fileID: 1114590434}
 --- !u!1 &314700432
 GameObject:
@@ -5979,7 +5983,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 514
+  m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -14798,6 +14802,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a817da1bdcefa144d96d9bd02d3fac03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FrameViewer: {fileID: 313543528}
+  ImageViewer: {fileID: 59709969}
   FileName: {fileID: 1253635631}
   FileContent: {fileID: 851889708}
 --- !u!1 &1859596874
