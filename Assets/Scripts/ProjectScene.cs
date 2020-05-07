@@ -113,4 +113,20 @@ public class ProjectManifest {
     public DateTime Created;
     public DateTime Modified;
     public List<string> Frames = new List<string>();
+    public ProjectManifestSettings settings = new ProjectManifestSettings();
+}
+
+[Serializable]
+public class ProjectManifestSettings {
+    public bool removeOutlierReadings;
+    public float outlierThreshold;
+    public float cameraDistance;
+    public float focalLength;
+
+    public ProjectManifestSettings() {
+        removeOutlierReadings = true;
+        outlierThreshold = 0.9f;
+        cameraDistance = 0.05f;     // 0.07f or 7cm if the lidar actually fit in the slot.
+        focalLength = 0.05f;        // 50mm aka. 5cm aka 0.05m
+    }
 }
