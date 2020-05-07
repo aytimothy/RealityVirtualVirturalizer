@@ -122,6 +122,7 @@ public class ProjectManifestSettings {
     public float outlierThreshold;
     public float cameraDistance;
     public float focalLength;
+    public float edgeLimit;
 
     public ProjectManifestSettings() {
         removeOutlierReadings = true;

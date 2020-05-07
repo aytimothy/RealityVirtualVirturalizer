@@ -6,6 +6,7 @@ using UnityEngine;
 public class ProjectReconstructPanel : MonoBehaviour {
     public TMP_InputField CameraDistanceInputField;
     public TMP_InputField FocalLengthInputField;
+    public TMP_InputField EdgeLengthLimitInputField;
     public ProjectScene SceneController;
     bool uiIsReadingFromDisk;
 
@@ -33,11 +34,24 @@ public class ProjectReconstructPanel : MonoBehaviour {
             SceneController.projectManifest.settings.focalLength = value;
         }
     }
+    public float EdgeLimit {
+        get {
+            if (SceneController.projectManifest.settings == null)
+                SceneController.projectManifest.settings = new ProjectManifestSettings();
+            return SceneController.projectManifest.settings.edgeLimit;
+        }
+        set {
+            if (SceneController.projectManifest.settings == null)
+                SceneController.projectManifest.settings = new ProjectManifestSettings();
+            SceneController.projectManifest.settings.edgeLimit = value;
+        }
+    }
 
     void OnEnable() {
         uiIsReadingFromDisk = true;
         CameraDistanceInputField.text = CameraDistance.ToString();
         FocalLengthInputField.text = FocalDistance.ToString();
+        EdgeLengthLimitInputField.text = EdgeLimit.ToString();
         uiIsReadingFromDisk = false;
     }
 
@@ -81,5 +95,14 @@ public class ProjectReconstructPanel : MonoBehaviour {
         float floatValue;
         if (float.TryParse(value, out floatValue))
             FocalDistance = floatValue;
+    }
+
+    public void EdgeLengthLimitInputField_OnEndEdit(string value) {
+        if (uiIsReadingFromDisk)
+            return;
+
+        float floatValue;
+        if (float.TryParse(value, out floatValue))
+            EdgeLimit = floatValue;
     }
 }
