@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProjectFileManagerPanel : MonoBehaviour {
     public FrameManager FrameManager;
@@ -12,6 +13,9 @@ public class ProjectFileManagerPanel : MonoBehaviour {
     public ProjectScene ProjectManager;
     public TMP_Text TotalFramesCountLabel;
     public TMP_Text TotalFrameSizeLabel;
+    public TMP_InputField OutlierCullThresholdInputField;
+    public Toggle CullOutlierToggle;
+    bool uiIsReadingFromDisk;
 
     public static string toImportFilePath;
     public string StorePath = "ImportedFrames";
@@ -84,7 +88,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
         FrameData frameData = new FrameData(importedFilePath, true);
         FrameManager.Frames.Add(frameData);
 
-        Vector3[] points = frameData.Data.ToVector3();
+        Vector3[] points = frameData.Data.ToVector3(CullOutliers, OutlierThreshold);
         foreach (Vector3 point in points)
             PointsManager.AddPoint(point);
         
@@ -116,5 +120,39 @@ public class ProjectFileManagerPanel : MonoBehaviour {
         }
 
         return relativePath;
+    }
+
+    public bool CullOutliers {
+        get {
+            if (ProjectManager.projectManifest.settings == null)
+                ProjectManager.projectManifest.settings = new ProjectManifestSettings();
+            return ProjectManager.projectManifest.settings.removeOutlierReadings;
+        }
+        set {
+            if (ProjectManager.projectManifest.settings == null)
+                ProjectManager.projectManifest.settings = new ProjectManifestSettings();
+            ProjectManager.projectManifest.settings.removeOutlierReadings = value;
+        }
+    }
+
+    public float OutlierThreshold {
+        get {
+            if (ProjectManager.projectManifest.settings == null)
+                ProjectManager.projectManifest.settings = new ProjectManifestSettings();
+            return ProjectManager.projectManifest.settings.outlierThreshold;
+        }
+        set {
+            if (ProjectManager.projectManifest.settings == null)
+                ProjectManager.projectManifest.settings = new ProjectManifestSettings();
+            ProjectManager.projectManifest.settings.outlierThreshold = value;
+        }
+    }
+
+    public void CullOutlierToggle_OnToggle(bool value) {
+        
+    }
+
+    public void OutlierCullThresholdInputField_OnEndEdit(string value) {
+
     }
 }

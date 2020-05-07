@@ -139,8 +139,8 @@ public class Frame {
         imgfmt = frame.imgfmt;
     }
 
-    public Vector3[] ToVector3() {
-        return ToVector3(this);
+    public Vector3[] ToVector3(bool removeOutliers = false, float outlierThreshold = 0.9f) {
+        return ToVector3(this, removeOutliers, outlierThreshold);
     }
 
     public static Vector3[] ToVector3(Frame frame, bool removeOutliers = false, float outlierThreshold = 0.9f) {
