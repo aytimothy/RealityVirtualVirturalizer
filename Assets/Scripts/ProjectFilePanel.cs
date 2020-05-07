@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using SFB;
 
 public class ProjectFilePanel : MonoBehaviour {
     public ProjectScene projectManager;
@@ -26,7 +27,18 @@ public class ProjectFilePanel : MonoBehaviour {
             LastUsedDirectory = directory;
             projectManager.LoadProject(directory);
         } */
-        DialogResult dialogResult = MessageBox.Show("Not Implemented.\nPlease re-open a project by closing and returning to the main menu.");
+        // DialogResult dialogResult = MessageBox.Show("Not Implemented.\nPlease re-open a project by closing and returning to the main menu.");
+
+        ExtensionFilter[] extensions = new[] {
+            new ExtensionFilter("Frame Files", "frame", "json" ),
+            new ExtensionFilter("All Files", "*" ),
+         };
+        string[] filePaths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, false);
+        if (filePaths.Length == 0)
+            return;
+
+        string filePath = Path.GetDirectoryName(filePaths[0]);
+        ProjectScene.StartupProjectPath = filePath;
     }
 
     public void SaveProjectButton_OnClick() {
