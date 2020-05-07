@@ -34,6 +34,13 @@ public class ProjectReconstructPanel : MonoBehaviour {
         }
     }
 
+    void OnEnable() {
+        uiIsReadingFromDisk = true;
+        CameraDistanceInputField.text = CameraDistance.ToString();
+        FocalLengthInputField.text = FocalDistance.ToString();
+        uiIsReadingFromDisk = false;
+    }
+
     public void ClassifyPointsButton_OnClick() {
 
     }
@@ -59,10 +66,20 @@ public class ProjectReconstructPanel : MonoBehaviour {
     }
 
     public void CameraDistanceInputField_OnEndEdit(string value) {
+        if (uiIsReadingFromDisk)
+            return;
 
+        float floatValue;
+        if (float.TryParse(value, out floatValue))
+            CameraDistance = floatValue;
     }
 
     public void CameraFocalLengthInputField_OnEndEdit(string value) {
-        
+        if (uiIsReadingFromDisk)
+            return;
+
+        float floatValue;
+        if (float.TryParse(value, out floatValue))
+            FocalDistance = floatValue;
     }
 }

@@ -36,6 +36,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
 
     void OnEnable() {
         UpdateLabels();
+        UpdateFields();
     }
 
     public void ImportFrameFileButton_OnClick() {
@@ -100,6 +101,13 @@ public class ProjectFileManagerPanel : MonoBehaviour {
         TotalFramesCountLabel.text = FrameManager.Frames.Count.ToString();
     }
 
+    public void UpdateFields() {
+        uiIsReadingFromDisk = true;
+        OutlierCullThresholdInputField.text = OutlierThreshold.ToString();
+        CullOutlierToggle.isOn = CullOutliers;
+        uiIsReadingFromDisk = false;
+    }
+
     // https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path
     public static String GetRelativePath(String fromPath, String toPath)
     {
@@ -149,10 +157,18 @@ public class ProjectFileManagerPanel : MonoBehaviour {
     }
 
     public void CullOutlierToggle_OnToggle(bool value) {
-        
+        if (uiIsReadingFromDisk)
+            return;
+
+        CullOutliers = value;
     }
 
     public void OutlierCullThresholdInputField_OnEndEdit(string value) {
+        if (uiIsReadingFromDisk)
+            return;
 
+        float floatValue;
+        if (float.TryParse(value, out floatValue))
+            OutlierThreshold = floatValue;
     }
 }
