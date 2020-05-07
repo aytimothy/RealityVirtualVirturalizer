@@ -27,7 +27,7 @@ public class OpenProjectButton : MonoBehaviour {
 
     public void Setup(TopScene sceneController, string projectFilePath) {
         try {
-            manifest = JsonConvert.DeserializeObject<ProjectManifest>(File.ReadAllText(projectFilePath + "manifest.json"));
+            manifest = JsonConvert.DeserializeObject<ProjectManifest>(File.ReadAllText(projectFilePath + "/manifest.json"));
         }
         catch (Exception ex) {
             Debug.LogException(ex);
@@ -40,6 +40,6 @@ public class OpenProjectButton : MonoBehaviour {
         nameLabel.text = (manifest == null) ? "<color=#FF0000>Error: Could not read manifest file...</color>" : manifest.Name;
         pathLabel.text = projectFilePath;
         modifiedLabel.text = (manifest == null) ? "Unknown" : manifest.Modified.ToShortDateString() + " " + manifest.Modified.ToShortTimeString();
-        string manifestFileContents = File.ReadAllText(projectFilePath + "manifest.json");
+        string manifestFileContents = File.ReadAllText(projectFilePath + "/manifest.json");
     }
 }

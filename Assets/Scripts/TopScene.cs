@@ -95,7 +95,15 @@ public class TopScene : MonoBehaviour {
     #endregion
 
     public void AddProject(string projectFilePath) {
-        DialogResult dialogResult = MessageBox.Show("Not Implemented Yet...", "Error!");
+        // DialogResult dialogResult = MessageBox.Show("Not Implemented Yet...", "Error!");
+        RecentProjectList recentProjects = JsonConvert.DeserializeObject<RecentProjectList>(ProjectHistory);
+
+        if (recentProjects.projectPaths.Contains(projectFilePath))
+            recentProjects.projectPaths.Remove(projectFilePath);
+        recentProjects.projectPaths.Add(projectFilePath);
+        ProjectHistory = JsonConvert.SerializeObject(recentProjects);
+
+        UpdateOpenProjectPanel();
     }
     public void OpenProject(string projectFilePath) {
         ProjectScene.StartupProjectPath = projectFilePath;
