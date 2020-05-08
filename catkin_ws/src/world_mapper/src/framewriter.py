@@ -83,7 +83,7 @@ def checkFrame():
     frame.intensities = laser_msg.intensities
     frame.img = image_msg.data
     frame.imgfmt = image_msg.format
-    if (frame.angle_increment >= 0.01):
+    if (frame.angle_increment <= 0.01):
         frame.angle_increment = (frame.angle_max - frame.angle_min) / (len(frame.ranges) - 1)
 
     j = json.loads("{}")
