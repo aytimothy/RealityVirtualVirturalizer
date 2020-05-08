@@ -43,7 +43,8 @@ public class FrameData {
     }
 
     public Frame LoadFrame() {
-        string frameString = File.ReadAllText(FilePath);
+        string fullFilePath = Path.GetFullPath(ProjectScene.CurrentProjectPath + FilePath);
+        string frameString = File.ReadAllText(fullFilePath);
         Data = JsonConvert.DeserializeObject<Frame>(frameString);
         loaded = true;
         return Data;
