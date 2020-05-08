@@ -139,11 +139,11 @@ public class Frame {
         imgfmt = frame.imgfmt;
     }
 
-    public Vector3[] ToVector3(bool removeOutliers = false, float outlierThreshold = 0.9f, bool useIntensity = true) {
-        return ToVector3(this, removeOutliers, outlierThreshold, useIntensity);
+    public Vector3[] ToVector3(bool removeOutliers = false, float outlierThreshold = 0.9f) {
+        return ToVector3(this, removeOutliers, outlierThreshold);
     }
 
-    public static Vector3[] ToVector3(Frame frame, bool removeOutliers = false, float outlierThreshold = 0.9f, bool useIntensity = true) {
+    public static Vector3[] ToVector3(Frame frame, bool removeOutliers = false, float outlierThreshold = 0.9f) {
         if (frame == null)
             return new Vector3[] { };
         List<Vector3> baseVectors = new List<Vector3>();
@@ -167,9 +167,7 @@ public class Frame {
         List<Vector3> results = new List<Vector3>();
         for (int i = 0; i < baseVectors.Count; i++) {
             Vector3 baseVector = baseVectors[i];
-            if (frame.ranges[i] >= frame.angle_max * outlierThreshold && removeOutliers && !useIntensity)
-                continue;
-            if (removeOutliers && useIntensity && frame.intensities[i] <= outlierThreshold)
+            if (frame.ranges[i] >= frame.angle_max * outlierThreshold && removeOutliers)
                 continue;
 
             float alpha = frame.rotX * Mathf.Deg2Rad;
