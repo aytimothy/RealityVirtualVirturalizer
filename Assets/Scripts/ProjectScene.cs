@@ -123,11 +123,13 @@ public class ProjectManifestSettings {
     public float cameraDistance;
     public float focalLength;
     public float edgeLimit;
+    public bool useIntensities;
 
     public ProjectManifestSettings() {
         removeOutlierReadings = true;
         outlierThreshold = 0.9f;
         cameraDistance = 0.05f;     // 0.07f or 7cm if the lidar actually fit in the slot.
-        focalLength = 0.05f;        // 50mm aka. 5cm aka 0.05m
+        focalLength = 0.05f;        // 50mm/5cm aka. 5cm aka 0.05m
+        useIntensities = true;
     }
 }

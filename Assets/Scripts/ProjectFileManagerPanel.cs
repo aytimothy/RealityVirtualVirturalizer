@@ -15,6 +15,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
     public TMP_Text TotalFrameSizeLabel;
     public TMP_InputField OutlierCullThresholdInputField;
     public Toggle CullOutlierToggle;
+    public Toggle UseIntensitiesToggle;
     bool uiIsReadingFromDisk;
 
     public static string toImportFilePath;
@@ -89,7 +90,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
         FrameData frameData = new FrameData(importedFilePath, true);
         FrameManager.Frames.Add(frameData);
 
-        Vector3[] points = frameData.Data.ToVector3(CullOutliers, OutlierThreshold);
+        Vector3[] points = frameData.Data.ToVector3(CullOutliers, OutlierThreshold, UseIntensities);
         foreach (Vector3 point in points)
             PointsManager.AddPoint(point);
         
@@ -105,6 +106,7 @@ public class ProjectFileManagerPanel : MonoBehaviour {
         uiIsReadingFromDisk = true;
         OutlierCullThresholdInputField.text = OutlierThreshold.ToString();
         CullOutlierToggle.isOn = CullOutliers;
+        UseIntensitiesToggle.isOn = UseIntensities;
         uiIsReadingFromDisk = false;
     }
 
@@ -156,6 +158,19 @@ public class ProjectFileManagerPanel : MonoBehaviour {
         }
     }
 
+    public bool UseIntensities {
+        get {
+            if (ProjectManager.projectManifest.settings == null)
+                ProjectManager.projectManifest.settings = new ProjectManifestSettings();
+            return ProjectManager.projectManifest.settings.useIntensities;
+        }
+        set {
+            if (ProjectManager.projectManifest.settings == null)
+                ProjectManager.projectManifest.settings = new ProjectManifestSettings();
+            ProjectManager.projectManifest.settings.useIntensities = value;
+        }
+    }
+
     public void CullOutlierToggle_OnToggle(bool value) {
         if (uiIsReadingFromDisk)
             return;
@@ -170,5 +185,12 @@ public class ProjectFileManagerPanel : MonoBehaviour {
         float floatValue;
         if (float.TryParse(value, out floatValue))
             OutlierThreshold = floatValue;
+    }
+
+    public void UseIntensitiesToggle_OnToggle(bool value) {
+        if (uiIsReadingFromDisk)
+            return;
+
+        UseIntensities = value;
     }
 }
