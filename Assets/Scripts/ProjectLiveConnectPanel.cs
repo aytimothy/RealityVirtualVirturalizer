@@ -30,8 +30,14 @@ public class ProjectLiveConnectPanel : MonoBehaviour {
         
     }
 
-    public void ServerInputField_OnTextChanged(string text) {
+    public void StartStopButton_OnClick() {
+        Connector.Awake();
+        Debug.Log(Connector.RosBridgeServerUrl);
+        Debug.Log(Connector.protocol);
+    }
 
+    public void ServerInputField_OnTextChanged(string text) {
+        LastServerURL = ServerInputField.text;
     }
 
     public void CommunicationMethodDropdown_OnValueChanged(int value) {
@@ -39,6 +45,6 @@ public class ProjectLiveConnectPanel : MonoBehaviour {
     }
 
     public void ROSTopicInputField_OnTextChanged(string text) {
-
+        LastROSTopic = "/" + ROSTopicInputField.text;
     }
 }
