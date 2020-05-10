@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { BridgeService } from '../services/rosbridge.service';
 import * as ROSLIB from 'roslib';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -31,10 +30,9 @@ export class ScannerService {
       this.scanService = this.__BridgeService.createService('/switch', 'world_mapper/string');
     }
 
-    var request = new ROSLIB.ServiceRequest({request: "status"});
-    this.scanService.callService(request, (res) => {
-      console.log("Status Message:");
-      console.log(res);
+    const request = new ROSLIB.ServiceRequest({ request: "status" });
+    this.scanService.callService(request, (res: any) => {
+      console.log("Scanner Status Message:\n", res);
       if (res.response == 'on') {
         this.updateScannerStatus(true);
       }
@@ -45,20 +43,18 @@ export class ScannerService {
   }
 
   public toggleScanner(status: boolean): void {
-    console.log("Current status of interface: " + status);
+
     if (status) {
-      var request = new ROSLIB.ServiceRequest({request: "stop"});
-      this.scanService.callService(request, (res) => {
-        console.log("Sent Stop:");
-        console.log(res)
+      const request = new ROSLIB.ServiceRequest({ request: "stop" });
+      this.scanService.callService(request, (res: any) => {
+        console.log("Sent Scanner Stop:\n", res);
         this.requestScannerStatus(); // update the scanner status
       });
     }
     if (!status) {
-      var request = new ROSLIB.ServiceRequest({request: "start"});
-      this.scanService.callService(request, (res) => {
-        console.log("Sent Start:");
-        console.log(res)
+      const request = new ROSLIB.ServiceRequest({ request: "start" });
+      this.scanService.callService(request, (res: any) => {
+        console.log("Sent Scanner Start:\n", res);
         this.requestScannerStatus(); // update the scanner status
       });
     }
