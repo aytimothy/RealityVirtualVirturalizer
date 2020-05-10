@@ -106,10 +106,9 @@ export class DashboardComponent implements AfterViewInit {
     window.dispatchEvent(new Event('resize'));
   }
 
-  private generatePoint(frames): void {
+  private generatePoint(frame): void {
     var baseVectors = [];
-    var frame = frames.default;
-
+    
     if (frame.angle_increment >= 0.1) {
       frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.length - 1);
     }
