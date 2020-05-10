@@ -168,41 +168,25 @@ Full build instructions can be found [here](https://github.com/aytimothy/Reality
 
 # 4. Usage
 
+## 4.1 Manual Startup
+
 First, boot it up...
 
-## 4.1 Start ROS
+Run `roscore`, ie.
 
-Start up ROS if it already isn't set in your launch commands.
-
-    roscore
+    screen -S roscore -d -m roscore
     
-## 4.2 Start the Sensors
+And finally use the start script.
 
-Start up the nodes for the sensors, if they are already not running.
-
-    rosrun urg_node urg_node
-    roslaunch video_stream_opencv webcam.launch
-    rosrun world_mapper imureader
-
-Press the button on the Arduino to reset the program so that it syncs with `rosserial_python`).
-
-## 4.3 Start the Data
-
-Just start up the frame writer.
-
-    rosrun world_mapper framewriter_python.py /path/to/wherever/you/want/to/store/your/frames
+    source ~/catkin_ws/start.sh
     
-For example:
+You can now access the web interface and start the sensors from there.
 
-    rosrun world_mapper framewriter_python.py ~/frames
+## 4.2 Automatic Startup
 
-## 4.4 Start the Interface
+First, copy `/catkin_ws/rvv_startup.sh` to `/etc/init.d/`.
 
-Ensure you have built your interface with:
+Then, add it to the list of scripts to run on startup.
 
-    cd ~/Downloads/RealityVirtualVirturalizer/web/-RealityVirtualVirturalizer-Interface/
-    ng build
-    
-Finally, just run the Node.js server located in `-RealityVirtualVirturalizer-Interface/Server`
-
-    node ./Server/server.js
+    sudo update-rc.d /etc/init.d/rvv_startup.sh defaults
+    chmod +x /etc/init.d/rvv_startup.sh
