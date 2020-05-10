@@ -1,3 +1,5 @@
+#!/bin/bash
+
 screen -XS framewriter quit
 screen -XS videostream quit
 screen -XS urgnode quit

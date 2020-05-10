@@ -1,5 +1,7 @@
+#! /usr/bin/env python2
+import os
 import rospy
-from world_mapper.srv import string
+from world_mapper.srv import string, stringResponse
 import subprocess
 
 status = "off"
@@ -7,29 +9,32 @@ running = False
 rc = None
 
 def turn_on():
-    rc = subprocess.call("~/catkin_ws/switch_start.sh")
-
-    running = False
+    global status, running
+    # os.path.abspath is stupid "~/" is not "/home/aytimothy/"; it's "/home/aytimothy/~/"
+    scriptpath = "/home/aytimothy/catkin_ws/switch_start.sh"
+    rc = subprocess.call(scriptpath)
+    status = "on"
     
 def turn_off():
-    rc = subprocess.call("~/catkin_ws/switch_stop.sh")
-
-    running = False
+    global status, running
+    scriptpath = "/home/aytimothy/catkin_ws/switch_stop.sh"
+    rc = subprocess.call(scriptpath)
+    status = "off"
 
 def handle_request(req):
-    if req.input == "status":
-        return string(status)
+    if req.request == "status":
+        return stringResponse(status)
     if running == True:
-        return string("error")
-    if req.input == "start" and status == "off":
+        return stringResponse("error")
+    if req.request == "start" and status == "off":
         turn_on()
-        return string("success")
-    elif req.input == "stop" and status == "on":
+        return stringResponse("success")
+    elif req.request == "stop" and status == "on":
         turn_off()
-        return string("success")
+        return stringResponse("success")
     else:
-        return string("failure")
-    return string("error")
+        return stringResponse("failure")
+    return stringResponse("error")
 
 def main():
     rospy.init_node("world_mapper_switch")
