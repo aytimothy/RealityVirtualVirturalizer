@@ -22,6 +22,7 @@ def turn_off():
     status = "off"
 
 def handle_request(req):
+    global status, running
     if req.request == "status":
         return stringResponse(status)
     if running == True:
