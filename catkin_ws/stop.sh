@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Kill everything!
+screen -XS roscore quit
 screen -XS rosswitch quit
 screen -XS framewriter quit
 screen -XS rosbridge quit
