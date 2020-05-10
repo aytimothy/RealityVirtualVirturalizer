@@ -28,31 +28,39 @@ export class ScannerService {
 
   public requestScannerStatus() {
     if (!this.scanService) {  // ensure the scanner service has been created
-      this.scanService = this.__BridgeService.createService('/switch', 'string');
+      this.scanService = this.__BridgeService.createService('/switch', 'world_mapper/string');
     }
 
-    const statusRequest = new ROSLIB.ServiceRequest('status');
-
-    this.scanService.callService(statusRequest, (status: any) => {
-      if (status == 'on') {
+    var request = new ROSLIB.ServiceRequest({request: "status"});
+    this.scanService.callService(request, (res) => {
+      console.log("Status Message:");
+      console.log(res);
+      if (res.response == 'on') {
         this.updateScannerStatus(true);
       }
-      if (status === 'off') {
+      if (res.response === 'off') {
         this.updateScannerStatus(false);
       }
     });
   }
 
   public toggleScanner(status: boolean): void {
+    console.log("Current status of interface: " + status);
     if (status) {
-      var stopRequest = new ROSLIB.ServiceRequest('stop');
-      this.scanService.callService(stopRequest)
-      this.requestScannerStatus() // update the scanner status
+      var request = new ROSLIB.ServiceRequest({request: "stop"});
+      this.scanService.callService(request, (res) => {
+        console.log("Sent Stop:");
+        console.log(res)
+        this.requestScannerStatus(); // update the scanner status
+      });
     }
     if (!status) {
-      var startRequest = new ROSLIB.ServiceRequest('start');
-      this.scanService.callService(startRequest);
-      this.requestScannerStatus() // update the scanner status
+      var request = new ROSLIB.ServiceRequest({request: "start"});
+      this.scanService.callService(request, (res) => {
+        console.log("Sent Start:");
+        console.log(res)
+        this.requestScannerStatus(); // update the scanner status
+      });
     }
   }
 }
