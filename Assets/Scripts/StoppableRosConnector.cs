@@ -11,9 +11,12 @@ public class StoppableRosConnector : RosConnector {
         set { enabled = value; }
     }
 
+    public override void Awake() {
+        // Do nada.
+    }
+
     public virtual void OnEnable() {
-        IsConnected = new ManualResetEvent(false);
-        ConnectAndWait();
+        base.Awake();
     }
 
     public virtual void OnDisable() {
@@ -24,7 +27,8 @@ public class StoppableRosConnector : RosConnector {
     protected override void ConnectAndWait() {
         RosSocket = ConnectToRos(protocol, RosBridgeServerUrl, OnConnected, OnClosed, Serializer);
 
-        if (!IsConnected.WaitOne(SecondsTimeout * 1000)) {
+        bool connected = IsConnected.WaitOne(SecondsTimeout * 1000);
+        if (!connected) {
             Debug.LogWarning("Failed to connect to RosBridge at: " + RosBridgeServerUrl, gameObject);
             RosSocket = null;
             enabled = false;

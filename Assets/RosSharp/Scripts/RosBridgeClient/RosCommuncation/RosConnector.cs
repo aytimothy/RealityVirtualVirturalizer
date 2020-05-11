@@ -56,8 +56,7 @@ namespace RosSharp.RosBridgeClient
             return new RosSocket(protocol, serializer);
         }
 
-        protected void OnApplicationQuit()
-        {
+        protected void OnApplicationQuit() {
             RosSocket.Close();
         }
 

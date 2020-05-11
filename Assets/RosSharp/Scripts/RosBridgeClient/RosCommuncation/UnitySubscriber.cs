@@ -40,6 +40,14 @@ namespace RosSharp.RosBridgeClient
                 Debug.LogWarning("Failed to subscribe: RosConnector not connected");
 
             rosConnector.RosSocket.Subscribe<T>(Topic, ReceiveMessage, (int)(TimeStep * 1000)); // the rate(in ms in between messages) at which to throttle the topics
+            Debug.Log("Connected to rosbridge at: " + rosConnector.RosBridgeServerUrl);
+        }
+
+        public void Subscribe(RosConnector connector) {
+            if (!connector.IsConnected.WaitOne(SecondsTimeout * 1000))
+                return;
+            connector.RosSocket.Subscribe<T>(Topic, ReceiveMessage, (int) (TimeStep * 1000));
+            Debug.Log("Connected to rosbridge at: " + connector.RosBridgeServerUrl);
         }
 
         protected abstract void ReceiveMessage(T message);

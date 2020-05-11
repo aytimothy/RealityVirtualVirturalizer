@@ -12,25 +12,23 @@ public class FrameListener : UnitySubscriber<ROSFrame> {
     public string StorePath = "ROSFrames";
     public string FileName = "Frame";
     public string FileExtension = ".json";
+    public bool isConnectorRunning = false;
 
     public int Count {
         get { return Manager.Frames.Count; }
     }
-    public string LastServerURL {
-        get { return PlayerPrefs.GetString("LastROSServerAddress", "ws://127.0.0.1:9090"); }
-        set { PlayerPrefs.SetString("LastROSServerAddress", value); }
-    }
-    public string LastROSTopic {
-        get { return PlayerPrefs.GetString("LastROSTopic", "output"); }
-        set { PlayerPrefs.SetString("LastROSTopic", value); }
-    }
 
-    void Awake() {
-        Connector.RosBridgeServerUrl = LastServerURL;
-        Topic = LastROSTopic;
+    void Update() {
+        if (Connector.enabled != isConnectorRunning) {
+            isConnectorRunning = Connector.enabled;
+            if (Connector.enabled) {
+                Subscribe(Connector);
+            }
+        }
     }
 
     protected override void ReceiveMessage(ROSFrame message) {
+        Debug.Log("I received a frame!");
         Frame frame = new Frame(message);
         string frameJson = JsonConvert.SerializeObject(frame);
         if (!Directory.Exists(ProjectScene.CurrentProjectPath + "/" + StorePath + "/"))

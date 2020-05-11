@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using RosSharp.RosBridgeClient;
 using TMPro;
@@ -15,7 +16,7 @@ public class ProjectLiveConnectPanel : MonoBehaviour {
 
     [Header("References")]
     public FrameListener Listener;
-    public RosConnector Connector;
+    public StoppableRosConnector Connector;
 
     public string LastServerURL {
         get { return PlayerPrefs.GetString("LastROSServerAddress", "ws://127.0.0.1:9090"); }
@@ -25,26 +26,40 @@ public class ProjectLiveConnectPanel : MonoBehaviour {
         get { return PlayerPrefs.GetString("LastROSTopic", "output"); }
         set { PlayerPrefs.SetString("LastROSTopic", value); }
     }
+    bool isReadingFromPrefs = false;
 
     void OnEnable() {
-        
+        isReadingFromPrefs = true;
+        ROSTopicInputField.text = LastROSTopic;
+        ServerInputField.text = LastServerURL;
+        isReadingFromPrefs = false;
+    }
+
+    void Update() {
+        StartStopButtonLabel.text = (Connector.enabled) ? "Disconnect" : "Connect";
     }
 
     public void StartStopButton_OnClick() {
-        Connector.Awake();
-        Debug.Log(Connector.RosBridgeServerUrl);
-        Debug.Log(Connector.protocol);
+        if (!Connector.enabled) {
+            Connector.RosBridgeServerUrl = LastServerURL;
+            Listener.Topic = "/" + LastROSTopic;
+        }
+        Connector.enabled = !Connector.enabled;
     }
 
     public void ServerInputField_OnTextChanged(string text) {
-        LastServerURL = ServerInputField.text;
+        if (isReadingFromPrefs)
+            return;
+        LastServerURL = text;
     }
 
     public void CommunicationMethodDropdown_OnValueChanged(int value) {
-
+        throw new NotImplementedException();
     }
 
     public void ROSTopicInputField_OnTextChanged(string text) {
-        LastROSTopic = "/" + ROSTopicInputField.text;
+        if (isReadingFromPrefs)
+            return;
+        LastROSTopic = text;
     }
 }
