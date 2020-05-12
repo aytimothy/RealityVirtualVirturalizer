@@ -2,13 +2,29 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProjectReconstructPanel : MonoBehaviour {
+    public TMP_Text StampDotButtonLabel;
+    public Button StampDotButton;
+    public CheatDotStamper CheatDotStamper;
     public TMP_InputField CameraDistanceInputField;
     public TMP_InputField FocalLengthInputField;
     public TMP_InputField EdgeLengthLimitInputField;
     public ProjectScene SceneController;
     bool uiIsReadingFromDisk;
+
+    void Update() {
+        UpdateStampButton();
+
+        void UpdateStampButton() {
+            bool StamperInProgress = CheatDotStamper.progress >= 0f && CheatDotStamper.progress < 1f;
+            StampDotButton.interactable = !StamperInProgress;
+            StampDotButtonLabel.text = (StamperInProgress)
+                ? "Stamping... " + Mathf.RoundToInt(CheatDotStamper.progress * 100f).ToString() + "%"
+                : "Stamp Point Color";
+        }
+    }
 
     public float CameraDistance {
         get {
@@ -60,7 +76,8 @@ public class ProjectReconstructPanel : MonoBehaviour {
     }
 
     public void StampPointsButton_OnClick() {
-
+        if (CheatDotStamper.progress < 0 || CheatDotStamper.progress >= 1)
+            CheatDotStamper.Stamp();
     }
 
     public void GenerateMeshButton_OnClick() {
