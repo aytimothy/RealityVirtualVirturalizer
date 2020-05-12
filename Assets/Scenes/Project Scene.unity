@@ -1552,6 +1552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63acc8dbdf868a347884d95b920317a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PointManager: {fileID: 1840801254}
   StampDotButtonLabel: {fileID: 1082431110538646500}
   StampDotButton: {fileID: 1082431110185703716}
   CheatDotStamper: {fileID: 1193135519}

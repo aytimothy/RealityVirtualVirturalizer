@@ -1,10 +1,15 @@
-﻿using System.Collections;
+﻿using String = System.String;
+using SFB;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ProjectReconstructPanel : MonoBehaviour {
+    public PointCloudManager PointManager;
     public TMP_Text StampDotButtonLabel;
     public Button StampDotButton;
     public CheatDotStamper CheatDotStamper;
@@ -13,6 +18,14 @@ public class ProjectReconstructPanel : MonoBehaviour {
     public TMP_InputField EdgeLengthLimitInputField;
     public ProjectScene SceneController;
     bool uiIsReadingFromDisk;
+
+    public string DefaultDirectory {
+        get { return Application.persistentDataPath; }
+    }
+    public string LastUsedDirectory {
+        get { return PlayerPrefs.GetString("LastUsedDirectory", DefaultDirectory); }
+        set { PlayerPrefs.SetString("LastUsedDirectory", value); }
+    }
 
     void Update() {
         UpdateStampButton();
@@ -93,7 +106,41 @@ public class ProjectReconstructPanel : MonoBehaviour {
     }
 
     public void ExportVertexButton_OnClick() {
+        bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        string filePath = StandaloneFileBrowser.SaveFilePanel("Save Vertices", LastUsedDirectory, "points", ".json");
+        if (!String.IsNullOrEmpty(filePath)) {
+            LastUsedDirectory = Path.GetDirectoryName(filePath);
 
+            if (shiftHeld)
+                ExportVectorArray();
+            if (!shiftHeld)
+                ExportNamedVectors();
+        }
+
+        void ExportVectorArray() {
+            VectorArrayExportFileFormat data = new VectorArrayExportFileFormat();
+            foreach (GameObject point in PointManager.PointObjects) {
+                data.points.Add(new float[3] { point.transform.position.x, point.transform.position.y, point.transform.position.z });
+            }
+
+            string json = JsonConvert.SerializeObject(data);
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+            File.WriteAllText(filePath, json);
+            
+        }
+
+        void ExportNamedVectors() {
+            NamedVectorArrayExportFileFormat data = new NamedVectorArrayExportFileFormat();
+            foreach (GameObject point in PointManager.PointObjects) {
+                data.points.Add(new NamedVector3() { x = point.transform.position.x, y = point.transform.position.y, z = point.transform.position.z });
+            }
+
+            string json = JsonConvert.SerializeObject(data);
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+            File.WriteAllText(filePath, json);
+        }
     }
 
     public void CameraDistanceInputField_OnEndEdit(string value) {
@@ -122,4 +169,18 @@ public class ProjectReconstructPanel : MonoBehaviour {
         if (float.TryParse(value, out floatValue))
             EdgeLimit = floatValue;
     }
+}
+
+public class VectorArrayExportFileFormat {
+    public List<float[]> points = new List<float[]>();
+}
+
+public class NamedVectorArrayExportFileFormat {
+    public List<NamedVector3> points = new List<NamedVector3>();
+}
+
+public class NamedVector3 {
+    public float x;
+    public float y;
+    public float z;
 }
