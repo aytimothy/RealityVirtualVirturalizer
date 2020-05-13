@@ -31,7 +31,7 @@ public class FrameFileViewer : MonoBehaviour
         FileName.text = "<color=#FFFF00> File: </color>" + Path.GetFileName(filePath);
 
         // Load the frame data
-        FrameData data = new FrameData(filePath);
+        FrameData data = new FrameData(ProjectFileManagerPanel.GetRelativePath(ProjectScene.CurrentProjectPath, filePath));
         Frame frame = data.LoadFrame();
 
         // Assign the data to the FileContent
