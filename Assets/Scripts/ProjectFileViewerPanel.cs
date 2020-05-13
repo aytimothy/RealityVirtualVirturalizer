@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using TMPro;
-public class ProjectFileViewerPanel : MonoBehaviour {
+public class ProjectFileViewerPanel : MonoBehaviour
+{
     public FrameFileViewer FrameViewer;
     public ImageFileViewer ImageViewer;
     public TextFileViewer TextViewer;
@@ -12,26 +14,35 @@ public class ProjectFileViewerPanel : MonoBehaviour {
     public GameObject NotFoundLabel;
     public MainPanelController PanelController;
 
-    public void XButton_OnClick() {
+    public void XButton_OnClick()
+    {
         PanelController.CloseButton_OnClick();
         FrameViewer.gameObject.SetActive(false);
         ImageViewer.gameObject.SetActive(false);
         TextViewer.gameObject.SetActive(false);
     }
 
-    public void Show(string filePath) {
+    public void Show(string filePath)
+    {
         IncompatibleTypeLabel.SetActive(false);
-        if (!File.Exists(filePath)) {
+        if (!File.Exists(filePath))
+        {
             NotFoundLabel.SetActive(true);
             return;
         }
         PanelController.OpenButton_OnClick(5);
-        
+
         string extension = Path.GetExtension(filePath);
         extension = extension.Trim(new char[] { '.', ' ' });
-        switch (extension) {
+        
+        switch (extension)
+        {
             case "json":
-                FrameViewer.Show(filePath);
+                bool isFrame = IsValidFrame(filePath);
+                if (isFrame)
+                    FrameViewer.Show(filePath);
+                else
+                    TextViewer.Show(filePath);
                 break;
             case "png":
                 ImageViewer.Show(filePath);
@@ -66,5 +77,14 @@ public class ProjectFileViewerPanel : MonoBehaviour {
                 TextViewer.Show(filePath);
                 break;
         }
+    }
+    public bool IsValidFrame(string filePath)
+    {
+        var data = JsonConvert.DeserializeObject<Frame>(File.ReadAllText(filePath));
+
+        if (data.frameid != null && data.seq != null)
+            return true;
+        else
+            return false;
     }
 }
