@@ -33,7 +33,7 @@ namespace RosSharp.RosBridgeClient
             new Thread(Subscribe).Start();
         }
 
-        private void Subscribe()
+        protected void Subscribe()
         {
             if (!rosConnector.IsConnected.WaitOne(SecondsTimeout * 1000))
                 Debug.LogWarning("Failed to subscribe: RosConnector not connected");
