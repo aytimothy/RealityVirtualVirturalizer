@@ -12,7 +12,7 @@ public class StoppableRosConnector : RosConnector {
     }
 
     public override void Awake() {
-        // Do nada.
+        IsConnected = new ManualResetEvent(false);
     }
 
     public virtual void OnEnable() {

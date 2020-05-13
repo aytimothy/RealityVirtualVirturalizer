@@ -4,6 +4,7 @@ using RosSharp.RosBridgeClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 
 public class FrameListener : UnitySubscriber<ROSFrame> {
@@ -17,11 +18,15 @@ public class FrameListener : UnitySubscriber<ROSFrame> {
         get { return Manager.Frames.Count; }
     }
 
+    protected override void Start() {
+        rosConnector = GetComponent<RosConnector>();
+    }
+
     void Update() {
         if (rosConnector.enabled != isConnectorRunning) {
             isConnectorRunning = rosConnector.enabled;
             if (rosConnector.enabled) {
-                Subscribe(rosConnector);
+                new Thread(Subscribe).Start();
             }
         }
     }

@@ -24,8 +24,8 @@ namespace RosSharp.RosBridgeClient
         public string Topic;
         public float TimeStep;
 
-        protected RosConnector rosConnector;
-        private readonly int SecondsTimeout = 1;
+        public RosConnector rosConnector;
+        public int SecondsTimeout = 1;
 
         protected virtual void Start()
         {
@@ -35,7 +35,6 @@ namespace RosSharp.RosBridgeClient
 
         private void Subscribe()
         {
-
             if (!rosConnector.IsConnected.WaitOne(SecondsTimeout * 1000))
                 Debug.LogWarning("Failed to subscribe: RosConnector not connected");
 
