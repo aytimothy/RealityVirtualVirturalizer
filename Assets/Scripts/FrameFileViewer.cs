@@ -35,49 +35,7 @@ public class FrameFileViewer : MonoBehaviour
         Frame frame = data.LoadFrame();
 
         // Assign the data to the FileContent
-        FileContent.text =
-            "seq: " + frame.seq.ToString() + "\n" +
-            "timestamp: " + frame.timestamp.ToString() + "\n" +
-            "frameid: " + frame.frameid.ToString() + "\n" +
-            "posX: " + frame.posX.ToString() + "\n" +
-            "posY: " + frame.posY.ToString() + "\n" +
-            "posZ: " + frame.posZ.ToString() + "\n" +
-            "rotX: " + frame.rotX.ToString() + "\n" +
-            "rotY: " + frame.rotY.ToString() + "\n" +
-            "rotZ: " + frame.rotZ.ToString() + "\n" +
-            "accX: " + frame.accX.ToString() + "\n" +
-            "accY: " + frame.accY.ToString() + "\n" +
-            "accZ: " + frame.accZ.ToString() + "\n" +
-            "gyrX: " + frame.gyrX.ToString() + "\n" +
-            "gyrY: " + frame.gyrY.ToString() + "\n" +
-            "gyrZ: " + frame.gyrZ.ToString() + "\n" +
-            "angle min: " + frame.angle_min.ToString() + "\n" +
-            "angle max: " + frame.angle_max.ToString() + "\n" +
-            "angle increment: " + frame.angle_increment.ToString() + "\n" +
-            "range min: " + frame.range_min.ToString() + "\n" +
-            "range max: " + frame.range_max.ToString() + "\n" +
-            "ranges: " + "\n";
-
-        // Append ranges list
-        if (frame.ranges != null)
-        {
-            foreach (float range in frame.ranges)
-            {
-                FileContent.text += range.ToString() + ", ";
-            }
-        }
-        // Append intensitites list
-        FileContent.text += "\nintensities: " + "\n";
-
-        if (frame.intensities != null)
-        {
-            foreach (float intensity in frame.intensities)
-            {
-                FileContent.text += intensity.ToString() + ", ";
-            }
-        }
-        // Append image format
-        FileContent.text += "\nimgfmt: " + frame.imgfmt;
+        FileContent.text = JsonUtility.ToJson(frame, true);
 
         /*try
         {
