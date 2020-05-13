@@ -24,7 +24,7 @@ namespace RosSharp.RosBridgeClient
         public string Topic;
         public float TimeStep;
 
-        private RosConnector rosConnector;
+        protected RosConnector rosConnector;
         private readonly int SecondsTimeout = 1;
 
         protected virtual void Start()

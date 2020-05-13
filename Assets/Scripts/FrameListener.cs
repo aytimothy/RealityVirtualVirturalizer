@@ -7,7 +7,6 @@ using System.IO;
 using UnityEngine;
 
 public class FrameListener : UnitySubscriber<ROSFrame> {
-    public RosConnector Connector;
     public FrameManager Manager;
     public string StorePath = "ROSFrames";
     public string FileName = "Frame";
@@ -19,10 +18,10 @@ public class FrameListener : UnitySubscriber<ROSFrame> {
     }
 
     void Update() {
-        if (Connector.enabled != isConnectorRunning) {
-            isConnectorRunning = Connector.enabled;
-            if (Connector.enabled) {
-                Subscribe(Connector);
+        if (rosConnector.enabled != isConnectorRunning) {
+            isConnectorRunning = rosConnector.enabled;
+            if (rosConnector.enabled) {
+                Subscribe(rosConnector);
             }
         }
     }
