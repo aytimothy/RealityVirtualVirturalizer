@@ -1,0 +1,55 @@
+﻿using System;
+public class Frame
+{
+    /*public uint seq;
+    public double timestamp;
+    public string frameId;
+    public float posX;
+    public float posY;
+    public float posZ;
+    public float rotX;
+    public float rotY;
+    public float rotZ;
+    public float accX;
+    public float accY;
+    public float accZ;
+    public float gyrX;
+    public float gyrY;
+    public float gyrZ;
+    public float angle_min;
+    public float angle_max;
+    public float angle_increment;
+    public float range_min;
+    public float range_max;
+    public float[] ranges;
+    public float[] intensities;
+    public uint width;
+    public uint height;
+    public uint depth;
+    public uint rowSize;
+    public byte[] image;*/
+    public uint seq;
+    public float timestamp;
+    public string frameid;
+    public float posX;
+    public float posY;
+    public float posZ;
+    public float rotX;
+    public float rotY;
+    public float rotZ;
+    public float accX;
+    public float accY;
+    public float accZ;
+    public float gyrX;
+    public float gyrY;
+    public float gyrZ;
+    public float angle_min;
+    public float angle_max;
+    public float angle_increment;
+    public float range_min;
+    public float range_max;
+    public float[] ranges = new float[] { };
+    public float[] intensities = new float[] { };
+    public byte[] img = new byte[] { };
+    public string imgfmt;
+}
