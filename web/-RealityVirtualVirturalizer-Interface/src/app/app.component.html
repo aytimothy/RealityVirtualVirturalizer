@@ -1,0 +1,29 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <!-- sidenav  -->
+  <mat-sidenav-container autosize>
+
+    <!-- left sidenav  panel -->
+    <mat-sidenav #left id="left-sidenav" mode="side" position="start" opened>
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+
+    <!-- right sidenav panel -->
+    <mat-sidenav #right id="right-sidenav" mode="side" position="end" opened>
+      <app-filesystem></app-filesystem>
+    </mat-sidenav>
+    <!-- end of right side panel-->
+
+    <mat-sidenav-content>
+      <main>
+        <router-outlet>
+        </router-outlet>
+      </main>
+      <app-statusbar></app-statusbar>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</body>

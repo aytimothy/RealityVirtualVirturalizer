@@ -1,0 +1,27 @@
+  <div class="sidenav-header">
+    <mat-icon>3d_rotation</mat-icon>
+    <span style="margin:0;" class="mat-display-1">Lidar</span>
+  </div>
+  <mat-nav-list>
+    <section class="mat-typography">
+      <a mat-list-item [routerLink]="'dashboard'">
+        <mat-icon>dashboard</mat-icon>Dashboard
+      </a>
+      <a mat-list-item *ngIf="isConnected && isScanning" (click)="toggleScanner()">
+        <mat-icon>cast</mat-icon>Stop Scanning
+      </a>
+      <a mat-list-item *ngIf="isConnected && !isScanning" (click)="toggleScanner()">
+        <mat-icon>cast</mat-icon>Start Scanning
+      </a>
+      <a mat-list-item *ngIf="isConnected">
+        <mat-icon>settings_overscan</mat-icon>Calibrate Position
+      </a>
+      <a mat-list-item (click)="configureRosBridge()">
+        <mat-icon>settings</mat-icon>Configure Rosbridge
+      </a>
+    </section>
+  </mat-nav-list>
+  <section class="img-container">
+    <h4 class="headline-title">Powered by</h4>
+    <img matListAvatar src="assets/ros_logo.png">
+  </section>

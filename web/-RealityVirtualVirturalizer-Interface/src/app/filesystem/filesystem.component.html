@@ -1,0 +1,31 @@
+<div class="sidenav-header">
+  <h2 style="margin:0;">
+    <mat-icon>file_copy</mat-icon> Browse Data
+  </h2>
+</div>
+<button mat-button *ngIf="selectedFolderName" (click)="directoryListing()">
+  <mat-icon>keyboard_arrow_left</mat-icon>
+  {{selectedFolderName}}
+</button>
+<button mat-button (click)="directoryListing()">
+  <mat-icon>refresh</mat-icon>
+  Refresh
+</button>
+<mat-nav-list>
+  <mat-list-item *ngFor="let item of directoryList; let index = index" [class.active]="selectedItemIndex === index">
+    <div matLine>
+      <button mat-button matTooltip="Open {{item.name}}" (click)="navigateFileSystem(index, item)">
+        <mat-icon *ngIf="item.isDir" mat-list-icon>folder</mat-icon>
+        <mat-icon *ngIf="!item.isDir" mat-list-icon>file_copy</mat-icon>
+        {{item.name}}
+      </button>
+    </div>
+    <button mat-icon-button matTooltip="Remove" (click)="removeItem(index, item)">
+      <mat-icon mat-list-icon>delete</mat-icon>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-icon-button (click)="navigateFileSystem(index, item)">
+      <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-nav-list>

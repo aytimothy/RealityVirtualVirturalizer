@@ -1,0 +1,24 @@
+/*Side Navigation*/
+#left-sidenav {
+  width: 260px;
+  color: #fff;
+  background: #3f51b5;
+  text-align: center;
+}
+
+#right-sidenav {
+  width: 260px;
+}
+
+main {
+  height: 80vh;
+  background-color: #fff;
+}
+
+html,
+body,
+.mat-sidenav-container,
+.material-app {
+  height: 100%;
+  width: 100%;
+}

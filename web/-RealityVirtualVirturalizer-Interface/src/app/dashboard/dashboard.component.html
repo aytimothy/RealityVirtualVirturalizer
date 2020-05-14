@@ -1,0 +1,123 @@
+<div *ngIf="isConnected && isScanning" class="row no-gutters">
+  <!-- toolbar displays dashboard options-->
+  <mat-toolbar id="options-bar">
+    <span>
+      <button mat-flat-button (click)="startListening()" *ngIf="!listeningForMessages">
+        <mat-icon>sync_alt</mat-icon>
+        Listen for messages
+      </button>
+      <button mat-flat-button (click)="stopListening()" *ngIf="listeningForMessages">
+        <mat-icon>sync_alt</mat-icon>
+        Stop Listening
+      </button>
+      <button mat-flat-button matTooltip="New Scene" (click)="createNewScene()" *ngIf="listeningForMessages">
+        <mat-icon>refresh</mat-icon>
+        New Scene
+      </button>
+    </span>
+    <span class="spacer"></span>
+    <span *ngIf="listeningForMessages">
+      <button mat-icon-button matTooltip="Display Options" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+        (click)="menuTrigger.openMenu()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" [overlapTrigger]="false">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+          <button mat-button matTooltip="Enable Full Screen" (click)="enableFullScreenMode()"
+            *ngIf="listeningForMessages && !isFullScreen">
+            <mat-icon>fullscreen</mat-icon>
+            Enable Full Screen
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Disable Full Screen" (click)="disableFullScreenMode()"
+            *ngIf="listeningForMessages && isFullScreen">
+            <mat-icon>fullscreen</mat-icon>
+            Disable Full Screen
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Change Color" (click)="switchColor()" *ngIf="listeningForMessages">
+            <mat-icon>color_lens</mat-icon>
+            Change Color
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Rotate X Axis" (click)="rotateX = !rotateX" *ngIf="listeningForMessages">
+            <mat-icon>more_horiz</mat-icon>
+            Rotate X Axis
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Rotate Y Axis" (click)="rotateY = !rotateY" *ngIf="listeningForMessages">
+            <mat-icon>more_vert</mat-icon>
+            Rotate Y Axis
+          </button>
+          <mat-divider></mat-divider>
+        </span>
+      </mat-menu>
+    </span>
+    <span *ngIf="listeningForMessages">
+      <button mat-icon-button matTooltip="Mode" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+        (click)="menuTrigger.openMenu()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" [overlapTrigger]="false">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+          <button mat-button matTooltip="Toggle Images" (click)="toggleImages()">
+            <mat-icon>collections</mat-icon>
+            Toggle Images
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-button matTooltip="Toggle 3D Canvas" (click)="toggleCanvas()">
+            <mat-icon>3d_rotation</mat-icon>
+            Toggle Canvas
+          </button>
+        </span>
+      </mat-menu>
+    </span>
+  </mat-toolbar>
+  <!-- toolbar with coordinates and sequence number-->
+  <mat-toolbar id="coordinates-bar" color="primary" *ngIf="listeningForMessages">
+    <span class="spacer"><strong>Seq: </strong>
+      <span *ngIf="frame">{{frame.seq}}</span>
+    </span>
+    <span class="spacer"><strong>posX: </strong>
+      <span *ngIf="frame">{{frame.posX}}</span>
+    </span>
+    <span class="spacer"><strong>posY: </strong>
+      <span *ngIf="frame">{{frame.posY}}</span>
+    </span>
+    <span><strong>posZ: </strong>
+      <span *ngIf="frame">{{frame.posZ}}</span>
+    </span>
+  </mat-toolbar>
+  <!-- card that displays either the canvas or images-->
+  <div [hidden]="!isImageDisplayed" class="camera_wrapper">
+    <img src="{{imageUrl}}" width="{{dashboardWidth}}" height="{{dashboardHeight}}" alt="frame image">
+  </div>
+  <div #canvas [hidden]="!isCanvasDisplayed" id="canvas" (window:resize)="onResize($event)"></div>
+</div>
+<!-- seperate container for error messages-->
+<div class="container-fluid" *ngIf="!isConnected || !isScanning">
+  <!-- warning template for rosbridge connection-->
+  <div class="warning_template" *ngIf="!isConnected">
+    <div class="wrapper">
+      <img src="assets/error_bridge.png" alt="error" id="error_bridge">
+    </div>
+    <div class="warning_message">
+      <button mat-button>
+        <mat-icon>warning</mat-icon>
+        <strong> Please connect to Rosbridge</strong>
+      </button>
+    </div>
+  </div>
+  <!-- warning template for scanner status-->
+  <div class="warning_template" *ngIf="isConnected && !isScanning">
+    <div class="wrapper">
+      <img src="assets/error_scan.png" alt="error" id="error_scan">
+    </div>
+    <div class="warning_message">
+      <button mat-button>
+        <mat-icon>warning</mat-icon>
+        <strong> The scanner is disabled</strong>
+      </button>
+    </div>
+  </div>
+</div>

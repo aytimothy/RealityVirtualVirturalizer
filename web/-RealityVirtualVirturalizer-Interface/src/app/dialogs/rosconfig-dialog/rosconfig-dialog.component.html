@@ -1,0 +1,29 @@
+<button mat-button mat-dialog-title>
+  <mat-icon>settings</mat-icon>
+  Rosbridge Configuration
+</button>
+<div mat-dialog-content>
+  <p>Set a custom host and port for rosbridge websocket connection</p>
+</div>
+<form [formGroup]="configForm">
+  <table>
+    <tr>
+      <td><strong>ws://</strong></td>
+      <td>
+        <mat-form-field mat-line>
+          <input matInput type="text" formControlName="host" placeholder="Host" required>
+        </mat-form-field>
+      </td>
+      <td><strong>:</strong></td>
+      <td>
+        <mat-form-field mat-line [style.width.px]=70>
+          <input matInput type="text" formControlName="port" placeholder="Port" required>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</form>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onSet()">Set</button>
+  <button mat-raised-button (click)="onCancel()">Cancel</button>
+</div>

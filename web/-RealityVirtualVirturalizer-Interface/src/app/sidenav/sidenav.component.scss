@@ -1,0 +1,38 @@
+.sidenav-header {
+  padding: 20px;
+  background: #475bcf;
+}
+
+mat-icon {
+  margin-right: 10px;
+}
+
+mat-nav-list {
+  padding: 20px;
+  text-align: center;
+
+}
+
+mat-nav-list a {
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: all 0.4s;
+  background: #475bcf;
+  color: white;
+}
+
+mat-nav-list a:hover {
+  background: #fff;
+  color: rgb(110, 131, 212);
+}
+
+.img-container {
+  position: absolute;
+  bottom: 0;
+}
+
+.img-container img {
+  max-width: 70%;
+  padding: 20px;
+  padding-top: 0;
+}

@@ -1,0 +1,164 @@
+/* Mobile RVV  */
+/* Html  */
+html{
+     margin: 0px; 
+     padding: 0px;	
+     height: 100%;
+     width: 100%;
+	 font-size: 12px;
+     font-family: Geneva, sans-serif;
+}
+/* Body  */
+body{
+     margin: 0px; 
+     padding: 0px;	
+     height: 100%;
+     width: 100%;
+	 font-size: 12px;
+     font-family: Geneva, sans-serif;
+}
+/* href link  */
+a{
+     color: #000000;
+     text-decoration: none;
+}
+/* Image  */
+img{
+     width: 100%; 
+     height: 100%;
+	 image-rendering: auto;
+}
+/* Span  */
+span{
+     margin: auto;
+}
+/* Canvas  */
+canvas{
+     display: block;
+}
+/* Canvas Container */
+.canvas-container{
+     height: 80vh;
+}
+/* IPhone Size  */
+@media screen and (min-width: 0px) and (max-width: 600px){
+     /* Wrapping  */
+	 .zeta-borderRadius{
+	 	 border-radius: 0px;
+     }
+	 /* Wrapping  */
+     .zeta-wrap{
+         width: 100%; 
+         position: relative;
+         margin: 0 auto;
+	     padding: 0px;
+	     padding-top: 65px;
+     }	    
+}
+/* IPad Size */
+@media screen and (min-width: 600px) and (max-width: 980px){
+	 /* Wrapping  */
+	 .borderRadius{
+	 	 border-radius: 5px;
+     }
+     /* Wrapping  */
+     .zeta-wrap{
+         width: 98%; 
+         position: relative;
+         margin: 0 auto;
+	     padding: 0px;
+	     padding-top: 80px;
+     }
+}
+/* PC Size */
+@media screen and (min-width: 980px){
+	 /* Border Radius */
+     .borderRadius{
+	 	 border-radius: 5px;
+     }
+	 /* Wrapping  */
+     .wrap{
+	     width: 80%;
+	     display: block;
+	     position: relative;
+	     margin: 0 auto;
+	     padding: 0px;
+     }	
+}
+/* Container Fluid */
+.container-fluid{
+     background-color: rgb(241, 173, 173);
+}
+/* Image Wrapper */
+.image-wrapper{
+     height: 80vh;
+     text-align: center;
+}
+/* Image Container */
+.img-container{
+     position: absolute;
+     bottom: 0;
+}
+/* Image Container Wrapper*/
+.img-container-wrapper{
+     max-width: 70%;
+     padding: 20px;
+     padding-top: 0;
+}
+/* Space */
+.spacer{
+     flex: 1 1 auto;
+}
+/* Coordinates Bar */
+.coordinates-bar{
+     height: 5%;
+      font-size: 1vw;
+}
+/* Side Nav Header */
+.sidenav-header{
+     padding: 20px;
+     background: #475bcf;
+     text-align: center;
+     color: #ffffff;
+}
+/* Mat Tool Bar */
+.mat-toolbar{
+     height: 10%;
+     justify-content: center;
+     position: absolute;
+     bottom: 0;
+}
+/* Mat Icon */
+.mat-icon {
+     margin-right: 10px;
+}
+/* Mat Nav List */
+.mat-nav-list {
+     padding: 20px;
+     text-align: center;
+}
+/* Mat nav List */
+.mat-nav-list{
+     border-radius: 10px;
+     margin-bottom: 10px;
+     transition: all 0.4s;
+     background: #475bcf;
+     color: white;
+}
+/* Mat Nav List */
+.mat-nav-list:hover{
+     background: #fff;
+     color: rgb(110, 131, 212);
+}
+/* Mat List Item */
+.mat-list-item{
+     background-color: #3f51b5;
+     color: #fff;
+}
+/* Mat List Item Hover */
+.mat-list-item:hover{
+     background: white;
+     color: #475bcf;
+}
+
+

@@ -1,0 +1,25 @@
+.sidenav-header {
+  padding: 20px;
+  background: #475bcf;
+  text-align: center;
+  color: #fff;
+}
+
+.mat-list-item.active {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.mat-list-item:hover {
+  background: white;
+  color: #475bcf;
+}
+
+.mat-list-item.active:hover {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+:host ::ng-deep .mat-list-item-content {
+  padding: 0px !important;
+}
