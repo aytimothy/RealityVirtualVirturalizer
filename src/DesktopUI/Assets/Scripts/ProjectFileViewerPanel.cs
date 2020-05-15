@@ -78,7 +78,8 @@ public class ProjectFileViewerPanel : MonoBehaviour
                 break;
         }
     }
-    public bool IsValidFrame(string filePath)
+    
+    private bool IsValidFrame(string filePath)
     {
         var data = JsonConvert.DeserializeObject<Frame>(File.ReadAllText(filePath));
 
