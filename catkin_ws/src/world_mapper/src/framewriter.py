@@ -6,6 +6,7 @@ import math
 import json
 import sys
 import base64
+import os
 from math import pi
 from math import cos
 from math import sin
@@ -193,6 +194,8 @@ def main():
         print("Error: Frame save directory required as a argument.\n")
         exit()
     fileDir = sys.argv[1]
+    if not os.path.exists(fileDir):
+        os.mkdir(fileDir)
     
     rospy.init_node("framewriter")
     lastImuMessageTime = rospy.get_rostime()
