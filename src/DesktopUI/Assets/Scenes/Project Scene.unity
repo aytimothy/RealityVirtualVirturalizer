@@ -7319,8 +7319,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768084944}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0.27355835, y: -0.0520093, z: 0.014815239, w: -0.960334}
+  m_LocalPosition: {x: 0.22582191, y: 4.458593, z: -6.5372267}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -16918,6 +16918,7 @@ GameObject:
   - component: {fileID: 1476278655}
   - component: {fileID: 1476278654}
   - component: {fileID: 1476278657}
+  - component: {fileID: 1476278660}
   - component: {fileID: 1476278658}
   - component: {fileID: 1476278659}
   m_Layer: 0
@@ -17029,6 +17030,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff25731885e83b4dbc1edd08f0ba727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1476278660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476278653}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2313f1cecdcf152498e60b0f7dee78c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FolderPath: C:\Users\aytimothy\Documents\Unity Projects\ROS Simulation 2\Frames\frame3
+  ImportInterval: 0.5
+  PointCloud: {fileID: 1840801254}
 --- !u!1 &1480471909
 GameObject:
   m_ObjectHideFlags: 0
