@@ -39,6 +39,7 @@ public class ProjectFilePanel : MonoBehaviour {
 
         string filePath = Path.GetDirectoryName(filePaths[0]);
         ProjectScene.StartupProjectPath = filePath;
+        SceneManager.LoadScene("Project Scene");
     }
 
     public void SaveProjectButton_OnClick() {

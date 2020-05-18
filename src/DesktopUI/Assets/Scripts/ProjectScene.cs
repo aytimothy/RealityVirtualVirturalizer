@@ -74,7 +74,8 @@ public class ProjectScene : MonoBehaviour {
         projectManifest.Modified = DateTime.Now;
         string manifestInformation = JsonConvert.SerializeObject(projectManifest);
 
-        File.WriteAllText(CurrentProjectPath + @"\manifest.json", manifestInformation);
+        /*File.WriteAllText(CurrentProjectPath + @"\manifest.json", manifestInformation);*/
+        File.WriteAllText(CurrentProjectPath + "/manifest.json", manifestInformation);
     }
 
     public static string projectName;

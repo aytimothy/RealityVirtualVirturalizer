@@ -82,7 +82,8 @@ public class ProjectViewPanel : MonoBehaviour
 
     public void ResetCameraButton_OnClick()
     {
-        camera.transform.position = Vector3.zero;
+        /* camera.transform.position = Vector3.zero;*/
+        camera.transform.position = new Vector3(0, 1, -10);
         camera.transform.rotation = Quaternion.identity;
     }
 
