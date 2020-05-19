@@ -228,12 +228,15 @@ public class Framewriter : UnityPublisher<ROSFrame>
 
             if (camera.targetTexture == null)
                 camera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+            RenderTexture active = RenderTexture.active;
+            RenderTexture.active = camera.targetTexture;
             camera.Render();
             Texture2D texture = new Texture2D(camera.targetTexture.width, camera.targetTexture.height, TextureFormat.RGB24, false);
             texture.ReadPixels(new Rect(0, 0, camera.targetTexture.width, camera.targetTexture.height), 0, 0);
             texture.Apply();
+            RenderTexture.active = active;
             ba = texture.EncodeToPNG();
-
+            Destroy(texture);
             return ba;
         }
     }

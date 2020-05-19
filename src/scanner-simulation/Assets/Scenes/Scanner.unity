@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /output
   camera: {fileID: 1926357963}
-  framePath: /home/user/frames
+  framePath: C:\Users\aytimothy\Downloads\
   frameFileName: Frame
   frameFileExtension: .json
   frameNumberFormat: 0000
@@ -168,7 +168,7 @@ MonoBehaviour:
   seq: 0
   lastPosition: {x: 0, y: 0, z: 0}
   lastRotation: {x: 0, y: 0, z: 0}
-  rosConnector: {fileID: 0}
+  rosConnector: {fileID: 1728323564}
 --- !u!114 &1728323564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 0
-  RosBridgeServerUrl: ws://192.168.1.180:9090
+  RosBridgeServerUrl: ws://192.168.0.27:9090
 --- !u!20 &1728323565
 Camera:
   m_ObjectHideFlags: 0
@@ -236,12 +236,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728323562}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.014, y: 0.828, z: -1.481}
-  m_LocalScale: {x: 0.10221, y: 0.10221, z: 0.10221}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1733721159}
+  - {fileID: 1926357965}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1733721158
 GameObject:
@@ -412,10 +413,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926357962}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.038209, y: -1.3091424, z: -2.87465}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_Father: {fileID: 1728323566}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
