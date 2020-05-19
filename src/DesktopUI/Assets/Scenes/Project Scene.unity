@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -1476,6 +1476,7 @@ GameObject:
   - component: {fileID: 196126588}
   - component: {fileID: 196126587}
   - component: {fileID: 196126589}
+  - component: {fileID: 196126590}
   m_Layer: 5
   m_Name: Reconstruct Panel
   m_TagString: Untagged
@@ -1560,6 +1561,26 @@ MonoBehaviour:
   FocalLengthInputField: {fileID: 1051765116}
   EdgeLengthLimitInputField: {fileID: 2141454563}
   SceneController: {fileID: 1476278657}
+  MeshBuilder: {fileID: 196126590}
+  DotStamper: {fileID: 0}
+  MeshDisplayParent: {fileID: 0}
+  MeshDisplayObject: {fileID: 0}
+  MeshDisplayMaterial: {fileID: 0}
+--- !u!114 &196126590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196126585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7550961924a0f741a47f00e66aaf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointCloudManager: {fileID: 1840801254}
+  displayPosition: {fileID: 0}
+  resultMesh: {fileID: 0}
 --- !u!1 &203867931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2371,7 +2392,7 @@ RectTransform:
   m_Father: {fileID: 1934329326}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.05171156}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -10840,7 +10861,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1069893413
 Transform:
   m_ObjectHideFlags: 0
@@ -10849,7 +10870,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1069893412}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 424.95328, y: 224.45375, z: -592.41284}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -17017,7 +17038,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fudgeLocation: C:\Users\aytimothy\Downloads\Points.json
   triggered: 0
+  triggered2: 0
+  activated2: 0
+  displayDelay: 10
+  displayTime: 0
   pointCloudManager: {fileID: 1840801254}
+  fudgeObject: {fileID: 2893486596603739994, guid: ec0eeb70d9c8cc3468049de916784245,
+    type: 3}
+  fudgeTarget: {fileID: 1069893413}
 --- !u!114 &1476278659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19500,8 +19528,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 256795602}
   m_HandleRect: {fileID: 256795601}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1.0000017
+  m_Size: 0.94828844
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23762,7 +23790,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1082431111092329206}
   m_OnClick:
     m_PersistentCalls:
@@ -24222,7 +24250,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1082431111609704940}
   m_OnClick:
     m_PersistentCalls:
