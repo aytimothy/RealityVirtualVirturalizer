@@ -59,6 +59,7 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public startListening(): void {
+    var processFrame = false;
     this.msg_listener = this.__BridgeService.subscribeToTopic('/output', 'world_mapper/Frame')
     // listen for basic messages
     this.listeningForMessages = true;
@@ -67,7 +68,12 @@ export class DashboardComponent implements AfterViewInit {
       this.frame = frame;
       // update the image url per frame
       this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
-      this.generatePoint(frame);
+      setTimeout(function () { processFrame = true; }, 1000);
+
+      if (processFrame) {
+        this.generatePoint(frame);
+        processFrame = false;
+      }
     });
     this.create3DCanvas();
   }
@@ -108,7 +114,7 @@ export class DashboardComponent implements AfterViewInit {
 
   private generatePoint(frame): void {
     var baseVectors = [];
-    
+
     if (frame.angle_increment >= 0.1) {
       frame.angle_increment = (frame.angle_max - frame.angle_min) / (frame.ranges.length - 1);
     }
