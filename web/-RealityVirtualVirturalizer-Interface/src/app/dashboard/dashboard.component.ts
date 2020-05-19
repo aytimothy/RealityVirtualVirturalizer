@@ -96,7 +96,7 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public stopListening(): void {
-    this.frame_listener.unsubstribe();
+    this.frame_listener.unsubscribe();
     this.listeningForMessages = false;
     this.isCanvasDisplayed = false;
   }
