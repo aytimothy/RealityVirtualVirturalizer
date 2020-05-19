@@ -30,8 +30,9 @@ export class DashboardComponent implements AfterViewInit {
   public isFullScreen: boolean = false;
   public rotateX: boolean = false;
   public rotateY: boolean = false;
-  private msg_listener: any;
+  private frame_listener: any;
   public frame: any;
+  private frameProccessed: boolean;
   public imageUrl: string;
 
   public dashboardWidth: number;
@@ -59,20 +60,21 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public startListening(): void {
-    var processFrame = false;
-    this.msg_listener = this.__BridgeService.subscribeToTopic('/output', 'world_mapper/Frame')
+    this.frame_listener = this.__BridgeService.subscribeToTopic('/output', 'world_mapper/Frame')
     // listen for basic messages
     this.listeningForMessages = true;
-    this.msg_listener.subscribe((frame: any) => {
-      // update the current frame
-      this.frame = frame;
-      // update the image url per frame
-      this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
-      setTimeout(function () { processFrame = true; }, 1000);
+    this.frameProccessed = true;
+    this.frame_listener.subscribe((frame: any) => {
 
-      if (processFrame) {
+      if (this.frameProccessed) {
+        // update the current frame
+        this.frame = frame;
+        // update the image url per frame
+        this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
+        // generate points
         this.generatePoint(frame);
-        processFrame = false;
+        // reset 
+        this.frameProccessed = false;
       }
     });
     this.create3DCanvas();
@@ -95,7 +97,7 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public stopListening(): void {
-    this.msg_listener.unsubstribe();
+    this.frame_listener.unsubstribe();
     this.listeningForMessages = false;
     this.isCanvasDisplayed = false;
   }
@@ -265,5 +267,7 @@ export class DashboardComponent implements AfterViewInit {
       component.controls.update();
       component.renderer.render(component.scene, component.camera);
     }());
+
+    this.frameProccessed = true;
   }
 }
