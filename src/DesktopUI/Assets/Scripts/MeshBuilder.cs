@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class MeshBuilder : MonoBehaviour {
     public PointCloudManager pointCloudManager;
+    public Transform displayPosition;
+    public Mesh resultMesh;
 
     public Mesh GenerateMesh() {
         return GenerateMesh(pointCloudManager);

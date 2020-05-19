@@ -17,6 +17,11 @@ public class ProjectReconstructPanel : MonoBehaviour {
     public TMP_InputField FocalLengthInputField;
     public TMP_InputField EdgeLengthLimitInputField;
     public ProjectScene SceneController;
+    public MeshBuilder MeshBuilder;
+    public CheatDotStamper DotStamper;
+    public Transform MeshDisplayParent;
+    public GameObject MeshDisplayObject;
+    public Material MeshDisplayMaterial;
     bool uiIsReadingFromDisk;
 
     public string DefaultDirectory {
@@ -94,11 +99,19 @@ public class ProjectReconstructPanel : MonoBehaviour {
     }
 
     public void GenerateMeshButton_OnClick() {
-
+        Mesh mesh = MeshBuilder.GenerateMesh();
+        if (MeshDisplayObject != null)
+            Destroy(MeshDisplayObject);
+        MeshDisplayObject = new GameObject();
+        MeshDisplayObject.transform.parent = MeshDisplayParent;
+        MeshFilter filter = MeshDisplayObject.AddComponent<MeshFilter>();
+        MeshRenderer renderer = MeshDisplayObject.AddComponent<MeshRenderer>();
+        filter.mesh = mesh;
+        renderer.material = new Material(MeshDisplayMaterial);
     }
 
     public void StampMeshButton_OnClick() {
-
+        DotStamper.Stamp();
     }
 
     public void ExportMeshButton_OnClick() {
