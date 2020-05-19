@@ -67,14 +67,13 @@ export class DashboardComponent implements AfterViewInit {
     this.frame_listener.subscribe((frame: any) => {
 
       if (this.frameProccessed) {
+        this.frameProccessed = false;
         // update the current frame
         this.frame = frame;
         // update the image url per frame
         this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
         // generate points
         this.generatePoint(frame);
-        // reset 
-        this.frameProccessed = false;
       }
     });
     this.create3DCanvas();
