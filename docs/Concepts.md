@@ -254,3 +254,5 @@ In order to generate the mesh, we simply drew triangles. The main gist of the al
 ### Texture Stamping <a name="stamp"></a>
 
 For texture stamping, what we do is we apply the pinhole camera, with the camera directly above the Lidar's reading point, and if the point falls within view of the pinhole camera, we can stamp the mesh/point.
+
+![https://www.scratchapixel.com/images/upload/cameras/canvascoordinates5.png](https://www.scratchapixel.com/images/upload/cameras/canvascoordinates5.png)
