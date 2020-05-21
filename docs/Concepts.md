@@ -243,12 +243,14 @@ Both the desktop and web user interfaces subscribe to the `/output` topic to rec
 
 ### Mesh Generation <a name="mesh"></a>
 
-// todo.
+In order to generate the mesh, we simply drew triangles. The main gist of the algorithm is to:
+
+1. Create a triangle using three points that are closest together.
+2. Now, join up each point to the closest edge.
+3. Look for any holes/unjointed/uneven edges (to make the mesh convex) and join them up.
+
+![https://github.com/aytimothy/RealityVirtualVirturalizer/raw/master/promo/Plan_DotJoining.png](https://github.com/aytimothy/RealityVirtualVirturalizer/raw/master/promo/Plan_DotJoining.png)
 
 ### Texture Stamping <a name="stamp"></a>
 
-// todo.
-
-## Reflection <a name="reflection"></a>
-
-// todo.
+For texture stamping, what we do is we apply the pinhole camera, with the camera directly above the Lidar's reading point, and if the point falls within view of the pinhole camera, we can stamp the mesh/point.
