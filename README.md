@@ -8,7 +8,6 @@ The aim is put together a product that would allow you to scan the world with th
 **Team Members:**
 * Jesse Gracia
 * Codie Little
-* Ritchie Wills
 * James Hamshere
 * Waleed Jamaldini
 
