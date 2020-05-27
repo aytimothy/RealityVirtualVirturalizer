@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { BridgeService } from '../services/rosbridge.service';
 import { ScannerService } from '../services/scanner.service';
@@ -30,9 +30,9 @@ export class DashboardComponent implements AfterViewInit {
   public isFullScreen: boolean = false;
   public rotateX: boolean = false;
   public rotateY: boolean = false;
+
   private frame_listener: any;
   public frame: any;
-  private frameProccessed: boolean;
   public imageUrl: string;
 
   public dashboardWidth: number;
@@ -63,18 +63,13 @@ export class DashboardComponent implements AfterViewInit {
     this.frame_listener = this.__BridgeService.subscribeToTopic('/output', 'world_mapper/Frame')
     // listen for basic messages
     this.listeningForMessages = true;
-    this.frameProccessed = true;
     this.frame_listener.subscribe((frame: any) => {
-
-      if (this.frameProccessed) {
-        this.frameProccessed = false;
-        // update the current frame
-        this.frame = frame;
-        // update the image url per frame
-        this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
-        // generate points
-        this.generatePoint(frame);
-      }
+      // update the current frame
+      this.frame = frame;
+      // update the image url per frame
+      this.imageUrl = 'data:image/jpeg;base64,' + frame.img;
+      // generate points
+      this.generatePoint(frame);
     });
     this.create3DCanvas();
   }
@@ -225,6 +220,22 @@ export class DashboardComponent implements AfterViewInit {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     this.createNewScene();
+
+    let component: DashboardComponent = this;
+    // Render the animation in the canvas
+    (function render() {
+      requestAnimationFrame(render);
+      // check if our rotation controls are enabled for x,y axis
+      if (component.rotateX) {
+        component.points.rotation.x += 0.01;
+      }
+      if (component.rotateY) {
+        component.points.rotation.y += 0.01;
+      }
+
+      component.controls.update();
+      component.renderer.render(component.scene, component.camera);
+    }());
   }
 
   public createNewScene() {
@@ -251,23 +262,5 @@ export class DashboardComponent implements AfterViewInit {
     this.points = new THREE.Points(geometry, material);
     // Add points to Scene
     this.scene.add(this.points);
-
-    let component: DashboardComponent = this;
-    // Render the animation in the canvas
-    (function render() {
-      requestAnimationFrame(render);
-      // check if our rotation controls are enabled for x,y axis
-      if (component.rotateX) {
-        component.points.rotation.x += 0.01;
-      }
-      if (component.rotateY) {
-        component.points.rotation.y += 0.01;
-      }
-
-      component.controls.update();
-      component.renderer.render(component.scene, component.camera);
-    }());
-
-    this.frameProccessed = true;
   }
 }
