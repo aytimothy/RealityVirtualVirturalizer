@@ -30,5 +30,7 @@ app.listen(PORT, HOST, () => {
 
 // Import routes
 const filesys = require('./routes/filesys');
+const index = require('./routes/index');
 
 app.use('/filesys', filesys);
+app.use('*', index);

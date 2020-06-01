@@ -9,7 +9,7 @@ const path = require('path');
 const BSON = require('bson');
 
 
-router.get('/root_list', async function (req, res) {
+router.get('/root_list', async (req, res) => {
     // root directory of data files
     const rootDirectory = path.join(__dirname, '../data/');
     try {
@@ -46,7 +46,7 @@ router.get('/root_list', async function (req, res) {
     }
 });
 
-router.post('/navigate_dir', async function (req, res) {
+router.post('/navigate_dir', async (req, res) => {
     // get current item which is either a directory or file
     let currentItem = req.body
     // check if item is a directory
@@ -88,7 +88,7 @@ router.post('/navigate_dir', async function (req, res) {
     }
 });
 
-router.post('/readfile', async function (req, res) {
+router.post('/readfile', async (req, res) => {
     // get file from body
     let file = req.body;
 
@@ -123,7 +123,7 @@ router.post('/readfile', async function (req, res) {
     }
 });
 
-router.post('/removeItem', async function (req, res) {
+router.post('/removeItem', async (req, res) => {
     let item = req.body;
     if (fs.existsSync(item.path)) {
         if (item.isDir) {
